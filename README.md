@@ -1,2 +1,2 @@
 # Trackee
-##  A personal finance and group expense management system 
+##  A personal finance and group expense management system
