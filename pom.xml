@@ -95,7 +95,6 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
@@ -113,7 +112,6 @@
 			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -133,33 +131,25 @@
 				<artifactId>openapi-generator-maven-plugin</artifactId>
 				<version>${openapi-generator-maven-plugin.version}</version>
 				<configuration>
-					<apiNameSuffix>ControllerApi</apiNameSuffix>
-					<generatorName>spring</generatorName>
-					<generateApis>true</generateApis>
-					<generateModels>true</generateModels>
+					<generatorName>openapi</generatorName>
+					<generatorName>html2</generatorName>
+
+					<inputSpec>${project.basedir}/contracts/openapi.yml</inputSpec>
+
+					<!-- Disable all code generations -->
+					<generateApis>false</generateApis>
+					<generateModels>false</generateModels>
 					<generateApiTests>false</generateApiTests>
 					<generateModelTests>false</generateModelTests>
 					<generateSupportingFiles>false</generateSupportingFiles>
-					<modelNameSuffix>DTO</modelNameSuffix>
-					<skipOperationExample>true</skipOperationExample>
+
+					<!-- Enable only docs -->
 					<configOptions>
-						<additionalModelTypeAnnotations>
-							@lombok.NoArgsConstructor
-							@lombok.AllArgsConstructor
-							@lombok.ToString
-							@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
-						</additionalModelTypeAnnotations>
-						<annotationLibrary>swagger2</annotationLibrary>
 						<apiDocs>true</apiDocs>
-						<generateConstructorWithAllArgs>false</generateConstructorWithAllArgs>
-						<generatedConstructorWithRequiredArgs>false</generatedConstructorWithRequiredArgs>
-						<interfaceOnly>true</interfaceOnly>
-						<library>spring-boot</library>
-						<dateLibrary>java8-localdatetime</dateLibrary>
-						<useResponseEntity>false</useResponseEntity>
+						<modelDocs>false</modelDocs>
+
+						<!-- Optional -->
 						<useSpringBoot3>true</useSpringBoot3>
-						<useTags>true</useTags>
-						<useEnumCaseInsensitive>true</useEnumCaseInsensitive>
 					</configOptions>
 				</configuration>
 				<executions>
