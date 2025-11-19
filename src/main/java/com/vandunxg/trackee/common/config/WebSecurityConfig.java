@@ -39,12 +39,11 @@ public class WebSecurityConfig {
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        request -> {
-                            request.requestMatchers(PUBLIC_ENDPOINT)
-                                    .permitAll()
-                                    .anyRequest()
-                                    .authenticated();
-                        })
+                        request ->
+                                request.requestMatchers(PUBLIC_ENDPOINT)
+                                        .permitAll()
+                                        .anyRequest()
+                                        .authenticated())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
 
