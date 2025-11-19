@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -27,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebSecurityConfig {
 
     CustomJwtFilter customJwtFilter;
-    AuthenticationProvider authenticationProvider;
+    //    AuthenticationProvider authenticationProvider;
 
     String[] PUBLIC_ENDPOINT = {"/auth/**"};
 
@@ -44,7 +43,7 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .anyRequest()
                                         .authenticated())
-                .authenticationProvider(authenticationProvider)
+                //                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
