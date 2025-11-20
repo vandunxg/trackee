@@ -54,11 +54,8 @@ public class JwtTokenProvider {
     @Value("${jwt.expiration.refresh-token}")
     String REFRESH_TOKEN_EXPIRY_TIME;
 
-    public String generateAccessToken(UserPrincipal userPrincipal) {
-        log.info(
-                "generate access token for user {} with authorities {}",
-                userPrincipal.getUsername(),
-                userPrincipal.getAuthorities());
+    public String accessToken(UserPrincipal userPrincipal) {
+        log.info("[accessToken]");
 
         UserEntity user = userPrincipal.getUser();
         List<String> roles =
@@ -73,11 +70,8 @@ public class JwtTokenProvider {
         return generateAccessToken(claims, userPrincipal.getUsername());
     }
 
-    public String generateRefreshToken(UserPrincipal userPrincipal) {
-        log.info(
-                "generate refresh token for user {} with authorities {}",
-                userPrincipal.getUsername(),
-                userPrincipal.getAuthorities());
+    public String refreshToken(UserPrincipal userPrincipal) {
+        log.info("[refreshToken]");
 
         UserEntity user = userPrincipal.getUser();
         List<String> roles =
@@ -93,7 +87,7 @@ public class JwtTokenProvider {
     }
 
     public String extractEmail(String token, TokenType type) {
-        log.info("extractEmail");
+        log.info("[extractEmail]");
 
         return extractClaim(token, type, Claims::getSubject);
     }
@@ -105,7 +99,7 @@ public class JwtTokenProvider {
     }
 
     String generateAccessToken(Map<String, Object> claims, String email) {
-        log.info("----------[ GENERATE-ACCESS-TOKEN ]----------");
+        log.info("[generateAccessToken]");
 
         return Jwts.builder()
                 .claims(claims)
@@ -120,7 +114,7 @@ public class JwtTokenProvider {
     }
 
     String generateRefreshToken(Map<String, Object> claims, String email) {
-        log.info("----------[ GENERATE-REFRESH-TOKEN ]----------");
+        log.info("[generateRefreshToken]");
 
         return Jwts.builder()
                 .claims(claims)
@@ -135,7 +129,7 @@ public class JwtTokenProvider {
     }
 
     Key getKeys(TokenType type) {
-        log.info("----------[ GET-KEY ]----------");
+        log.info("[getKeys]");
 
         return switch (type) {
             case ACCESS_TOKEN -> Keys.hmacShaKeyFor(
@@ -146,14 +140,14 @@ public class JwtTokenProvider {
     }
 
     <T> T extractClaim(String token, TokenType type, Function<Claims, T> claimResolver) {
-        log.info("----------[ extractClaim ]----------");
+        log.info("[extractClaim]");
 
         final Claims claims = extractAllClaims(token, type);
         return claimResolver.apply(claims);
     }
 
     Claims extractAllClaims(String token, TokenType type) {
-        log.info("----------[ EXTRACT-ALL-CLAIMS ]----------");
+        log.info("[extractAllClaims]");
 
         try {
             return Jwts.parser()
