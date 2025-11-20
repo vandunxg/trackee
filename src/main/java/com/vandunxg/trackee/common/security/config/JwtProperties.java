@@ -1,4 +1,4 @@
-package com.vandunxg.trackee.common.config;
+package com.vandunxg.trackee.common.security.config;
 
 import lombok.Data;
 

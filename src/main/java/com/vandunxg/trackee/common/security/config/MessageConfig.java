@@ -1,4 +1,4 @@
-package com.vandunxg.trackee.common.config;
+package com.vandunxg.trackee.common.security.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

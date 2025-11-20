@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.vandunxg.trackee.common.domain.BaseEntity;
+import com.vandunxg.trackee.common.enums.RoleType;
 import com.vandunxg.trackee.common.enums.UserStatus;
 
 @Getter
@@ -43,4 +44,8 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     UserStatus status;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    RoleType role;
 }
