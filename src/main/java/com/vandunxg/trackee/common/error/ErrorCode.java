@@ -7,6 +7,11 @@ import com.vandunxg.trackee.common.constant.MessageKey;
 @Getter
 public enum ErrorCode {
 
+    // COMMON ERRORS
+    VALIDATION_ERROR(MessageKey.VALIDATION_ERROR),
+    INTERNAL_SERVER_ERROR(MessageKey.INTERNAL_SERVER_ERROR),
+    REQUIRED_REQUEST_BODY(MessageKey.REQUIRED_REQUEST_BODY),
+
     // AUTH
     AUTH_INVALID_CREDENTIALS(MessageKey.AUTH_INVALID_CREDENTIALS),
 
