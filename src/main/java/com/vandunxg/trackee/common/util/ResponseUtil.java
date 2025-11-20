@@ -19,8 +19,6 @@ import com.vandunxg.trackee.common.error.ErrorCode;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public final class ResponseUtil {
 
-    static MessageSource messageSource;
-
     ResponseUtil() {}
 
     static String getPath() {
