@@ -23,7 +23,7 @@ import com.vandunxg.trackee.common.enums.UserStatus;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-public class UserEntity extends BaseEntity {
+public class User extends BaseEntity {
 
     @Column(nullable = false)
     String fullName;

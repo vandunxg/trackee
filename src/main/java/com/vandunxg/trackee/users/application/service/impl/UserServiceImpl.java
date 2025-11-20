@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
 import com.vandunxg.trackee.users.application.service.UserService;
 import com.vandunxg.trackee.users.application.validator.UserValidator;
-import com.vandunxg.trackee.users.domain.UserEntity;
+import com.vandunxg.trackee.users.domain.User;
 import com.vandunxg.trackee.users.domain.UserRepository;
 import com.vandunxg.trackee.users.domain.factory.UserFactory;
 
@@ -29,16 +29,16 @@ public class UserServiceImpl implements UserService {
     UserValidator userValidator;
 
     @Override
-    public UUID createUserForRegistration(RegisterRequest request) {
+    public UUID createUserRegistration(RegisterRequest request) {
         log.info("[createUserForRegistration] request={}", request);
 
         userValidator.validateEmailNotExists(request.email());
 
-        UserEntity userEntity = userFactory.createUser(request);
+        User user = userFactory.createUserRegister(request);
 
         log.info("[register] save user to db");
-        userRepository.save(userEntity);
+        userRepository.save(user);
 
-        return userEntity.getId();
+        return user.getId();
     }
 }

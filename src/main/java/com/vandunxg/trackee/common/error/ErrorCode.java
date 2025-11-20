@@ -22,6 +22,7 @@ public enum ErrorCode {
     USER_CREATED(MessageKey.USER_CREATED),
     USER_UPDATED(MessageKey.USER_UPDATED),
     USER_DELETED(MessageKey.USER_DELETED),
+    USER_INACTIVE(MessageKey.USER_INACTIVE),
 
     // USER VALIDATION
     EMAIL_BLANK(MessageKey.EMAIL_BLANK),

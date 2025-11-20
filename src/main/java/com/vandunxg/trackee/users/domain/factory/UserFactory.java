@@ -9,8 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
+import com.vandunxg.trackee.common.enums.RoleType;
 import com.vandunxg.trackee.common.enums.UserStatus;
-import com.vandunxg.trackee.users.domain.UserEntity;
+import com.vandunxg.trackee.users.domain.User;
 import com.vandunxg.trackee.users.domain.validator.EmailValidator;
 import com.vandunxg.trackee.users.domain.validator.PasswordValidator;
 
@@ -22,16 +23,17 @@ public class UserFactory {
 
     PasswordEncoder passwordEncoder;
 
-    public UserEntity createUser(RegisterRequest request) {
+    public User createUserRegister(RegisterRequest request) {
         log.info("[createUser] request={}", request);
 
         validateRequest(request);
 
-        return UserEntity.builder()
+        return User.builder()
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
                 .fullName(request.fullName())
-                .status(UserStatus.ACTIVE)
+                .status(UserStatus.INACTIVE) // user is created but not activated yet.
+                .role(RoleType.USER) // role always is USER
                 .build();
     }
 

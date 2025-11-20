@@ -5,10 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record RegisterRequest(
-        @NotBlank(message = "Full name must not be blank")
-                @Size(max = 255, message = "Full name must be at most 255 characters")
-                String fullName,
+public record LoginRequest(
         @NotBlank(message = "Email must not be blank")
                 @Email(message = "Invalid email format")
                 @Size(max = 255, message = "Email must be at most 255 characters")
@@ -19,5 +16,14 @@ public record RegisterRequest(
                         regexp =
                                 "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
                         message =
-                                "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character")
-                String password) {}
+                                "Password must contain at least one uppercase letter, one lowercase letter, one digit, and"
+                                        + " one special character")
+                String password,
+        @NotBlank(message = "Platform must not be blank")
+                @Pattern(
+                        regexp = "^(WEB|IOS|ANDROID)$",
+                        message = "Platform must be WEB, IOS, or ANDROID")
+                String platform,
+        @NotBlank(message = "Device id must not be blank")
+                @Size(max = 255, message = "Device id must be at most 255 characters")
+                String deviceId) {}

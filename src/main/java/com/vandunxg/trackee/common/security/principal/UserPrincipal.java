@@ -10,16 +10,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.vandunxg.trackee.common.enums.UserStatus;
-import com.vandunxg.trackee.users.domain.UserEntity;
+import com.vandunxg.trackee.users.domain.User;
 
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserPrincipal implements UserDetails {
 
-    @Getter UserEntity user;
+    @Getter User user;
 
     Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrincipal(UserEntity user, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(User user, Collection<? extends GrantedAuthority> authorities) {
         this.user = user;
         this.authorities = authorities;
     }
@@ -42,5 +42,10 @@ public class UserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserStatus.ACTIVE.equals(user.getStatus());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserStatus.DELETED != user.getStatus();
     }
 }

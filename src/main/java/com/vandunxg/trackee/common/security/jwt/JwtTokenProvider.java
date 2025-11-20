@@ -30,7 +30,7 @@ import com.vandunxg.trackee.common.enums.TokenType;
 import com.vandunxg.trackee.common.error.ErrorCode;
 import com.vandunxg.trackee.common.exception.BusinessException;
 import com.vandunxg.trackee.common.security.principal.UserPrincipal;
-import com.vandunxg.trackee.users.domain.UserEntity;
+import com.vandunxg.trackee.users.domain.User;
 
 @Component
 @RequiredArgsConstructor
@@ -57,7 +57,7 @@ public class JwtTokenProvider {
     public String accessToken(UserPrincipal userPrincipal) {
         log.info("[accessToken]");
 
-        UserEntity user = userPrincipal.getUser();
+        User user = userPrincipal.getUser();
         List<String> roles =
                 userPrincipal.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)
@@ -73,7 +73,7 @@ public class JwtTokenProvider {
     public String refreshToken(UserPrincipal userPrincipal) {
         log.info("[refreshToken]");
 
-        UserEntity user = userPrincipal.getUser();
+        User user = userPrincipal.getUser();
         List<String> roles =
                 userPrincipal.getAuthorities().stream()
                         .map(GrantedAuthority::getAuthority)

@@ -6,5 +6,5 @@ import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
 
 public interface UserService {
 
-    UUID createUserForRegistration(RegisterRequest request);
+    UUID createUserRegistration(RegisterRequest request);
 }

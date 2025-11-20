@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.vandunxg.trackee.common.error.ErrorCode;
 import com.vandunxg.trackee.common.exception.BusinessException;
 import com.vandunxg.trackee.common.security.principal.UserPrincipal;
-import com.vandunxg.trackee.users.domain.UserEntity;
+import com.vandunxg.trackee.users.domain.User;
 import com.vandunxg.trackee.users.domain.UserRepository;
 
 @Service
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         log.info("[loadUserByUsername] email={}", email);
 
-        UserEntity user =
+        User user =
                 userRepository
                         .findByEmail(email)
                         .orElseThrow(

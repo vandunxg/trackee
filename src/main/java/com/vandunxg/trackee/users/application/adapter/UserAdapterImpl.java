@@ -24,6 +24,6 @@ public class UserAdapterImpl implements UserAdapter {
     public UUID createdUser(RegisterRequest request) {
         log.info("[createdUser] request={}", request);
 
-        return userService.createUserForRegistration(request);
+        return userService.createUserRegistration(request);
     }
 }

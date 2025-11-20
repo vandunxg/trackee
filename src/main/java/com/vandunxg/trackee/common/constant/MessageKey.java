@@ -32,6 +32,7 @@ public class MessageKey {
     public static final String USER_UPDATED = "user.updated";
     public static final String USER_DELETED = "user.deleted";
     public static final String USER_EMAIL_EXISTS = "user.email.exists";
+    public static final String USER_INACTIVE = "user.inactive";
 
     /** USER VALIDATION * */
     public static final String EMAIL_BLANK = "email.blank";
