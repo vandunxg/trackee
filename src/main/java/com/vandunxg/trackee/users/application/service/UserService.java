@@ -1,3 +1,10 @@
 package com.vandunxg.trackee.users.application.service;
 
-public class UserService {}
+import java.util.UUID;
+
+import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
+
+public interface UserService {
+
+    UUID createUserForRegistration(RegisterRequest request);
+}

@@ -2,19 +2,40 @@ package com.vandunxg.trackee.common.error;
 
 import lombok.Getter;
 
+import com.vandunxg.trackee.common.constant.MessageKey;
+
 @Getter
 public enum ErrorCode {
 
     // AUTH
-    AUTH_001("AUTH_001", "auth.invalid.credentials");
+    AUTH_INVALID_CREDENTIALS(MessageKey.AUTH_INVALID_CREDENTIALS),
 
-    // USER
+    // USER ERRORS
+    USER_NOT_FOUND(MessageKey.USER_NOT_FOUND),
+    USER_EMAIL_EXISTS(MessageKey.USER_EMAIL_EXISTS),
+    USER_CREATED(MessageKey.USER_CREATED),
+    USER_UPDATED(MessageKey.USER_UPDATED),
+    USER_DELETED(MessageKey.USER_DELETED),
 
-    private final String code;
+    // USER VALIDATION
+    EMAIL_BLANK(MessageKey.EMAIL_BLANK),
+    EMAIL_INVALID(MessageKey.EMAIL_INVALID),
+
+    PASSWORD_BLANK(MessageKey.PASSWORD_BLANK),
+    PASSWORD_INVALID(MessageKey.PASSWORD_INVALID),
+    PASSWORD_MISMATCH(MessageKey.PASSWORD_MISMATCH),
+    PASSWORD_TOO_SHORT(MessageKey.PASSWORD_TOO_SHORT),
+    PASSWORD_TOO_LONG(MessageKey.PASSWORD_TOO_LONG),
+    PASSWORD_TOO_WEAK(MessageKey.PASSWORD_TOO_WEAK),
+    PASSWORD_NO_DIGIT(MessageKey.PASSWORD_NO_DIGIT),
+    PASSWORD_NO_UPPERCASE(MessageKey.PASSWORD_NO_UPPERCASE),
+    PASSWORD_NO_LOWERCASE(MessageKey.PASSWORD_NO_LOWERCASE),
+    PASSWORD_NO_SPECIAL_CHAR(MessageKey.PASSWORD_NO_SPECIAL_CHAR),
+    ;
+
     private final String messageKey;
 
-    ErrorCode(String code, String messageKey) {
-        this.code = code;
+    ErrorCode(String messageKey) {
         this.messageKey = messageKey;
     }
 }

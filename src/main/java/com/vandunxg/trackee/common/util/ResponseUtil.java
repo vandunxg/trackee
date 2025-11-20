@@ -69,7 +69,7 @@ public final class ResponseUtil {
 
         ErrorResponse body =
                 ErrorResponse.builder()
-                        .code(code.getCode())
+                        .code(code.name())
                         .status(status.value())
                         .error(status.getReasonPhrase())
                         .message(message)

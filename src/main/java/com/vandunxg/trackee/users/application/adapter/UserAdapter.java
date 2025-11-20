@@ -1,3 +1,10 @@
 package com.vandunxg.trackee.users.application.adapter;
 
-public interface UserAdapter {}
+import java.util.UUID;
+
+import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
+
+public interface UserAdapter {
+
+    UUID createdUser(RegisterRequest request);
+}

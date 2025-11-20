@@ -5,10 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,12 +15,12 @@ import com.vandunxg.trackee.common.enums.UserStatus;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@EntityListeners(AuditingEntityListener.class)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class UserEntity extends BaseEntity {
 
@@ -44,5 +41,6 @@ public class UserEntity extends BaseEntity {
     String avatarUrl;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     UserStatus status;
 }

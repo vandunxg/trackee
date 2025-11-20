@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Locale;
 
 import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,6 +30,6 @@ public class GlobalExceptionHandler {
 
         String message = messageSource.getMessage(ex.getErrorCode().getMessageKey(), null, locale);
 
-        return ResponseUtil.error(ex.errorCode, HttpStatus.BAD_REQUEST, message);
+        return ResponseUtil.error(ex.getErrorCode(), ex.getStatus(), message);
     }
 }
