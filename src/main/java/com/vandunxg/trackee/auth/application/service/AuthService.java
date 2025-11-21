@@ -12,4 +12,6 @@ public interface AuthService {
     RegisterResponse register(RegisterRequest request);
 
     LoginResponse login(LoginRequest request, HttpServletResponse response);
+
+    void verifyVerificationToken(String token, String userId);
 }

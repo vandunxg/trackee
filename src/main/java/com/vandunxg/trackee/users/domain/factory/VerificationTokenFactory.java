@@ -3,6 +3,7 @@ package com.vandunxg.trackee.users.domain.factory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 
 import java.util.Date;
 import java.util.UUID;
@@ -17,8 +18,9 @@ import com.vandunxg.trackee.users.domain.VerificationToken;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class VerificationTokenFactory {
 
+    @NonFinal
     @Value("${spring.application.verification.expiry-time}")
-    static long VERIFICATION_EXPIRY_TIME;
+    long VERIFICATION_EXPIRY_TIME;
 
     public VerificationToken createRegisterVerificationToken(
             UUID userId, String email, String otpHash, String tokenHash) {

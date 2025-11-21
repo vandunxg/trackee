@@ -10,4 +10,6 @@ public interface UserService {
     UUID createUserRegistration(RegisterRequest request);
 
     UserInfoDTO getUserInfo(UUID userId);
+
+    void activeUser(UUID userId);
 }

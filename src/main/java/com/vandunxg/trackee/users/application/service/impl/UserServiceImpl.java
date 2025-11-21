@@ -62,6 +62,19 @@ public class UserServiceImpl implements UserService {
                 user.getId(), user.getEmail(), user.getFullName(), user.getAvatarUrl());
     }
 
+    @Override
+    public void activeUser(UUID userId) {
+        log.info("[activeUser] userId={}", userId);
+
+        User user = getUserById(userId);
+        user.ensureUserNotDeleted();
+
+        user.activeUser();
+
+        log.info("[activeUser] save user to db");
+        userRepository.save(user);
+    }
+
     User getUserById(UUID userId) {
         log.info("[getUserById] userID={}", userId);
 

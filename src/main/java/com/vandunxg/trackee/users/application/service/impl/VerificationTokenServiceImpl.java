@@ -8,16 +8,19 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vandunxg.trackee.common.error.ErrorCode;
+import com.vandunxg.trackee.common.exception.BusinessException;
+import com.vandunxg.trackee.common.util.TokenHasher;
 import com.vandunxg.trackee.common.util.VerificationCodeGenerator;
 import com.vandunxg.trackee.users.application.event.RegisterVerificationCodeGeneratedEvent;
 import com.vandunxg.trackee.users.application.service.VerificationTokenService;
 import com.vandunxg.trackee.users.domain.VerificationToken;
 import com.vandunxg.trackee.users.domain.VerificationTokenRepository;
 import com.vandunxg.trackee.users.domain.factory.VerificationTokenFactory;
+import com.vandunxg.trackee.users.domain.validator.VerificationTokenValidator;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
     VerificationCodeGenerator verificationCodeGenerator;
     VerificationTokenRepository verificationTokenRepository;
     ApplicationEventPublisher eventPublisher;
+    VerificationTokenValidator verificationTokenValidator;
+    TokenHasher tokenHasher;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -41,8 +46,8 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
         String otpCode = verificationCodeGenerator.generateOtp(OTP_LENGTH);
         String token = verificationCodeGenerator.generateVerificationToken(VERIFICATION_TOKEN_BYTE);
 
-        String otpCodeHash = BCrypt.hashpw(otpCode, BCrypt.gensalt());
-        String tokenHash = BCrypt.hashpw(token, BCrypt.gensalt());
+        String otpCodeHash = tokenHasher.hashToken(otpCode);
+        String tokenHash = tokenHasher.hashToken(token);
 
         VerificationToken verificationToken =
                 verificationTokenFactory.createRegisterVerificationToken(
@@ -55,5 +60,30 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
                 "[generateRegistrationVerificationToken] publish an event after generated verification code");
         eventPublisher.publishEvent(
                 new RegisterVerificationCodeGeneratedEvent(otpCode, token, userId));
+    }
+
+    @Override
+    public void verifyVerificationToken(String token, String userId) {
+        log.info("[verifyVerificationCode] token={}, userId={}", token, userId);
+
+        String tokenHash = tokenHasher.hashToken(token);
+        VerificationToken verificationToken =
+                getVerificationTokenByUserIdAndToken(UUID.fromString(userId), tokenHash);
+
+        verificationTokenValidator.validateToken(verificationToken, UUID.fromString(userId));
+
+        verificationToken.markAsUsed();
+
+        log.info("[verifyVerificationCode] save verification token to db");
+        verificationTokenRepository.save(verificationToken);
+    }
+
+    VerificationToken getVerificationTokenByUserIdAndToken(UUID userId, String tokenHash) {
+        log.info("[getVerificationTokenByUserIdAndToken] userId={} token={}", userId, tokenHash);
+
+        return verificationTokenRepository
+                .findByTokenHashAndUserId(tokenHash, userId)
+                .orElseThrow(
+                        () -> new BusinessException(ErrorCode.AUTH_VERIFICATION_TOKEN_NOT_FOUND));
     }
 }

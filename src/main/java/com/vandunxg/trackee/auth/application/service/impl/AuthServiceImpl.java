@@ -1,5 +1,6 @@
 package com.vandunxg.trackee.auth.application.service.impl;
 
+import io.jsonwebtoken.lang.Strings;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +28,7 @@ import com.vandunxg.trackee.common.exception.BusinessException;
 import com.vandunxg.trackee.common.security.jwt.JwtTokenProvider;
 import com.vandunxg.trackee.common.security.principal.UserPrincipal;
 import com.vandunxg.trackee.users.application.adapter.UserAdapter;
+import com.vandunxg.trackee.users.application.adapter.VerificationCodeAdapter;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +40,7 @@ public class AuthServiceImpl implements AuthService {
     static String REFRESH_TOKEN_PATH = "/auth/refresh";
 
     UserAdapter userAdapter;
+    VerificationCodeAdapter verificationCodeAdapter;
     AuthenticationManager authenticationManager;
     JwtTokenProvider jwtProvider;
 
@@ -62,6 +65,35 @@ public class AuthServiceImpl implements AuthService {
         addRefreshTokenToCookie(response, refreshToken);
 
         return new LoginResponse(accessToken);
+    }
+
+    @Override
+    public void verifyVerificationToken(String token, String userId) {
+        log.info("[verifyVerificationToken] token={}, userId={}", token, userId);
+
+        if (!Strings.hasLength(token) || token.isBlank()) {
+            log.error("[verifyVerificationToken] token is empty or blank, token={}", token);
+
+            throw new BusinessException(ErrorCode.AUTH_VERIFICATION_TOKEN_FORMAT_INVALID);
+        }
+
+        if (!isValidUUID(userId)) {
+            throw new BusinessException(ErrorCode.AUTH_VERIFICATION_TOKEN_FORMAT_INVALID);
+        }
+
+        log.info(
+                "[verifyVerificationToken] verify verification token, token={}, userId={}",
+                token,
+                userId);
+        verificationCodeAdapter.verifyVerificationToken(token, userId);
+
+        log.info("[verifyVerificationToken] active user={} after verify successfully", userId);
+        userAdapter.activeUser(UUID.fromString(userId));
+
+        log.info(
+                "[verifyVerificationToken] verify successfully, token={}, userId={}",
+                token,
+                userId);
     }
 
     UserPrincipal authenticate(LoginRequest request) {
@@ -111,5 +143,17 @@ public class AuthServiceImpl implements AuthService {
         cookie.setAttribute("SameSite", "Strict");
 
         response.addCookie(cookie);
+    }
+
+    boolean isValidUUID(String value) {
+        log.info("[isValidUUID] value={}", value);
+
+        try {
+            UUID.fromString(value);
+            return true;
+        } catch (Exception ex) {
+            log.error("[isValidUUID] value={} error={}", value, ex.getMessage());
+            return false;
+        }
     }
 }

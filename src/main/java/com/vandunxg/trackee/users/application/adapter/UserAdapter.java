@@ -10,4 +10,6 @@ public interface UserAdapter {
     UUID createdUser(RegisterRequest request);
 
     UserInfoDTO getUserInfo(UUID id);
+
+    void activeUser(UUID userId);
 }

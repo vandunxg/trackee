@@ -34,4 +34,11 @@ public class UserAdapterImpl implements UserAdapter {
 
         return userService.getUserInfo(userId);
     }
+
+    @Override
+    public void activeUser(UUID userId) {
+        log.info("[activeUser] userId={}", userId);
+
+        userService.activeUser(userId);
+    }
 }

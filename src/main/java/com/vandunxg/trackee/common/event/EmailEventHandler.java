@@ -49,6 +49,6 @@ public class EmailEventHandler {
     String buildVerificationLink(String token, UUID userId) {
         log.info("[buildVerificationLink]: {}", token);
 
-        return String.format("%s/auth/verify/token=%s?userId=%s", BASE_URL, token, userId);
+        return String.format("%s/auth/verify?token=%s&userId=%s", BASE_URL, token, userId);
     }
 }

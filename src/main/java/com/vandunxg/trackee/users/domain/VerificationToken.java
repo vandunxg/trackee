@@ -37,4 +37,8 @@ public class VerificationToken extends BaseEntity {
     Instant expiryAt;
 
     Instant usedAt;
+
+    public void markAsUsed() {
+        this.usedAt = Instant.now();
+    }
 }

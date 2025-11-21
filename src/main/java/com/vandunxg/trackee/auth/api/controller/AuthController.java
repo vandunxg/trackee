@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.vandunxg.trackee.auth.api.dto.LoginRequest;
 import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
@@ -48,5 +45,15 @@ public class AuthController {
         return ResponseUtil.success(
                 localizationUtils.get(MessageKey.AUTH_LOGIN_SUCCESS),
                 authService.login(request, response));
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verify(
+            @RequestParam("token") String token, @RequestParam("userId") String userId) {
+        log.info("[GET /auth/verify]");
+
+        authService.verifyVerificationToken(token, userId);
+
+        return ResponseUtil.success(localizationUtils.get(MessageKey.AUTH_VERIFICATION_SUCCESS));
     }
 }

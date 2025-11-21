@@ -12,6 +12,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.vandunxg.trackee.common.domain.BaseEntity;
 import com.vandunxg.trackee.common.enums.RoleType;
 import com.vandunxg.trackee.common.enums.UserStatus;
+import com.vandunxg.trackee.common.error.ErrorCode;
+import com.vandunxg.trackee.common.exception.BusinessException;
 
 @Getter
 @Setter
@@ -48,4 +50,14 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     RoleType role;
+
+    public void ensureUserNotDeleted() {
+        if (deleted) {
+            throw new BusinessException(ErrorCode.USER_DELETED);
+        }
+    }
+
+    public void activeUser() {
+        this.status = UserStatus.ACTIVE;
+    }
 }

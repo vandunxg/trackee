@@ -24,6 +24,22 @@ public class MessageKey {
     public static final String AUTH_TOKEN_INVALID = "auth.token.invalid";
     public static final String AUTH_UNAUTHORIZED = "auth.unauthorized";
     public static final String AUTH_INVALID_CREDENTIALS = "auth.invalid.credentials";
+    public static final String AUTH_VERIFICATION_SUCCESS = "auth.verification.success";
+    public static final String AUTH_VERIFICATION_FAIL = "auth.verification.fail";
+    public static final String AUTH_VERIFICATION_TOKEN_INVALID = "auth.verification.token.invalid";
+    public static final String AUTH_VERIFICATION_TOKEN_EXPIRED = "auth.verification.token.expired";
+    public static final String AUTH_VERIFICATION_TOKEN_NOT_FOUND =
+            "auth.verification.token.not-found";
+    public static final String AUTH_VERIFICATION_TOKEN_USED = "auth.verification.token.used";
+    public static final String AUTH_VERIFICATION_TOKEN_FORMAT_INVALID =
+            "auth.verification.token.format-invalid";
+    public static final String AUTH_VERIFICATION_TOKEN_SIGNATURE_INVALID =
+            "auth.verification.token.signature-invalid";
+    public static final String AUTH_VERIFICATION_TOKEN_USER_MISMATCH =
+            "auth.verification.token.user-mismatch";
+    public static final String AUTH_VERIFICATION_TOKEN_ALREADY_VERIFIED =
+            "auth.verification.token.already-verified";
+    public static final String AUTH_VERIFICATION_TOKEN_BLOCKED = "auth.verification.token.blocked";
 
     /** USER * */
     public static final String USER_NOT_FOUND = "user.not.found";
