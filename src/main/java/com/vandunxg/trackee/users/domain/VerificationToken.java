@@ -20,7 +20,7 @@ import com.vandunxg.trackee.common.domain.BaseEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "verification_codes")
+@Table(name = "verification_tokens")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
