@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.vandunxg.trackee.auth.api.dto.RegisterRequest;
+import com.vandunxg.trackee.users.application.adapter.dto.UserInfoDTO;
 import com.vandunxg.trackee.users.application.service.UserService;
 
 @Service
@@ -25,5 +26,12 @@ public class UserAdapterImpl implements UserAdapter {
         log.info("[createdUser] request={}", request);
 
         return userService.createUserRegistration(request);
+    }
+
+    @Override
+    public UserInfoDTO getUserInfo(UUID userId) {
+        log.info("[getUserInfo] userId={}", userId);
+
+        return userService.getUserInfo(userId);
     }
 }

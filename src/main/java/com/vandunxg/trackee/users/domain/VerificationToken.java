@@ -20,13 +20,15 @@ import com.vandunxg.trackee.common.domain.BaseEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Table(name = "verification_codes")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class VerificationToken extends BaseEntity {
 
     UUID userId;
+
+    String otpHash;
 
     String tokenHash;
 

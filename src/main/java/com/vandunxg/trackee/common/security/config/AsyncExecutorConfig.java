@@ -20,11 +20,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class AsyncExecutorConfig implements AsyncConfigurer {
 
     @NonFinal
-    @Value("${budgee.executor.mail.max-size}")
+    @Value("${trackee.executor.mail.max-size}")
     int EXECUTOR_MAIL_MAX_SIZE;
 
     @NonFinal
-    @Value("${budgee.executor.mail.core-size}")
+    @Value("${trackee.executor.mail.core-size}")
     int EXECUTOR_MAIL_CORE_SIZE;
 
     // -----------------------------------------
