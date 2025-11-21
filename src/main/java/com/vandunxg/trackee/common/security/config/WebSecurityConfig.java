@@ -28,10 +28,7 @@ public class WebSecurityConfig {
     CustomJwtFilter customJwtFilter;
     //    AuthenticationProvider authenticationProvider;
 
-    String[] PUBLIC_ENDPOINT = {
-            "/auth/**",
-            "/health"
-    };
+    String[] PUBLIC_ENDPOINT = {"/auth/**", "/health"};
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
