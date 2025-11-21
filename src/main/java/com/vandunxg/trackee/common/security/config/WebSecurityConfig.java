@@ -1,0 +1,83 @@
+package com.vandunxg.trackee.common.security.config;
+
+import lombok.AccessLevel;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+@RequiredArgsConstructor
+@Slf4j(topic = "WEB-SECURITY-CONFIG")
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@EnableMethodSecurity
+public class WebSecurityConfig {
+
+    CustomJwtFilter customJwtFilter;
+    //    AuthenticationProvider authenticationProvider;
+
+    String[] PUBLIC_ENDPOINT = {"/auth/**", "/health"};
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        log.info("----------------[FILTER - CHAIN]----------------");
+
+        http.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(
+                        request ->
+                                request.requestMatchers(PUBLIC_ENDPOINT)
+                                        .permitAll()
+                                        .anyRequest()
+                                        .authenticated())
+                //                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    // enable for swagger
+    @Bean
+    public WebSecurityCustomizer ignoreResources() {
+
+        return webSecurity ->
+                webSecurity
+                        .ignoring()
+                        .requestMatchers(
+                                "/actuator/**",
+                                "/v3/**",
+                                "/webjars/**",
+                                "/swagger-ui*/*swagger-initializer.js",
+                                "/swagger-ui*/**",
+                                "/favicon.ico");
+    }
+
+    // config cors
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true)
+                        .maxAge(3600);
+            }
+        };
+    }
+}
