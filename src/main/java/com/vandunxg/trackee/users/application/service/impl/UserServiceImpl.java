@@ -15,6 +15,7 @@ import com.vandunxg.trackee.common.error.ErrorCode;
 import com.vandunxg.trackee.common.exception.BusinessException;
 import com.vandunxg.trackee.users.application.adapter.dto.UserInfoDTO;
 import com.vandunxg.trackee.users.application.service.UserService;
+import com.vandunxg.trackee.users.application.service.VerificationTokenService;
 import com.vandunxg.trackee.users.application.validator.UserValidator;
 import com.vandunxg.trackee.users.domain.User;
 import com.vandunxg.trackee.users.domain.UserRepository;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     UserValidator userValidator;
 
-    VerificationTokenServiceImpl verificationTokenService;
+    VerificationTokenService verificationTokenService;
 
     @Override
     @Transactional
