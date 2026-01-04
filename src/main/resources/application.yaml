@@ -41,10 +41,13 @@ spring:
   mail:
     from: YUMMY_EMAIL
 
-jwt:
-  private-key:
-    access-token: YUMMY_TOKEN
-    refresh-token: YUMMY_TOKEN
-  expiration:
-    access-token: 3600000        # 1 hour
-    refresh-token: 2592000000    # 30 days
+security:
+  authentication:
+    jwt:
+      key-store: ${KEY_STORE:trackee.jks}
+      key-store-password: ${KEY_STORE_PASSWORD:k0uhijUKaKWjMuL}
+      key-alias: ${KEY_ALIAS:trackee}
+      access-token-expires-in: ${ACCESS_TOKEN_EXPIRES_IN:60m}
+      refresh-token-expires-in: ${REFRESH_TOKEN_EXPIRES_IN:7d}
+      refresh-token-long-expires-in: ${REFRESH_TOKEN_EXPIRES_IN:30d}
+      email-token-expires-in: ${EMAIL_TOKEN_EXPIRES_IN:10m}

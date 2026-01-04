@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.util;
 
 import org.apache.commons.lang3.StringUtils;

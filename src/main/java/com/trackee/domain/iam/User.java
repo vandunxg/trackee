@@ -1,9 +1,11 @@
+/* Copyright (c) 2026 Trackee */
 package com.trackee.domain.iam;
 
-import com.trackee.domain.iam.enums.UserRole;
-import com.trackee.domain.iam.enums.UserStatus;
+import com.trackee.application.iam.command.UserRegisterCommand;
 import com.trackee.shared.exception.ResponseException;
 import com.trackee.shared.kernel.domain.AuditableDomain;
+import com.trackee.shared.kernel.domain.enums.UserRole;
+import com.trackee.shared.kernel.domain.enums.UserStatus;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -15,12 +17,12 @@ import java.util.UUID;
 /**
  * @author vandunxg
  */
-@Getter
-@SuperBuilder
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Setter(AccessLevel.PRIVATE)
-@EqualsAndHashCode(callSuper = false)
+@Getter
 public class User extends AuditableDomain {
 
     UUID id;
@@ -35,6 +37,18 @@ public class User extends AuditableDomain {
     String avatarFileId;
     Boolean isFirstLogin;
     UserRole role;
+    Instant deletedAt;
+
+    public static User register(UserRegisterCommand cmd) {
+
+        return User.builder()
+                .id(UUID.randomUUID())
+                .status(UserStatus.ACTIVE)
+                .fullName(cmd.getFullName())
+                .email(cmd.getEmail())
+                .passwordHash(cmd.getPasswordHash())
+                .build();
+    }
 
     public void changePassword(String passwordHash) {
 

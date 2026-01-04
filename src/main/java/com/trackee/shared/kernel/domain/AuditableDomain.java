@@ -1,3 +1,4 @@
+/* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
