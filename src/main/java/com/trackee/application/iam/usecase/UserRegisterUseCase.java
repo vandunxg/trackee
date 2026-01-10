@@ -6,14 +6,13 @@ import com.trackee.application.iam.mapper.UserCommandMapper;
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.web.iam.request.RegisterRequest;
+import com.trackee.web.iam.response.UserRegisterResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 /**
  * @author vandunxg
@@ -28,7 +27,7 @@ public class UserRegisterUseCase {
     UserCommandMapper userCommandMapper;
     PasswordEncoder passwordEncoder;
 
-    public UUID handle(RegisterRequest request) {
+    public UserRegisterResponse handle(RegisterRequest request) {
         log.info("[handle]={}", request);
 
         UserRegisterCommand cmd = userCommandMapper.toCommand(request);
@@ -38,6 +37,6 @@ public class UserRegisterUseCase {
 
         userRepository.save(user);
 
-        return user.getId();
+        return new UserRegisterResponse(user.getId());
     }
 }

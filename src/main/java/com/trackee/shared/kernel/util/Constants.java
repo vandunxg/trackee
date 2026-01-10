@@ -9,6 +9,11 @@ import java.util.List;
  */
 public interface Constants {
 
+    interface System {
+        String SYSTEM = "SYSTEM";
+        String ANONYMOUS_USER = "anonymousUser";
+    }
+
     interface JwtConstant {
         String ANONYMOUS_ACCOUNT = "anonymous";
         String HTTP = "http://";

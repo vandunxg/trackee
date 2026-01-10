@@ -4,6 +4,7 @@ package com.trackee.web.iam;
 import com.trackee.application.iam.usecase.UserRegisterUseCase;
 import com.trackee.shared.kernel.web.Response;
 import com.trackee.web.iam.request.RegisterRequest;
+import com.trackee.web.iam.response.UserRegisterResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 /**
  * @author vandunxg
@@ -29,7 +28,7 @@ public class AuthController {
     UserRegisterUseCase userRegisterUseCase;
 
     @PostMapping("/register")
-    public Response<UUID> register(@Valid @RequestBody RegisterRequest request) {
+    public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
         log.info("[register]={}", request);
 
         return Response.of(userRegisterUseCase.handle(request));
