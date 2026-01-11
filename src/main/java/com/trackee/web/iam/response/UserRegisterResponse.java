@@ -3,5 +3,4 @@ package com.trackee.web.iam.response;
 
 import java.util.UUID;
 
-public record UserRegisterResponse(UUID userId) {
-}
+public record UserRegisterResponse(UUID userId) {}

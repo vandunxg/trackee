@@ -42,4 +42,10 @@ public class UserRepositoryImpl implements UserRepository {
                 .map(userPersistenceMapper::toDomain)
                 .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+
+        return userJpaRepository.existsByEmail(email);
+    }
 }

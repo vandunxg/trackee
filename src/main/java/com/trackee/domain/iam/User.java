@@ -32,7 +32,6 @@ public class User extends AuditableDomain {
     Instant birthday;
     String passwordHash;
     UserStatus status;
-    Boolean deleted;
     String avatarUrl;
     String avatarFileId;
     Boolean isFirstLogin;

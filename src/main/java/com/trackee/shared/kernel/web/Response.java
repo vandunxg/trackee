@@ -6,12 +6,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.shared.kernel.exception.ErrorCodeClient;
 import com.trackee.shared.kernel.exception.ResponseError;
+import java.io.Serializable;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
-
-import java.io.Serializable;
-import java.time.Instant;
 
 /**
  * @author vandunxg
@@ -24,11 +23,9 @@ public class Response<T> implements Serializable {
     private boolean success = true;
     private int code = 200;
     private String message;
-    @Setter
-    private long timestamp = Instant.now().toEpochMilli();
+    @Setter private long timestamp = Instant.now().toEpochMilli();
     private String status;
-    @JsonIgnore
-    private RuntimeException exception;
+    @JsonIgnore private RuntimeException exception;
 
     public Response() {
         this.status = ErrorCodeClient.SUCCESS.name();

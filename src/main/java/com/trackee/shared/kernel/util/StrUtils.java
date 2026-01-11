@@ -1,14 +1,13 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.Instant;
 import java.util.*;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author vandunxg
@@ -142,7 +141,7 @@ public final class StrUtils {
         if (str == null) {
             return new String[0];
         } else if (str.trim().isEmpty()) {
-            return new String[]{str};
+            return new String[] {str};
         } else {
             int delLength = delimiter.length();
             int maxParts = str.length() / delLength + 2;
@@ -152,8 +151,8 @@ public final class StrUtils {
 
             int i;
             for (positions[0] = -delLength;
-                 (i = str.indexOf(delimiter, j)) != -1;
-                 j = i + delLength) {
+                    (i = str.indexOf(delimiter, j)) != -1;
+                    j = i + delLength) {
                 ++count;
                 positions[count] = i;
             }

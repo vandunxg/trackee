@@ -2,13 +2,12 @@
 package com.trackee.infrastructure.user.security;
 
 import com.trackee.domain.iam.User;
+import java.util.Collection;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 /**
  * @author vandunxg

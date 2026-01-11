@@ -5,10 +5,9 @@ import com.trackee.shared.infrastructure.persistence.AuditableEntity;
 import com.trackee.shared.kernel.domain.enums.UserRole;
 import com.trackee.shared.kernel.domain.enums.UserStatus;
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.Instant;
 import java.util.UUID;
+import lombok.*;
 
 /**
  * @author vandunxg
@@ -17,8 +16,8 @@ import java.util.UUID;
 @Table(
         name = "users",
         indexes = {
-                @Index(name = "user_email_idx", columnList = "email"),
-                @Index(name = "user_deleted_at_idx", columnList = "deleted_at")
+            @Index(name = "user_email_idx", columnList = "email"),
+            @Index(name = "user_deleted_at_idx", columnList = "deleted_at")
         })
 @Getter
 @Setter

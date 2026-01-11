@@ -2,11 +2,10 @@
 package com.trackee.infrastructure.user.persistence;
 
 import com.trackee.infrastructure.user.persistence.entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author vandunxg
@@ -15,4 +14,6 @@ import java.util.UUID;
 public interface UserJpaRepository extends JpaRepository<UserEntity, UUID> {
 
     Optional<UserEntity> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

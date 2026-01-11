@@ -34,12 +34,12 @@ spring:
     verification:
       expiry-minutes: 15
 
-  send-grid:
-    api-key: YUMMY_TOKEN
-    register-template: YUMMY_TOKEN
-
+send-grid:
+  api-key: YUMMY_TOKEN
   mail:
     from: YUMMY_EMAIL
+  template:
+    register: YUMMY
 
 security:
   authentication:
@@ -51,3 +51,5 @@ security:
       refresh-token-expires-in: ${REFRESH_TOKEN_EXPIRES_IN:7d}
       refresh-token-long-expires-in: ${REFRESH_TOKEN_EXPIRES_IN:30d}
       email-token-expires-in: ${EMAIL_TOKEN_EXPIRES_IN:10m}
+    otp:
+      secret: ${OTP_HMAC_SECRET}

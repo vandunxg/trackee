@@ -29,12 +29,12 @@ public class WebSecurityConfig {
 
     static String[] PUBLIC_ENDPOINT = {"/auth/**"};
     static String[] IGNORE_ENDPOINT = {
-            "/actuator/**",
-            "/v3/**",
-            "/webjars/**",
-            "/swagger-ui*/*swagger-initializer.js",
-            "/swagger-ui*/**",
-            "/favicon.ico"
+        "/actuator/**",
+        "/v3/**",
+        "/webjars/**",
+        "/swagger-ui*/*swagger-initializer.js",
+        "/swagger-ui*/**",
+        "/favicon.ico"
     };
 
     UserDetailServiceCustom userDetailServiceCustom;
