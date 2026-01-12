@@ -5,8 +5,7 @@ import com.trackee.shared.kernel.util.StrUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -26,12 +25,11 @@ import java.util.Map;
  * @author vandunxg
  */
 @Component
+@Slf4j(topic = "LOCALE-STRING-SERVICE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LocaleStringServiceImpl implements LocaleStringService {
 
-    static Logger log = LoggerFactory.getLogger(LocaleStringServiceImpl.class);
     static Locale DEFAULT_LOCALE = Locale.of("vi", "VN");
-    static String KC_LOCALE_KEY = "kc-language";
     MessageSource messageSource;
 
     @Autowired

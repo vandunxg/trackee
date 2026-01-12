@@ -6,6 +6,7 @@ import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.event.UserRegisterEvent;
 import com.trackee.domain.iam.repository.OtpCodeRepository;
+import com.trackee.infrastructure.common.security.OtpProperties;
 import com.trackee.shared.kernel.application.mail.MailService;
 import com.trackee.shared.kernel.domain.enums.MailPurpose;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +39,7 @@ public class UserEventHandler {
     OtpHasher otpHasher;
     MailService mailService;
     OtpCodeRepository otpCodeRepository;
+    OtpProperties otpProperties;
 
     @Async("virtualThreadExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
@@ -44,7 +48,11 @@ public class UserEventHandler {
 
         String code = CodeGenerator.numeric(Constants.CodeGenerator.OTP_CODE_LENGTH);
 
-        OtpGenerateCmd cmd = new OtpGenerateCmd(code, event.userId(), OtpPurpose.REGISTER);
+        Duration ttl = otpProperties.expiryTime();
+        Instant expiresAt = Instant.now().plus(ttl);
+
+        OtpGenerateCmd cmd =
+                new OtpGenerateCmd(code, event.userId(), OtpPurpose.REGISTER, expiresAt);
 
         OtpCode otpCode = new OtpCode(cmd, otpHasher);
 

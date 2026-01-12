@@ -5,10 +5,11 @@ import com.trackee.application.iam.command.OtpGenerateCmd;
 import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.shared.kernel.domain.AuditableDomain;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
-import java.time.Instant;
-import java.util.UUID;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.time.Instant;
+import java.util.UUID;
 
 /**
  * @author vandunxg
@@ -27,12 +28,14 @@ public class OtpCode extends AuditableDomain {
     Instant usedAt;
     Instant deletedAt;
     OtpPurpose otpPurpose;
+    Instant expiryAt;
 
     public OtpCode(OtpGenerateCmd cmd, OtpHasher hasher) {
 
         this.id = UUID.randomUUID();
         this.userId = cmd.getUserId();
         this.otpPurpose = cmd.getOtpPurpose();
+        this.expiryAt = cmd.getExpiryAt();
 
         this.hashedCode = hasher.hash(cmd.getCode());
     }

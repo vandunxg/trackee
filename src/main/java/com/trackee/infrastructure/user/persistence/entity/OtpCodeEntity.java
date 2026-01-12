@@ -4,9 +4,10 @@ package com.trackee.infrastructure.user.persistence.entity;
 import com.trackee.shared.infrastructure.persistence.AuditableEntity;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.Instant;
 import java.util.UUID;
-import lombok.*;
 
 @Entity
 @Table(
@@ -30,7 +31,7 @@ public class OtpCodeEntity extends AuditableEntity {
     @Column(name = "user_id", nullable = false)
     UUID userId;
 
-    @Column(name = "hashed_code")
+    @Column(name = "hashed_code", nullable = false)
     String hashedCode;
 
     @Column(name = "used_at")
@@ -39,6 +40,9 @@ public class OtpCodeEntity extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "otp_purpose")
     OtpPurpose otpPurpose;
+
+    @Column(name = "expiry_at", nullable = false)
+    Instant expiryAt;
 
     @Column(name = "deleted_at")
     Instant deletedAt;

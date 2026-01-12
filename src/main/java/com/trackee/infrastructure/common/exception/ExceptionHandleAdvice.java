@@ -13,8 +13,8 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.NonTransientDataAccessException;
@@ -56,10 +56,10 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice
 @RequiredArgsConstructor
+@Slf4j(topic = "EXCEPTION-HANDLE-ADVICE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ExceptionHandleAdvice {
 
-    Logger log = LoggerFactory.getLogger(ExceptionHandleAdvice.class);
     LocaleStringService localeStringService;
 
     @ExceptionHandler({ObjectOptimisticLockingFailureException.class})

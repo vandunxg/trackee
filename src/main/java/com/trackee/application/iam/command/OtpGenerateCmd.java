@@ -5,6 +5,7 @@ import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.util.UUID;
 
 /**
@@ -21,4 +22,5 @@ public class OtpGenerateCmd {
     String code;
     UUID userId;
     OtpPurpose otpPurpose;
+    Instant expiryAt;
 }
