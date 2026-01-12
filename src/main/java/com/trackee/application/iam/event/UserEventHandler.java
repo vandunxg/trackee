@@ -16,12 +16,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,8 +37,8 @@ public class UserEventHandler {
     MailService mailService;
     OtpCodeRepository otpCodeRepository;
 
-    @Async
-    @EventListener
+    @Async("virtualThreadExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onUserRegisterEvent(UserRegisterEvent event) {
         log.info("[onUserRegisterEvent]={}", event);
 
@@ -53,15 +53,10 @@ public class UserEventHandler {
         variables.put("full_name", event.fullName());
         variables.put("otp", code);
 
-        MailMessage message =
-                new MailMessage(
-                        List.of(event.mailTo()),
-                        Constants.MailMessage.REGISTER_EMAIL_SUBJECT,
-                        MailPurpose.REGISTER,
-                        variables);
-
-        mailService.sendMail(message);
+        MailMessage message = MailMessage.template(event.mailTo(), MailPurpose.REGISTER, variables);
 
         otpCodeRepository.save(otpCode);
+
+        mailService.sendMail(message);
     }
 }

@@ -9,10 +9,6 @@ import java.util.List;
  */
 public interface Constants {
 
-    interface MailMessage {
-        String REGISTER_EMAIL_SUBJECT = "Register email code";
-    }
-
     String CONTENT_KEY = "content";
 
     interface CodeGenerator {
