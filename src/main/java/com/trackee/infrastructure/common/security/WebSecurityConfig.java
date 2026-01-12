@@ -1,7 +1,7 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.security;
 
-import com.trackee.infrastructure.user.security.UserDetailServiceCustom;
+import com.trackee.infrastructure.iam.security.UserDetailServiceCustom;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

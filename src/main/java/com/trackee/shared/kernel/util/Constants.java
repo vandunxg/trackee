@@ -11,6 +11,12 @@ public interface Constants {
 
     String CONTENT_KEY = "content";
 
+    interface RegexPattern {
+        String PLATFORM_REGEX = "^(WEB|IOS|ANDROID)$";
+        String PASSWORD_REGEX =
+                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+    }
+
     interface CodeGenerator {
         int OTP_CODE_LENGTH = 6;
     }

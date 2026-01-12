@@ -1,29 +1,30 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.security;
 
-import static com.trackee.shared.kernel.util.Constants.JwtConstant.*;
-
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
+import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 import com.trackee.shared.kernel.util.Constants;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import java.security.KeyPair;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
+import static com.trackee.shared.kernel.util.Constants.JwtConstant.*;
 
 /**
  * @author vandunxg
@@ -52,13 +53,13 @@ public class TokenProvider {
         return new JWKSet(builder.build());
     }
 
-    public String createToken(Authentication authentication, String userId) {
+    public String createToken(AuthenticatedUser authenticatedUser, String userId) {
 
         Instant now = Instant.now();
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
 
         return Jwts.builder()
-                .subject(authentication.getName())
+                .subject(authenticatedUser.username())
                 .claim(USER_ID_CLAIM, userId)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiresAt))

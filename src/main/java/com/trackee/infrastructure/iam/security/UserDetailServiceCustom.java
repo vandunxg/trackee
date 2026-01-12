@@ -1,5 +1,5 @@
 /* Copyright (c) 2026 Trackee */
-package com.trackee.infrastructure.user.security;
+package com.trackee.infrastructure.iam.security;
 
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;

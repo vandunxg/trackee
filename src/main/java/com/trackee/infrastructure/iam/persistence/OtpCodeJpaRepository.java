@@ -1,9 +1,10 @@
 /* Copyright (c) 2026 Trackee */
-package com.trackee.infrastructure.user.persistence;
+package com.trackee.infrastructure.iam.persistence;
 
-import com.trackee.infrastructure.user.persistence.entity.OtpCodeEntity;
-import java.util.UUID;
+import com.trackee.infrastructure.iam.persistence.entity.OtpCodeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
 
 /**
  * @author vandunxg

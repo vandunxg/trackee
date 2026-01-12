@@ -70,4 +70,11 @@ public class User extends AuditableDomain {
 
         this.status = UserStatus.INACTIVE;
     }
+
+    public void ensureUserActive() {
+
+        if (!Objects.equals(UserStatus.ACTIVE, this.status)) {
+            throw new ResponseException(AuthenticationError.USER_NOT_ACTIVE);
+        }
+    }
 }

@@ -1,8 +1,8 @@
 /* Copyright (c) 2026 Trackee */
-package com.trackee.infrastructure.user.persistence.mapper;
+package com.trackee.infrastructure.iam.persistence.mapper;
 
 import com.trackee.domain.iam.OtpCode;
-import com.trackee.infrastructure.user.persistence.entity.OtpCodeEntity;
+import com.trackee.infrastructure.iam.persistence.entity.OtpCodeEntity;
 import com.trackee.shared.infrastructure.mapper.PersistenceMapper;
 import org.mapstruct.Mapper;
 

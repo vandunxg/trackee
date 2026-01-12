@@ -1,10 +1,10 @@
 /* Copyright (c) 2026 Trackee */
-package com.trackee.infrastructure.user.persistence.impl;
+package com.trackee.infrastructure.iam.persistence.impl;
 
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.repository.OtpCodeRepository;
-import com.trackee.infrastructure.user.persistence.OtpCodeJpaRepository;
-import com.trackee.infrastructure.user.persistence.mapper.OtpCodePersistenceMapper;
+import com.trackee.infrastructure.iam.persistence.OtpCodeJpaRepository;
+import com.trackee.infrastructure.iam.persistence.mapper.OtpCodePersistenceMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
