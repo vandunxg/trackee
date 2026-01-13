@@ -1,59 +1,72 @@
 spring:
-  profiles:
-    active: dev
+  application:
+    name: trackee
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${POSTGRES_URI:}
-    username: ${POSTGRES_USER:}
-    password: ${POSTGRES_PASSWORD:}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     hikari:
-      maximum-pool-size: ${CONNECTION_POOL_SIZE:2}
+      maximum-pool-size: ${SPRING_DATASOURCE_POOL_SIZE:5}
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
 
   jpa:
+    open-in-view: false
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
+
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST}
+      port: ${SPRING_REDIS_PORT}
+      timeout: 5s
 
   threads:
     virtual:
       enabled: true
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
 
   servlet:
     multipart:
       max-file-size: 2MB
       max-request-size: 2MB
 
-  application:
-    version: 1.0
-    verification:
-      expiry-minutes: 15
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql: WARN
+
+application:
+  version: ${APP_VERSION:1.0}
+  verification:
+    expiry-minutes: 15
 
 send-grid:
-  api-key: YUMMY_TOKEN
+  api-key: ${SENDGRID_API_KEY}
   mail:
-    from: YUMMY_EMAIL
+    from: ${SENDGRID_FROM_EMAIL}
   template:
-    register: YUMMY
+    register: ${SENDGRID_TEMPLATE_REGISTER}
 
 security:
   authentication:
     jwt:
-      key-store: ${KEY_STORE:trackee.jks}
-      key-store-password: ${KEY_STORE_PASSWORD:k0uhijUKaKWjMuL}
-      key-alias: ${KEY_ALIAS:trackee}
+      key-store: ${KEY_STORE}
+      key-store-password: ${KEY_STORE_PASSWORD}
+      key-alias: ${KEY_ALIAS}
       access-token-expires-in: ${ACCESS_TOKEN_EXPIRES_IN:60m}
       refresh-token-expires-in: ${REFRESH_TOKEN_EXPIRES_IN:7d}
-      refresh-token-long-expires-in: ${REFRESH_TOKEN_EXPIRES_IN:30d}
+      refresh-token-long-expires-in: ${REFRESH_TOKEN_LONG_EXPIRES_IN:30d}
       email-token-expires-in: ${EMAIL_TOKEN_EXPIRES_IN:10m}
+
     otp:
       secret: ${OTP_HMAC_SECRET}
