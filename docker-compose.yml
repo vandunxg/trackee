@@ -1,25 +1,53 @@
 version: "3.9"
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql_db
-    restart: always
+
+  postgres:
+    image: postgres:16
+    container_name: trackee-postgres
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: trackee
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 122112
+      POSTGRES_DB: trackee
+      POSTGRES_USER: trackee
+      POSTGRES_PASSWORD: trackee
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - app-network
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trackee"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: trackee-redis
+    ports:
+      - "6379:6379"
+
+  trackee-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trackee-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackee
+      SPRING_DATASOURCE_USERNAME: trackee
+      SPRING_DATASOURCE_PASSWORD: trackee
+
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+
+      JVM_OPTS: "-Xms256m -Xmx512m"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
 volumes:
-  mysql_data:
-
-networks:
-  app-network:
-    driver: bridge
+  postgres_data:
