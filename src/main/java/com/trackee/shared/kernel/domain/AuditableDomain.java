@@ -2,9 +2,10 @@
 package com.trackee.shared.kernel.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import java.time.Instant;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.Instant;
 
 /**
  * @author vandunxg

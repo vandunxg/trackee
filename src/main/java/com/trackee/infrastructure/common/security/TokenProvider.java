@@ -1,10 +1,9 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.security;
 
-import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 import com.trackee.shared.kernel.util.Constants;
@@ -14,13 +13,20 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.security.KeyPair;
+import java.security.MessageDigest;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -43,14 +49,21 @@ public class TokenProvider {
     JwtProperties jwtProperties;
     private KeyPair keyPair;
 
-    public JWKSet jwkSet() {
+    @Bean
+    public JwtEncoder jwtEncoder(KeyPair keyPair) {
+        RSAKey rsaKey =
+                new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
+                        .privateKey(keyPair.getPrivate())
+                        .keyID(kidFromPublicKey((RSAPublicKey) keyPair.getPublic()))
+                        .build();
 
-        RSAKey.Builder builder =
-                new RSAKey.Builder((RSAPublicKey) this.keyPair.getPublic())
-                        .keyUse(KeyUse.SIGNATURE)
-                        .algorithm(JWSAlgorithm.RS256)
-                        .keyID(UUID.randomUUID().toString());
-        return new JWKSet(builder.build());
+        var jwkSource = new ImmutableJWKSet<>(new JWKSet(rsaKey));
+        return new NimbusJwtEncoder(jwkSource);
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder(KeyPair keyPair) {
+        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
     }
 
     public String createToken(AuthenticatedUser authenticatedUser, String userId) {
@@ -59,6 +72,7 @@ public class TokenProvider {
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
 
         return Jwts.builder()
+                .id(UUID.randomUUID().toString())
                 .subject(authenticatedUser.username())
                 .claim(USER_ID_CLAIM, userId)
                 .issuedAt(Date.from(now))
@@ -73,6 +87,7 @@ public class TokenProvider {
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
 
         return Jwts.builder()
+                .id(UUID.randomUUID().toString())
                 .subject(userId)
                 .claim(AUTHORITY_TYPE, REFRESH_TOKEN)
                 .signWith(keyPair.getPrivate())
@@ -260,5 +275,15 @@ public class TokenProvider {
         }
 
         return null;
+    }
+
+    static String kidFromPublicKey(RSAPublicKey publicKey) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(publicKey.getEncoded());
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
+        } catch (Exception e) {
+            return UUID.nameUUIDFromBytes(publicKey.getEncoded()).toString();
+        }
     }
 }

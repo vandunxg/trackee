@@ -41,8 +41,8 @@ public class OtpCodeEntity extends AuditableEntity {
     @Column(name = "otp_purpose")
     OtpPurpose otpPurpose;
 
-    @Column(name = "expiry_at", nullable = false)
-    Instant expiryAt;
+    @Column(name = "expires_at", nullable = false)
+    Instant expiresAt;
 
     @Column(name = "deleted_at")
     Instant deletedAt;

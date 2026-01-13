@@ -28,14 +28,14 @@ public class OtpCode extends AuditableDomain {
     Instant usedAt;
     Instant deletedAt;
     OtpPurpose otpPurpose;
-    Instant expiryAt;
+    Instant expiresAt;
 
     public OtpCode(OtpGenerateCmd cmd, OtpHasher hasher) {
 
         this.id = UUID.randomUUID();
         this.userId = cmd.getUserId();
         this.otpPurpose = cmd.getOtpPurpose();
-        this.expiryAt = cmd.getExpiryAt();
+        this.expiresAt = cmd.getExpiresAt();
 
         this.hashedCode = hasher.hash(cmd.getCode());
     }

@@ -1,6 +1,8 @@
 spring:
   application:
     name: trackee
+  profiles:
+    active: dev
 
   datasource:
     driver-class-name: org.postgresql.Driver

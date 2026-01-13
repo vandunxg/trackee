@@ -22,5 +22,5 @@ public class OtpGenerateCmd {
     String code;
     UUID userId;
     OtpPurpose otpPurpose;
-    Instant expiryAt;
+    Instant expiresAt;
 }

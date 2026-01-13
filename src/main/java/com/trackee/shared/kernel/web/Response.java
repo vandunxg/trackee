@@ -6,11 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.shared.kernel.exception.ErrorCodeClient;
 import com.trackee.shared.kernel.exception.ResponseError;
-import java.io.Serializable;
-import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
+
+import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * @author vandunxg

@@ -3,6 +3,7 @@ package com.trackee.shared.kernel.dto;
 
 import com.trackee.shared.kernel.domain.enums.MailPurpose;
 import com.trackee.shared.kernel.util.Constants;
+
 import java.util.List;
 import java.util.Map;
 

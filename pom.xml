@@ -51,6 +51,11 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
         <!-- ===== Validation ===== -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -104,6 +109,18 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.13.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.13.0</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- ===== Nimbus ===== -->
@@ -176,6 +193,7 @@
                             <indent>
                                 <tabs>true</tabs>
                                 <spacesPerTab>4</spacesPerTab>
+
                             </indent>
                         </format>
                     </formats>
@@ -187,9 +205,13 @@
                         <googleJavaFormat>
                             <version>1.19.1</version>
                             <style>AOSP</style>
-                            <reflowLongStrings>true</reflowLongStrings>
-                            <formatJavadoc>false</formatJavadoc>
                         </googleJavaFormat>
+
+                        <importOrder>
+                            <order>,java,javax,jakarta,org,com</order>
+                        </importOrder>
+
+                        <removeUnusedImports/>
 
                         <!-- make sure every file has the following copyright header.
                           optionally, Spotless can set copyright years by digging

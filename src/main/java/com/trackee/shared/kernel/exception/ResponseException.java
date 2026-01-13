@@ -2,6 +2,7 @@
 package com.trackee.shared.exception;
 
 import com.trackee.shared.kernel.exception.ResponseError;
+
 import java.text.MessageFormat;
 import java.util.Objects;
 

@@ -5,10 +5,9 @@ import java.security.SecureRandom;
 import java.util.Objects;
 
 /**
- * Production-ready code generator.
- * - SecureRandom
- * - Supports numeric OTP with leading zeros
- * - Supports custom charset (e.g. alphanumeric without ambiguous chars)
+ * Production-ready code generator. - SecureRandom - Supports numeric OTP with leading zeros -
+ * Supports custom charset (e.g. alphanumeric without ambiguous chars)
+ *
  * @author vandunxg
  */
 public final class CodeGenerator {
@@ -22,8 +21,8 @@ public final class CodeGenerator {
     private CodeGenerator() {}
 
     /**
-     * Generate numeric OTP with fixed length (keeps leading zeros).
-     * Example: length=6 -> "000042" is possible.
+     * Generate numeric OTP with fixed length (keeps leading zeros). Example: length=6 -> "000042"
+     * is possible.
      */
     public static String numeric(int length) {
         if (length <= 0 || length > 18) {
