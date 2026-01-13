@@ -43,6 +43,7 @@ public class User extends AuditableDomain {
         return User.builder()
                 .id(UUID.randomUUID())
                 .status(UserStatus.ACTIVE)
+                .role(UserRole.USER)
                 .fullName(cmd.getFullName())
                 .email(cmd.getEmail())
                 .passwordHash(cmd.getPasswordHash())

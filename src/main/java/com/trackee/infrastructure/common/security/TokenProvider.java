@@ -75,6 +75,7 @@ public class TokenProvider {
                 .id(UUID.randomUUID().toString())
                 .subject(authenticatedUser.username())
                 .claim(USER_ID_CLAIM, userId)
+                .claim(ROLE_CLAIM, authenticatedUser.role())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiresAt))
                 .signWith(keyPair.getPrivate())

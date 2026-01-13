@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface Constants {
 
+    String ROLE_PREFIX = "ROLE_";
+
     String CONTENT_KEY = "content";
 
     interface RegexPattern {
@@ -34,6 +36,7 @@ public interface Constants {
         List<String> EXTENSIONS = Arrays.asList("bmp,jpg,png,jpeg".split(","));
         String AUTHORITY_TYPE = "auth_type";
         String USER_ID_CLAIM = "user_id";
+        String ROLE_CLAIM = "role";
         String EMAIL_CLAIM = "email";
         String API_TOKEN = "Api-token";
         String CLIENT = "client";

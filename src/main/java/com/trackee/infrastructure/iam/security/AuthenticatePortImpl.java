@@ -13,8 +13,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 /**
  * @author vandunxg
@@ -32,15 +35,21 @@ public class AuthenticatePortImpl implements AuthenticatePort {
         log.info("[authenticate]={}", email);
 
         try {
-            Authentication authentication =
+            Authentication unauthenticated =
                     new UsernamePasswordAuthenticationToken(email, password);
-            authenticationManager.authenticate(authentication);
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authenticated = authenticationManager.authenticate(unauthenticated);
 
-            return new AuthenticatedUser(authentication.getName());
+            SecurityContextHolder.getContext().setAuthentication(authenticated);
+
+            String role =
+                    authenticated.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.joining(","));
+
+            return new AuthenticatedUser(authenticated.getName(), role);
         } catch (AuthenticationException ex) {
-            log.error("[authenticate]={}", ex.getMessage());
+            log.error("[authenticate] failed: {}", ex.getMessage());
 
             throw new ResponseException(AuthenticationError.INVALID_CREDENTIALS);
         }

@@ -2,9 +2,11 @@
 package com.trackee.infrastructure.iam.security;
 
 import com.trackee.domain.iam.User;
+import com.trackee.shared.kernel.util.Constants;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -24,7 +26,7 @@ public class UserDetailCustom implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(Constants.ROLE_PREFIX + user.getRole().name()));
     }
 
     @Override
@@ -35,5 +37,25 @@ public class UserDetailCustom implements UserDetails {
     @Override
     public String getUsername() {
         return this.user.getEmail();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
     }
 }

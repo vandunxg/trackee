@@ -58,9 +58,7 @@ public final class CodeGenerator {
         return new String(out);
     }
 
-    /**
-     * Safe alphanumeric code (no ambiguous chars).
-     */
+    /** Safe alphanumeric code (no ambiguous chars). */
     public static String alphanumericSafe(int length) {
         return fromCharset(length, ALPHANUMERIC_SAFE);
     }
