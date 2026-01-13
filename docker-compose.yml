@@ -9,8 +9,6 @@ services:
       POSTGRES_DB: trackee
       POSTGRES_USER: trackee
       POSTGRES_PASSWORD: trackee
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -18,12 +16,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   redis:
     image: redis:7
     container_name: trackee-redis
-    ports:
-      - "6379:6379"
+    restart: unless-stopped
 
   trackee-api:
     build:
@@ -38,16 +36,28 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackee
       SPRING_DATASOURCE_USERNAME: trackee
       SPRING_DATASOURCE_PASSWORD: trackee
+      SPRING_DATASOURCE_POOL_SIZE: 5
 
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
 
-      JVM_OPTS: "-Xms256m -Xmx512m"
+      SENDGRID_API_KEY: YUMMY_TOKEN
+      SENDGRID_FROM_EMAIL: YUMMY_EMAIL
+      SENDGRID_TEMPLATE_REGISTER: YUMMY
+
+      KEY_STORE: trackee.jks
+      KEY_STORE_PASSWORD: change_me
+      KEY_ALIAS: trackee
+
+      OTP_HMAC_SECRET: change_me
+
+      JAVA_OPTS: "-Xms256m -Xmx512m"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_started
+    restart: unless-stopped
 
 volumes:
   postgres_data:
