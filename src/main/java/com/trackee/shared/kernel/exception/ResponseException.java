@@ -4,8 +4,6 @@ package com.trackee.shared.kernel.exception;
 import java.text.MessageFormat;
 import java.util.Objects;
 
-import com.trackee.shared.kernel.exception.ResponseError;
-
 /**
  * @author vandunxg
  */

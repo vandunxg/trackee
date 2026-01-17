@@ -1,7 +1,6 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.domain.iam;
 
-import com.trackee.shared.kernel.exception.ResponseException;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,6 +12,7 @@ import com.trackee.shared.kernel.domain.AuditableDomain;
 import com.trackee.shared.kernel.domain.enums.UserRole;
 import com.trackee.shared.kernel.domain.enums.UserStatus;
 import com.trackee.shared.kernel.exception.AuthenticationError;
+import com.trackee.shared.kernel.exception.ResponseException;
 
 /**
  * @author vandunxg
