@@ -29,8 +29,8 @@ public class UserLoginUseCase {
     AuthenticatePort authenticatePort;
     TokenProvider tokenProvider;
 
-    public LoginResponse handle(LoginRequest request) {
-        log.info("[handle]={}", request);
+    public LoginResponse login(LoginRequest request) {
+        log.info("[register]={}", request);
 
         User user = userRepository.findByEmail(request.email());
 

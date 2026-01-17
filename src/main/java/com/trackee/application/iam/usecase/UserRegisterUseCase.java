@@ -34,8 +34,8 @@ public class UserRegisterUseCase {
     ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public UserRegisterResponse handle(RegisterRequest request) {
-        log.info("[handle]={}", request);
+    public UserRegisterResponse register(RegisterRequest request) {
+        log.info("[register]={}", request);
 
         ensureEmailNotExists(request.email());
 

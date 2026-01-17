@@ -35,13 +35,13 @@ public class AuthController {
     public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
         log.info("[register]={}", request);
 
-        return Response.of(userRegisterUseCase.handle(request));
+        return Response.of(userRegisterUseCase.register(request));
     }
 
     @PostMapping("/login")
     public Response<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         log.info("[login]={}", request);
 
-        return Response.of(userLoginUseCase.handle(request));
+        return Response.of(userLoginUseCase.login(request));
     }
 }
