@@ -1,19 +1,20 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.exception;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.trackee.shared.infrastructure.i18n.LocaleStringService;
-import com.trackee.shared.kernel.exception.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -46,10 +47,12 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.trackee.shared.infrastructure.i18n.LocaleStringService;
+import com.trackee.shared.kernel.exception.*;
 
 /**
  * @author vandunxg
@@ -222,8 +225,8 @@ public class ExceptionHandleAdvice {
             String object =
                     queryParamPath.split("\\.").length > 1
                             ? queryParamPath.substring(
-                            queryParamPath.indexOf(".") + 1,
-                            queryParamPath.lastIndexOf("."))
+                                    queryParamPath.indexOf(".") + 1,
+                                    queryParamPath.lastIndexOf("."))
                             : queryParamPath;
             String errorMessage =
                     this.localeStringService.getMessage(
@@ -346,7 +349,7 @@ public class ExceptionHandleAdvice {
                                                                     .stream()
                                                                     .map(
                                                                             JsonMappingException
-                                                                                    .Reference
+                                                                                            .Reference
                                                                                     ::getFieldName)
                                                                     .collect(
                                                                             Collectors.joining(
@@ -369,7 +372,7 @@ public class ExceptionHandleAdvice {
                                                             jsonMappingException.getPath().stream()
                                                                     .map(
                                                                             JsonMappingException
-                                                                                    .Reference
+                                                                                            .Reference
                                                                                     ::getFieldName)
                                                                     .collect(
                                                                             Collectors.joining(
@@ -398,7 +401,7 @@ public class ExceptionHandleAdvice {
             com.trackee.shared.exception.ResponseException e, HttpServletRequest request) {
         log.warn(
                 "Failed to handle request {}: {}",
-                new Object[]{request.getRequestURI(), e.getError().getMessage(), e});
+                new Object[] {request.getRequestURI(), e.getError().getMessage(), e});
         ResponseError error = e.getError();
         String message =
                 this.localeStringService.getMessage(
@@ -418,7 +421,7 @@ public class ExceptionHandleAdvice {
             InvocationTargetException e, HttpServletRequest request) {
         log.warn(
                 "Failed to handle request {}: {}",
-                new Object[]{request.getRequestURI(), e.getMessage(), e});
+                new Object[] {request.getRequestURI(), e.getMessage(), e});
         ResponseError error = InternalServerError.INTERNAL_SERVER_ERROR;
         log.error(
                 "Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(),
@@ -427,7 +430,7 @@ public class ExceptionHandleAdvice {
                 this.localeStringService.getMessage(
                         InternalServerError.INTERNAL_SERVER_ERROR.getName(),
                         "There are somethings wrong: {0}",
-                        new Object[]{e});
+                        new Object[] {e});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
                 .body(
@@ -491,7 +494,7 @@ public class ExceptionHandleAdvice {
                 this.localeStringService.getMessage(
                         InternalServerError.INTERNAL_SERVER_ERROR.getName(),
                         "There are somethings wrong: {0}",
-                        new Object[]{e});
+                        new Object[] {e});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
                 .body(
@@ -503,9 +506,9 @@ public class ExceptionHandleAdvice {
     }
 
     @ExceptionHandler({
-            DataIntegrityViolationException.class,
-            NonTransientDataAccessException.class,
-            DataAccessException.class
+        DataIntegrityViolationException.class,
+        NonTransientDataAccessException.class,
+        DataAccessException.class
     })
     public ResponseEntity<ErrorResponse<Object>> handleDataAccessException(
             DataAccessException e, HttpServletRequest request) {
@@ -518,7 +521,7 @@ public class ExceptionHandleAdvice {
                 this.localeStringService.getMessage(
                         InternalServerError.DATA_ACCESS_EXCEPTION.getName(),
                         "Data access exception",
-                        new Object[]{e.getClass().getName()});
+                        new Object[] {e.getClass().getName()});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
                 .body(

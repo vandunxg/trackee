@@ -1,12 +1,13 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.domain.iam;
 
-import com.trackee.shared.kernel.domain.AuditableDomain;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 import java.util.UUID;
+
+import com.trackee.shared.kernel.domain.AuditableDomain;
 
 /**
  * @author vandunxg

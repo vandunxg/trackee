@@ -1,16 +1,18 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.security;
 
-import com.trackee.domain.iam.User;
-import com.trackee.shared.kernel.util.Constants;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import com.trackee.domain.iam.User;
+import com.trackee.shared.kernel.util.Constants;
 
 /**
  * @author vandunxg
@@ -41,7 +43,7 @@ public class UserDetailCustom implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return user.isUserActive();
     }
 
     @Override

@@ -1,6 +1,18 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.web.iam;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.trackee.application.iam.usecase.UserLoginUseCase;
 import com.trackee.application.iam.usecase.UserRegisterUseCase;
 import com.trackee.shared.kernel.web.Response;
@@ -8,15 +20,6 @@ import com.trackee.web.iam.request.LoginRequest;
 import com.trackee.web.iam.request.RegisterRequest;
 import com.trackee.web.iam.response.LoginResponse;
 import com.trackee.web.iam.response.UserRegisterResponse;
-import jakarta.validation.Valid;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author vandunxg

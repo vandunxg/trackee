@@ -1,14 +1,14 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.util;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.Instant;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author vandunxg

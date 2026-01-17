@@ -1,14 +1,16 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.persistence.entity;
 
-import com.trackee.shared.infrastructure.persistence.AuditableEntity;
-import com.trackee.shared.kernel.domain.enums.UserRole;
-import com.trackee.shared.kernel.domain.enums.UserStatus;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
+
+import jakarta.persistence.*;
+
+import com.trackee.shared.infrastructure.persistence.AuditableEntity;
+import com.trackee.shared.kernel.domain.enums.UserRole;
+import com.trackee.shared.kernel.domain.enums.UserStatus;
 
 /**
  * @author vandunxg

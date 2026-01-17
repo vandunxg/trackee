@@ -1,11 +1,11 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.dto;
 
-import com.trackee.shared.kernel.domain.enums.MailPurpose;
-import com.trackee.shared.kernel.util.Constants;
-
 import java.util.List;
 import java.util.Map;
+
+import com.trackee.shared.kernel.domain.enums.MailPurpose;
+import com.trackee.shared.kernel.util.Constants;
 
 public record MailMessage(
         List<String> to, String subject, MailPurpose mailPurpose, Map<String, Object> variables) {

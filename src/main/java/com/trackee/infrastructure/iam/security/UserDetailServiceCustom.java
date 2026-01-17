@@ -1,12 +1,13 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.security;
 
-import com.trackee.domain.iam.User;
-import com.trackee.domain.iam.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.trackee.domain.iam.User;
+import com.trackee.domain.iam.repository.UserRepository;
 
 @Service
 public record UserDetailServiceCustom(UserRepository userRepository) implements UserDetailsService {

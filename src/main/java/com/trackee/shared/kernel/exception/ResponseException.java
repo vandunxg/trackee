@@ -1,10 +1,10 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.exception;
 
-import com.trackee.shared.kernel.exception.ResponseError;
-
 import java.text.MessageFormat;
 import java.util.Objects;
+
+import com.trackee.shared.kernel.exception.ResponseError;
 
 /**
  * @author vandunxg

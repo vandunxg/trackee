@@ -37,9 +37,7 @@ public final class CodeGenerator {
         return new String(out);
     }
 
-    /**
-     * Generate code from provided charset.
-     */
+    /** Generate code from provided charset. */
     public static String fromCharset(int length, String charset) {
         if (length <= 0) {
             throw new IllegalArgumentException("length must be > 0");

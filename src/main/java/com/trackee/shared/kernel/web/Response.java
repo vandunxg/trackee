@@ -1,17 +1,19 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.web;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+import java.time.Instant;
+
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.shared.kernel.exception.ErrorCodeClient;
 import com.trackee.shared.kernel.exception.ResponseError;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.util.StringUtils;
-
-import java.io.Serializable;
-import java.time.Instant;
 
 /**
  * @author vandunxg

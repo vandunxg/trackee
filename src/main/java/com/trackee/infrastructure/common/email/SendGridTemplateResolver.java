@@ -1,13 +1,15 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.email;
 
-import com.trackee.infrastructure.common.security.SendGridProperties;
-import com.trackee.shared.kernel.domain.enums.MailPurpose;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Component;
+
+import com.trackee.infrastructure.common.security.SendGridProperties;
+import com.trackee.shared.kernel.domain.enums.MailPurpose;
 
 @Component
 @RequiredArgsConstructor

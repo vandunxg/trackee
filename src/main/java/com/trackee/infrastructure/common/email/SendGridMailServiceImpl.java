@@ -1,6 +1,16 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.email;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -12,14 +22,6 @@ import com.trackee.infrastructure.common.security.SendGridProperties;
 import com.trackee.shared.kernel.application.mail.MailService;
 import com.trackee.shared.kernel.domain.enums.MailPurpose;
 import com.trackee.shared.kernel.dto.MailMessage;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author vandunxg

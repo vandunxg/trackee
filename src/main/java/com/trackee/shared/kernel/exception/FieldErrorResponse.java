@@ -128,8 +128,7 @@ public class FieldErrorResponse implements Serializable {
         private String objectName;
         private String message;
 
-        FieldErrorResponseBuilder() {
-        }
+        FieldErrorResponseBuilder() {}
 
         public FieldErrorResponseBuilder field(final String field) {
             this.field = field;
