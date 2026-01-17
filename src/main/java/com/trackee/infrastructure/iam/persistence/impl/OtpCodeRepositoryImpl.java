@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,5 +46,21 @@ public class OtpCodeRepositoryImpl implements OtpCodeRepository {
         return otpCodeJpaRepository
                 .findLatestOtpCodeByUserId(userId, otpPurpose)
                 .map(otpCodePersistenceMapper::toDomain);
+    }
+
+    @Override
+    public List<OtpCode> findAllOtpCodesNotUsedByUserId(UUID userId, OtpPurpose otpPurpose) {
+        log.info("[findAllOtpCodesNotUsedByUserId] userId={} purpose={}", userId, otpPurpose);
+
+        return otpCodePersistenceMapper.toDomain(
+                otpCodeJpaRepository.findAllOtpCodesNotUsedByUserId(userId, otpPurpose));
+    }
+
+    @Override
+    public List<OtpCode> saveAll(List<OtpCode> otpCodes) {
+
+        otpCodeJpaRepository.saveAll(otpCodePersistenceMapper.toEntity(otpCodes));
+
+        return otpCodes;
     }
 }

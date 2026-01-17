@@ -23,7 +23,7 @@ import com.trackee.web.iam.response.LoginResponse;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "USER-LOGIN-USE-CASE")
+@Slf4j(topic = "USER-LOGIN-USE-ASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserLoginUseCase {
 

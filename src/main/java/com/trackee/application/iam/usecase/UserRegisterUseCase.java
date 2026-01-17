@@ -24,7 +24,7 @@ import com.trackee.web.iam.response.UserRegisterResponse;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "USER-REGISTER-USE-CASE")
+@Slf4j(topic = "USER-REGISTER-USECASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserRegisterUseCase {
 

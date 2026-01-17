@@ -33,6 +33,7 @@ public class OtpCode extends AuditableDomain {
     Instant deletedAt;
     OtpPurpose otpPurpose;
     Instant expiresAt;
+    Instant revokedAt;
 
     public OtpCode(String hashedCode, OtpPurpose otpPurpose, UUID userId, Instant expiresAt) {
 
@@ -45,6 +46,10 @@ public class OtpCode extends AuditableDomain {
     }
 
     public void verify(String rawCode, OtpHasher otpHasher) {
+
+        if (isRevoked()) {
+            throw new ResponseException(AuthenticationError.OTP_REVOKED);
+        }
 
         if (isUsed()) {
             throw new ResponseException(BadRequestError.OTP_ALREADY_USED);
@@ -61,6 +66,11 @@ public class OtpCode extends AuditableDomain {
         consume();
     }
 
+    private boolean isRevoked() {
+
+        return Objects.nonNull(this.revokedAt);
+    }
+
     private boolean isExpired() {
 
         return this.expiresAt.isBefore(Instant.now());
@@ -73,5 +83,9 @@ public class OtpCode extends AuditableDomain {
 
     private void consume() {
         this.usedAt = Instant.now();
+    }
+
+    public void revoked() {
+        this.revokedAt = Instant.now();
     }
 }

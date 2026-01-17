@@ -28,6 +28,7 @@ public enum AuthenticationError implements ResponseError {
     USER_ALREADY_ACTIVE(40100017, "User is already active"),
     OTP_CODE_NOT_MATCH(40100018, "Otp code not match"),
     OTP_EXPIRED(40100019, "Otp expired"),
+    OTP_REVOKED(40100020, "Otp revoked"),
     ;
 
     private final Integer code;

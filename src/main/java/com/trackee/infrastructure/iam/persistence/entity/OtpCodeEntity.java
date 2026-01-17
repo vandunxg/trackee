@@ -49,6 +49,9 @@ public class OtpCodeEntity extends AuditableEntity {
     @Column(name = "expires_at", nullable = false)
     Instant expiresAt;
 
+    @Column(name = "revoked_at")
+    Instant revokedAt;
+
     @Column(name = "deleted_at")
     Instant deletedAt;
 }

@@ -9,61 +9,58 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.User;
+import com.trackee.domain.iam.event.UserResendOtpEvent;
 import com.trackee.domain.iam.repository.OtpCodeRepository;
 import com.trackee.domain.iam.repository.UserRepository;
-import com.trackee.shared.kernel.application.port.TokenProvider;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
-import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 import com.trackee.shared.kernel.exception.NotFoundError;
 import com.trackee.shared.kernel.exception.ResponseException;
-import com.trackee.shared.kernel.util.Constants;
-import com.trackee.web.iam.request.ActiveRequest;
-import com.trackee.web.iam.response.LoginResponse;
+import com.trackee.web.iam.request.ResendOtpRequest;
 
 /**
  * @author vandunxg
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "USER-ACTIVE-USECASE")
+@Slf4j(topic = "USER-RESEND-OTP-USECASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserActiveUseCase {
+public class UserResendOtpUseCase {
 
-    OtpHasher otpHasher;
-    UserRepository userRepository;
     OtpCodeRepository otpCodeRepository;
-    TokenProvider tokenProvider;
+    UserRepository userRepository;
+    ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
-    public LoginResponse active(ActiveRequest request) {
-        log.info("[active]={}", request.email());
+    public Boolean resend(ResendOtpRequest request) {
+        log.info("[resend]={}", request);
 
         User user = findUserByEmail(request.email());
 
         ensureUserNotActive(user);
 
-        OtpCode otpCode = findLatestOtpByUserId(user.getId(), OtpPurpose.REGISTER);
+        List<OtpCode> otpCodes = findAllOtpCodesNotUsedByUserId(user.getId(), OtpPurpose.REGISTER);
 
-        otpCode.verify(request.code(), otpHasher);
+        otpCodes.forEach(OtpCode::revoked);
 
-        user.activeUser();
+        applicationEventPublisher.publishEvent(
+                new UserResendOtpEvent(user.getId(), user.getEmail(), user.getFullName()));
 
-        userRepository.save(user);
-        otpCodeRepository.save(otpCode);
+        otpCodeRepository.saveAll(otpCodes);
 
-        List<String> authorities = List.of(Constants.ROLE_PREFIX + user.getRole().name());
+        return Boolean.TRUE;
+    }
 
-        return new LoginResponse(
-                tokenProvider.generateAccessToken(
-                        new AuthenticatedUser(user.getEmail(), authorities), user.getId()),
-                tokenProvider.generateRefreshToken(user.getId()));
+    List<OtpCode> findAllOtpCodesNotUsedByUserId(UUID userId, OtpPurpose otpPurpose) {
+        log.info("[findAllOtpCodesNotUsedByUserId] userId={} purpose={}", userId, otpPurpose);
+
+        return otpCodeRepository.findAllOtpCodesNotUsedByUserId(userId, otpPurpose);
     }
 
     void ensureUserNotActive(User user) {
@@ -72,14 +69,6 @@ public class UserActiveUseCase {
         if (user.isUserActive()) {
             throw new ResponseException(AuthenticationError.USER_ALREADY_ACTIVE);
         }
-    }
-
-    OtpCode findLatestOtpByUserId(UUID userId, OtpPurpose otpPurpose) {
-        log.info("[findLatestOtpByUserId] userId={} purpose={}", userId, otpPurpose);
-
-        return otpCodeRepository
-                .findLatestByUserId(userId, otpPurpose)
-                .orElseThrow(() -> new ResponseException(NotFoundError.OTP_CODE_NOT_FOUND));
     }
 
     User findUserByEmail(String email) {
