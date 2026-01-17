@@ -1,28 +1,26 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.domain.iam;
 
-import com.trackee.application.iam.command.UserRegisterCommand;
-import com.trackee.shared.exception.ResponseException;
-import com.trackee.shared.kernel.domain.AuditableDomain;
-import com.trackee.shared.kernel.domain.enums.UserRole;
-import com.trackee.shared.kernel.domain.enums.UserStatus;
-import com.trackee.shared.kernel.exception.AuthenticationError;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.trackee.shared.exception.ResponseException;
+import com.trackee.shared.kernel.domain.AuditableDomain;
+import com.trackee.shared.kernel.domain.enums.UserRole;
+import com.trackee.shared.kernel.domain.enums.UserStatus;
+import com.trackee.shared.kernel.exception.AuthenticationError;
+
 /**
  * @author vandunxg
  */
-@EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder
-@Setter(AccessLevel.PRIVATE)
 @Getter
+@Setter(AccessLevel.PRIVATE)
+@EqualsAndHashCode(callSuper = false)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User extends AuditableDomain {
 
     UUID id;
@@ -38,28 +36,24 @@ public class User extends AuditableDomain {
     UserRole role;
     Instant deletedAt;
 
-    public static User register(UserRegisterCommand cmd) {
+    User(UUID id, String fullName, String email, String passwordHash) {
+        this.id = id;
+        this.fullName = Objects.requireNonNull(fullName);
+        this.email = Objects.requireNonNull(email);
+        this.passwordHash = Objects.requireNonNull(passwordHash);
 
-        return User.builder()
-                .id(UUID.randomUUID())
-                .status(UserStatus.ACTIVE)
-                .role(UserRole.USER)
-                .fullName(cmd.getFullName())
-                .email(cmd.getEmail())
-                .passwordHash(cmd.getPasswordHash())
-                .build();
+        this.status = UserStatus.INACTIVE;
+        this.role = UserRole.USER;
+        this.isFirstLogin = true;
+    }
+
+    public static User register(String fullName, String email, String passwordHash) {
+        return new User(UUID.randomUUID(), fullName, email, passwordHash);
     }
 
     public void changePassword(String passwordHash) {
 
         this.passwordHash = passwordHash;
-    }
-
-    public void ensureActive() {
-
-        if (Objects.equals(UserStatus.ACTIVE, this.status)) {
-            throw new ResponseException(AuthenticationError.USER_NOT_ACTIVE);
-        }
     }
 
     public void activeUser() {
@@ -77,5 +71,10 @@ public class User extends AuditableDomain {
         if (!Objects.equals(UserStatus.ACTIVE, this.status)) {
             throw new ResponseException(AuthenticationError.USER_NOT_ACTIVE);
         }
+    }
+
+    public boolean isUserActive() {
+
+        return UserStatus.ACTIVE.equals(this.status);
     }
 }

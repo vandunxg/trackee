@@ -1,8 +1,16 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.application.iam.usecase;
 
-import com.trackee.application.iam.command.UserRegisterCommand;
-import com.trackee.application.iam.mapper.UserCommandMapper;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.event.UserRegisterEvent;
 import com.trackee.domain.iam.repository.UserRepository;
@@ -10,14 +18,6 @@ import com.trackee.shared.exception.ResponseException;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.web.iam.request.RegisterRequest;
 import com.trackee.web.iam.response.UserRegisterResponse;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author vandunxg
@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRegisterUseCase {
 
     UserRepository userRepository;
-    UserCommandMapper userCommandMapper;
     PasswordEncoder passwordEncoder;
     ApplicationEventPublisher eventPublisher;
 
@@ -39,10 +38,11 @@ public class UserRegisterUseCase {
 
         ensureEmailNotExists(request.email());
 
-        UserRegisterCommand cmd = userCommandMapper.toCommand(request);
-        cmd.setPasswordHash(passwordEncoder.encode(request.password()));
-
-        User user = User.register(cmd);
+        User user =
+                User.register(
+                        request.fullName(),
+                        request.email(),
+                        passwordEncoder.encode(request.password()));
 
         eventPublisher.publishEvent(
                 new UserRegisterEvent(user.getId(), user.getEmail(), user.getFullName()));
