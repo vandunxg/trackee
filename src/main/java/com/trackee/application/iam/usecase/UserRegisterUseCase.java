@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.event.UserRegisterEvent;
 import com.trackee.domain.iam.repository.UserRepository;
-import com.trackee.shared.exception.ResponseException;
+import com.trackee.shared.kernel.exception.ResponseException;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.web.iam.request.RegisterRequest;
 import com.trackee.web.iam.response.UserRegisterResponse;

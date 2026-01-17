@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.security;
 
+import com.trackee.shared.kernel.exception.ResponseException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.trackee.application.iam.port.AuthenticatePort;
-import com.trackee.shared.exception.ResponseException;
 import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 

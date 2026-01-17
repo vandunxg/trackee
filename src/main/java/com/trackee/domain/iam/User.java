@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.domain.iam;
 
+import com.trackee.shared.kernel.exception.ResponseException;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,7 +9,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.trackee.shared.exception.ResponseException;
 import com.trackee.shared.kernel.domain.AuditableDomain;
 import com.trackee.shared.kernel.domain.enums.UserRole;
 import com.trackee.shared.kernel.domain.enums.UserStatus;

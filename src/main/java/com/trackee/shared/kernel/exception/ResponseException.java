@@ -1,5 +1,5 @@
 /* Copyright (c) 2026 Trackee */
-package com.trackee.shared.exception;
+package com.trackee.shared.kernel.exception;
 
 import java.text.MessageFormat;
 import java.util.Objects;

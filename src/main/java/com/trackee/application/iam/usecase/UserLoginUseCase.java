@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.application.iam.usecase;
 
+import com.trackee.shared.kernel.exception.ResponseException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,6 @@ import com.trackee.application.iam.port.AuthenticatePort;
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.infrastructure.common.security.TokenProvider;
-import com.trackee.shared.exception.ResponseException;
 import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.NotFoundError;
 import com.trackee.web.iam.request.LoginRequest;

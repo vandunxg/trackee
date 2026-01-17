@@ -1,6 +1,7 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.persistence.impl;
 
+import com.trackee.shared.kernel.exception.ResponseException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,6 @@ import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.infrastructure.iam.persistence.UserJpaRepository;
 import com.trackee.infrastructure.iam.persistence.mapper.UserPersistenceMapper;
-import com.trackee.shared.exception.ResponseException;
 import com.trackee.shared.kernel.exception.NotFoundError;
 
 /**
