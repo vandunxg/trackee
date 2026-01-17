@@ -11,6 +11,9 @@ import jakarta.persistence.*;
 import com.trackee.shared.infrastructure.persistence.AuditableEntity;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 
+/**
+ * @author vandunxg
+ */
 @Entity
 @Table(
         name = "otp_codes",

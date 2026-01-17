@@ -20,17 +20,13 @@ public class InvalidInputResponse extends ErrorResponse<Void> {
 
     public InvalidInputResponse(
             int code, String message, String error, Set<FieldErrorResponse> errors) {
-        super(code, message, (Void) null, error);
+        super(code, message, null, error);
         this.errors = errors;
     }
 
     public InvalidInputResponse(int code, String message, String error) {
-        super(code, message, (Void) null, error);
+        super(code, message, null, error);
         this.errors = null;
-    }
-
-    public Set<FieldErrorResponse> getErrors() {
-        return this.errors;
     }
 
     @Override
@@ -42,26 +38,21 @@ public class InvalidInputResponse extends ErrorResponse<Void> {
     public boolean equals(final Object o) {
         if (o == this) {
             return true;
-        } else if (!(o instanceof InvalidInputResponse)) {
+        } else if (!(o instanceof InvalidInputResponse other)) {
             return false;
         } else {
-            InvalidInputResponse other = (InvalidInputResponse) o;
             if (!other.canEqual(this)) {
                 return false;
             } else if (!super.equals(o)) {
                 return false;
             } else {
-                Object this$errors = this.getErrors();
-                Object other$errors = other.getErrors();
-                if (this$errors == null) {
-                    if (other$errors != null) {
-                        return false;
-                    }
-                } else if (!this$errors.equals(other$errors)) {
-                    return false;
+                Object thisErrors = this.getErrors();
+                Object otherErrors = other.getErrors();
+                if (thisErrors == null) {
+                    return otherErrors == null;
+                } else {
+                    return thisErrors.equals(otherErrors);
                 }
-
-                return true;
             }
         }
     }
@@ -73,10 +64,10 @@ public class InvalidInputResponse extends ErrorResponse<Void> {
 
     @Override
     public int hashCode() {
-        int PRIME = 59;
+        int prime = 59;
         int result = super.hashCode();
-        Object $errors = this.getErrors();
-        result = result * 59 + ($errors == null ? 43 : $errors.hashCode());
+        Object errors = this.getErrors();
+        result = result * prime + (errors == null ? 43 : errors.hashCode());
         return result;
     }
 }

@@ -16,7 +16,7 @@ public class ResponseException extends RuntimeException {
     private final Object[] params;
 
     public ResponseException(ResponseError error) {
-        this(error.getMessage(), (Throwable) null, (ResponseError) error);
+        this(error.getMessage(), null, error);
     }
 
     public ResponseException(String message, Throwable cause, ResponseError error) {

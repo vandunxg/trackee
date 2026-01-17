@@ -30,30 +30,6 @@ public class FieldErrorResponse implements Serializable {
         return new FieldErrorResponseBuilder();
     }
 
-    public String getField() {
-        return this.field;
-    }
-
-    public String getObjectName() {
-        return this.objectName;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setField(final String field) {
-        this.field = field;
-    }
-
-    public void setObjectName(final String objectName) {
-        this.objectName = objectName;
-    }
-
-    public void setMessage(final String message) {
-        this.message = message;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
