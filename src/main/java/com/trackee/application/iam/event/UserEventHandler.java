@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import com.trackee.application.iam.command.OtpGenerateCmd;
 import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.event.UserRegisterEvent;
@@ -53,10 +52,8 @@ public class UserEventHandler {
         Duration ttl = otpProperties.expiryTime();
         Instant expiresAt = Instant.now().plus(ttl);
 
-        OtpGenerateCmd cmd =
-                new OtpGenerateCmd(code, event.userId(), OtpPurpose.REGISTER, expiresAt);
-
-        OtpCode otpCode = new OtpCode(cmd, otpHasher);
+        OtpCode otpCode =
+                new OtpCode(otpHasher.hash(code), OtpPurpose.REGISTER, event.userId(), expiresAt);
 
         Map<String, Object> variables = new HashMap<>();
 
