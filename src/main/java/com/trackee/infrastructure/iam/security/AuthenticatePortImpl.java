@@ -6,14 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.trackee.application.iam.port.AuthenticatePort;
@@ -44,16 +44,24 @@ public class AuthenticatePortImpl implements AuthenticatePort {
 
             SecurityContextHolder.getContext().setAuthentication(authenticated);
 
-            String role =
+            List<String> authorities =
                     authenticated.getAuthorities().stream()
                             .map(GrantedAuthority::getAuthority)
-                            .collect(Collectors.joining(","));
+                            .toList();
 
-            return new AuthenticatedUser(authenticated.getName(), role);
-        } catch (AuthenticationException ex) {
-            log.error("[authenticate] failed: {}", ex.getMessage());
+            return new AuthenticatedUser(authenticated.getName(), authorities);
+        } catch (DisabledException ex) {
+            log.warn("[authenticate] user disabled: {}", email);
+            throw new ResponseException(AuthenticationError.USER_NOT_ACTIVE);
+
+        } catch (BadCredentialsException | UsernameNotFoundException ex) {
+            log.warn("[authenticate] bad credentials: {}", ex.getMessage());
 
             throw new ResponseException(AuthenticationError.INVALID_CREDENTIALS);
+
+        } catch (AuthenticationException ex) {
+            log.error("[authenticate] unexpected auth error", ex);
+            throw new ResponseException(AuthenticationError.UNAUTHORISED);
         }
     }
 }

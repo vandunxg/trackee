@@ -17,6 +17,7 @@ public interface Constants {
         String PLATFORM_REGEX = "^(WEB|IOS|ANDROID)$";
         String PASSWORD_REGEX =
                 "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        String OTP_CODE_REGEX = "^\\d{6}$";
     }
 
     interface CodeGenerator {
@@ -36,7 +37,7 @@ public interface Constants {
         List<String> EXTENSIONS = Arrays.asList("bmp,jpg,png,jpeg".split(","));
         String AUTHORITY_TYPE = "auth_type";
         String USER_ID_CLAIM = "user_id";
-        String ROLE_CLAIM = "role";
+        String AUTHORITIES_CLAIM = "authorities";
         String EMAIL_CLAIM = "email";
         String API_TOKEN = "Api-token";
         String CLIENT = "client";

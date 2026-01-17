@@ -17,7 +17,9 @@ public enum BadRequestError implements ResponseError {
     RECORD_IS_BEING_UPDATED(4000007, "The record is being updated. Please wait a minute"),
     MISSING_HEADER_VARIABLE(4000008, "Missing header variable: {0}"),
     BAD_REQUEST_ERROR(4000009, "Bad request error"),
-    EMAIL_ALREADY_EXISTS(4000009, "Email already exists");
+    EMAIL_ALREADY_EXISTS(4000010, "Email already exists"),
+    OTP_ALREADY_USED(4000011, "OTP already used"),
+    ;
 
     private final Integer code;
     private final String message;

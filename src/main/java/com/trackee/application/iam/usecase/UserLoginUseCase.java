@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.trackee.application.iam.port.AuthenticatePort;
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
-import com.trackee.infrastructure.common.security.TokenProvider;
+import com.trackee.shared.kernel.application.port.TokenProvider;
 import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.NotFoundError;
 import com.trackee.shared.kernel.exception.ResponseException;
@@ -34,7 +34,10 @@ public class UserLoginUseCase {
     public LoginResponse login(LoginRequest request) {
         log.info("[register]={}", request);
 
-        User user = userRepository.findByEmail(request.email());
+        User user =
+                userRepository
+                        .findByEmail(request.email())
+                        .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
 
         if (user == null) {
             throw new ResponseException(NotFoundError.USER_NOT_FOUND);
@@ -43,10 +46,8 @@ public class UserLoginUseCase {
         AuthenticatedUser authenticatedUser =
                 authenticatePort.authenticate(request.email(), request.password());
 
-        user.ensureUserActive();
-
         return new LoginResponse(
-                tokenProvider.createToken(authenticatedUser, user.getId().toString()),
-                tokenProvider.createRefreshToken(user.getId().toString()));
+                tokenProvider.generateAccessToken(authenticatedUser, user.getId()),
+                tokenProvider.generateRefreshToken(user.getId()));
     }
 }

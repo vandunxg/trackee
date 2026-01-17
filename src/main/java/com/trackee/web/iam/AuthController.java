@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trackee.application.iam.usecase.UserActiveUseCase;
 import com.trackee.application.iam.usecase.UserLoginUseCase;
 import com.trackee.application.iam.usecase.UserRegisterUseCase;
 import com.trackee.shared.kernel.web.Response;
+import com.trackee.web.iam.request.ActiveRequest;
 import com.trackee.web.iam.request.LoginRequest;
 import com.trackee.web.iam.request.RegisterRequest;
 import com.trackee.web.iam.response.LoginResponse;
@@ -33,6 +35,7 @@ public class AuthController {
 
     UserRegisterUseCase userRegisterUseCase;
     UserLoginUseCase userLoginUseCase;
+    UserActiveUseCase userActiveUseCase;
 
     @PostMapping("/register")
     public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
@@ -46,5 +49,12 @@ public class AuthController {
         log.info("[login]={}", request);
 
         return Response.of(userLoginUseCase.login(request));
+    }
+
+    @PostMapping("/active")
+    public Response<LoginResponse> active(@Valid @RequestBody ActiveRequest request) {
+        log.info("[active]={}", request);
+
+        return Response.of(userActiveUseCase.active(request));
     }
 }

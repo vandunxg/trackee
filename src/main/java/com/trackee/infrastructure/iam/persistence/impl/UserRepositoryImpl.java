@@ -6,14 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.infrastructure.iam.persistence.UserJpaRepository;
 import com.trackee.infrastructure.iam.persistence.mapper.UserPersistenceMapper;
-import com.trackee.shared.kernel.exception.NotFoundError;
-import com.trackee.shared.kernel.exception.ResponseException;
 
 /**
  * @author vandunxg
@@ -37,12 +37,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
 
-        return userJpaRepository
-                .findByEmail(email)
-                .map(userPersistenceMapper::toDomain)
-                .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
+        return userJpaRepository.findByEmail(email).map(userPersistenceMapper::toDomain);
     }
 
     @Override

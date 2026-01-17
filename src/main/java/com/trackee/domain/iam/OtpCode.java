@@ -5,10 +5,15 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
+import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.shared.kernel.domain.AuditableDomain;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
+import com.trackee.shared.kernel.exception.AuthenticationError;
+import com.trackee.shared.kernel.exception.BadRequestError;
+import com.trackee.shared.kernel.exception.ResponseException;
 
 /**
  * @author vandunxg
@@ -37,5 +42,36 @@ public class OtpCode extends AuditableDomain {
         this.expiresAt = expiresAt;
 
         this.hashedCode = hashedCode;
+    }
+
+    public void verify(String rawCode, OtpHasher otpHasher) {
+
+        if (isUsed()) {
+            throw new ResponseException(BadRequestError.OTP_ALREADY_USED);
+        }
+
+        if (isExpired()) {
+            throw new ResponseException(AuthenticationError.OTP_EXPIRED);
+        }
+
+        if (!otpHasher.matches(rawCode, this.hashedCode)) {
+            throw new ResponseException(AuthenticationError.OTP_CODE_NOT_MATCH);
+        }
+
+        consume();
+    }
+
+    private boolean isExpired() {
+
+        return this.expiresAt.isBefore(Instant.now());
+    }
+
+    private boolean isUsed() {
+
+        return Objects.nonNull(usedAt);
+    }
+
+    private void consume() {
+        this.usedAt = Instant.now();
     }
 }

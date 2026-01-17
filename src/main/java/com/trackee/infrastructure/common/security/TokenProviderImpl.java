@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.trackee.shared.kernel.application.port.TokenProvider;
 import com.trackee.shared.kernel.dto.AuthenticatedUser;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 import com.trackee.shared.kernel.util.Constants;
@@ -42,7 +43,7 @@ import com.trackee.shared.kernel.util.Constants;
 @RequiredArgsConstructor
 @Slf4j(topic = "TOKEN-PROVIDER")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TokenProvider {
+public class TokenProviderImpl implements TokenProvider {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER = "Bearer ";
@@ -69,7 +70,8 @@ public class TokenProvider {
         return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
     }
 
-    public String createToken(AuthenticatedUser authenticatedUser, String userId) {
+    @Override
+    public String generateAccessToken(AuthenticatedUser authenticatedUser, UUID userId) {
 
         Instant now = Instant.now();
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
@@ -78,21 +80,22 @@ public class TokenProvider {
                 .id(UUID.randomUUID().toString())
                 .subject(authenticatedUser.username())
                 .claim(USER_ID_CLAIM, userId)
-                .claim(ROLE_CLAIM, authenticatedUser.role())
+                .claim(AUTHORITIES_CLAIM, authenticatedUser.authorities())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiresAt))
                 .signWith(keyPair.getPrivate())
                 .compact();
     }
 
-    public String createRefreshToken(String userId) {
+    @Override
+    public String generateRefreshToken(UUID userId) {
 
         Instant now = Instant.now();
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
 
         return Jwts.builder()
                 .id(UUID.randomUUID().toString())
-                .subject(userId)
+                .subject(userId.toString())
                 .claim(AUTHORITY_TYPE, REFRESH_TOKEN)
                 .signWith(keyPair.getPrivate())
                 .issuedAt(Date.from(now))
@@ -100,13 +103,13 @@ public class TokenProvider {
                 .compact();
     }
 
-    public String createRefreshTokenRememberMe(String userId) {
+    public String createRefreshTokenRememberMe(UUID userId) {
 
         Instant now = Instant.now();
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
 
         return Jwts.builder()
-                .subject(userId)
+                .subject(userId.toString())
                 .claim(AUTHORITY_TYPE, REFRESH_TOKEN)
                 .signWith(keyPair.getPrivate())
                 .issuedAt(Date.from(now))

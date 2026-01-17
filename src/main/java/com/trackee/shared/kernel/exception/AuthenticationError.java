@@ -24,7 +24,11 @@ public enum AuthenticationError implements ResponseError {
     REFRESH_TOKEN_WAS_REVOKE(40100013, "Refresh token was revoke"),
     INVALID_TOKEN_TYPE(40100014, "Invalid token type"),
     INVALID_CREDENTIALS(40100015, "Invalid credentials"),
-    USER_NOT_ACTIVE(40100016, "User not active");
+    USER_NOT_ACTIVE(40100016, "User not active"),
+    USER_ALREADY_ACTIVE(40100017, "User is already active"),
+    OTP_CODE_NOT_MATCH(40100018, "Otp code not match"),
+    OTP_EXPIRED(40100019, "Otp expired"),
+    ;
 
     private final Integer code;
     private final String message;

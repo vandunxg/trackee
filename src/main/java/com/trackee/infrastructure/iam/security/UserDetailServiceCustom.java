@@ -6,8 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
+import com.trackee.shared.kernel.exception.NotFoundError;
+import com.trackee.shared.kernel.exception.ResponseException;
 
 @Service
 public record UserDetailServiceCustom(UserRepository userRepository) implements UserDetailsService {
@@ -15,8 +16,9 @@ public record UserDetailServiceCustom(UserRepository userRepository) implements 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(username);
-
-        return new UserDetailCustom(user);
+        return userRepository
+                .findByEmail(username)
+                .map(UserDetailCustom::new)
+                .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
     }
 }
