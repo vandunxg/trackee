@@ -252,11 +252,11 @@ public class TokenProvider {
             Jwts.parser().verifyWith(keyPair.getPublic()).build().parseSignedClaims(refreshToken);
         } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException e) {
             log.info(INVALID_JWT_SIGNATURE);
-            throw new com.trackee.shared.exception.ResponseException(
+            throw new com.trackee.shared.kernel.exception.ResponseException(
                     AuthenticationError.INVALID_JWT_SIGNATURE_REFRESH_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info(EXPIRED_JWT_TOKEN);
-            throw new com.trackee.shared.exception.ResponseException(
+            throw new com.trackee.shared.kernel.exception.ResponseException(
                     AuthenticationError.EXPIRED_REFRESH_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");

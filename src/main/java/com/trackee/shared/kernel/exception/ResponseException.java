@@ -1,12 +1,15 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.exception;
 
+import lombok.Getter;
+
 import java.text.MessageFormat;
 import java.util.Objects;
 
 /**
  * @author vandunxg
  */
+@Getter
 public class ResponseException extends RuntimeException {
 
     private final ResponseError error;
@@ -32,22 +35,14 @@ public class ResponseException extends RuntimeException {
     }
 
     public ResponseException(ResponseError error, Object... params) {
-        this(error.getMessage(), (Throwable) null, error, params);
+        this(error.getMessage(), null, error, params);
     }
 
     public ResponseException(String message, ResponseError error) {
-        this(message, (Throwable) null, (ResponseError) error);
+        this(message, null, error);
     }
 
     public ResponseException(String message, ResponseError error, Object... params) {
-        this(message, (Throwable) null, error, params);
-    }
-
-    public ResponseError getError() {
-        return this.error;
-    }
-
-    public Object[] getParams() {
-        return this.params;
+        this(message, null, error, params);
     }
 }

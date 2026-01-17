@@ -18,6 +18,7 @@ import com.trackee.shared.kernel.exception.ResponseException;
  * @author vandunxg
  */
 @Getter
+@AllArgsConstructor
 @Setter(AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 @FieldDefaults(level = AccessLevel.PRIVATE)

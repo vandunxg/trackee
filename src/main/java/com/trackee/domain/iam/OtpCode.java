@@ -13,11 +13,11 @@ import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 /**
  * @author vandunxg
  */
-@EqualsAndHashCode(callSuper = false)
-@NoArgsConstructor
-@SuperBuilder
-@Setter(AccessLevel.PRIVATE)
 @Getter
+@SuperBuilder
+@AllArgsConstructor
+@Setter(AccessLevel.PRIVATE)
+@EqualsAndHashCode(callSuper = false)
 public class OtpCode extends AuditableDomain {
 
     UUID id;

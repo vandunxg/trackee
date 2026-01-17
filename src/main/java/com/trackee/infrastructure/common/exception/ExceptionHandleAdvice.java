@@ -396,9 +396,9 @@ public class ExceptionHandleAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(invalidInputResponse);
     }
 
-    @ExceptionHandler({com.trackee.shared.exception.ResponseException.class})
+    @ExceptionHandler({com.trackee.shared.kernel.exception.ResponseException.class})
     public ResponseEntity<ErrorResponse<Object>> handleResponseException(
-            com.trackee.shared.exception.ResponseException e, HttpServletRequest request) {
+            com.trackee.shared.kernel.exception.ResponseException e, HttpServletRequest request) {
         log.warn(
                 "Failed to handle request {}: {}",
                 new Object[] {request.getRequestURI(), e.getError().getMessage(), e});
