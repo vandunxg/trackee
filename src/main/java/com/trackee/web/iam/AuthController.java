@@ -34,35 +34,35 @@ public class AuthController {
 
     @PostMapping("/register")
     public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
-        log.info("[register]={}", request.email());
+        log.info("[auth/register]={}", request.email());
 
         return Response.of(userRegisterUseCase.register(request));
     }
 
     @PostMapping("/login")
     public Response<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        log.info("[login]={}", request.email());
+        log.info("[auth/login]={}", request.email());
 
         return Response.of(userLoginUseCase.login(request));
     }
 
     @PostMapping("/active")
     public Response<LoginResponse> active(@Valid @RequestBody ActiveRequest request) {
-        log.info("[active]={}", request.email());
+        log.info("[auth/active]={}", request.email());
 
         return Response.of(userActiveUseCase.active(request));
     }
 
     @PostMapping("/resend")
     public Response<Boolean> resendOtp(@Valid @RequestBody ResendOtpRequest request) {
-        log.info("[resendOtp]={}", request);
+        log.info("[auth/resendOtp]={}", request);
 
         return Response.of(userResendOtpUseCase.resend(request));
     }
 
     @PostMapping("/forget-password")
     public Response<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordRequest request) {
-        log.info("[forgetPassword]={}", request);
+        log.info("[auth/forgetPassword]={}", request);
 
         return Response.of(userForgetPasswordUseCase.forgetPassword(request));
     }
