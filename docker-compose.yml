@@ -1,25 +1,63 @@
 version: "3.9"
 
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: mysql_db
-    restart: always
+
+  postgres:
+    image: postgres:16
+    container_name: trackee-postgres
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: trackee
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 122112
-    ports:
-      - "3306:3306"
+      POSTGRES_DB: trackee
+      POSTGRES_USER: trackee
+      POSTGRES_PASSWORD: trackee
     volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - app-network
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trackee"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: trackee-redis
+    restart: unless-stopped
+
+  trackee-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trackee-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trackee
+      SPRING_DATASOURCE_USERNAME: trackee
+      SPRING_DATASOURCE_PASSWORD: trackee
+      SPRING_DATASOURCE_POOL_SIZE: 5
+
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+
+      SENDGRID_API_KEY: YUMMY_TOKEN
+      SENDGRID_FROM_EMAIL: YUMMY_EMAIL
+      SENDGRID_TEMPLATE_REGISTER: YUMMY
+
+      KEY_STORE: trackee.jks
+      KEY_STORE_PASSWORD: change_me
+      KEY_ALIAS: trackee
+
+      OTP_HMAC_SECRET: change_me
+
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
 
 volumes:
-  mysql_data:
-
-networks:
-  app-network:
-    driver: bridge
+  postgres_data:
