@@ -1,15 +1,13 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.persistence.entity;
 
+import com.trackee.shared.infrastructure.persistence.AuditableEntity;
+import com.trackee.shared.kernel.domain.enums.OtpPurpose;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
-
-import jakarta.persistence.*;
-
-import com.trackee.shared.infrastructure.persistence.AuditableEntity;
-import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 
 /**
  * @author vandunxg
@@ -18,8 +16,8 @@ import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 @Table(
         name = "otp_codes",
         indexes = {
-            @Index(name = "otp_codes_hashed_code_idx", columnList = "hashed_code"),
-            @Index(name = "otp_codes_deleted_at_idx", columnList = "deleted_at")
+                @Index(name = "otp_codes_hashed_code_idx", columnList = "hashed_code"),
+                @Index(name = "otp_codes_deleted_at_idx", columnList = "deleted_at")
         })
 @Getter
 @Setter

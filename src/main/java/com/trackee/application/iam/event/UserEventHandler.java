@@ -1,21 +1,6 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.application.iam.event;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
-
 import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.event.UserRegisterEvent;
@@ -27,6 +12,19 @@ import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 import com.trackee.shared.kernel.dto.MailMessage;
 import com.trackee.shared.kernel.util.CodeGenerator;
 import com.trackee.shared.kernel.util.Constants;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author vandunxg

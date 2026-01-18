@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan
 public class TrackeeApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TrackeeApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(TrackeeApplication.class, args);
+  }
 }

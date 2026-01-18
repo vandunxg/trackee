@@ -38,9 +38,7 @@ public class UserRegisterUseCase {
 
         User user =
                 User.register(
-                        request.fullName(),
-                        request.email(),
-                        passwordEncoder.encode(request.password()));
+                        request.fullName(), request.email(), passwordEncoder.encode(request.password()));
 
         eventPublisher.publishEvent(
                 new UserForgetPasswordEvent(user.getId(), user.getEmail(), user.getFullName()));

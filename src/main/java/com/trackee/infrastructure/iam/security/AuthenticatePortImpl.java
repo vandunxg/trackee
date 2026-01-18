@@ -1,14 +1,18 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.security;
 
+import com.trackee.application.iam.port.AuthenticatePort;
+import com.trackee.shared.kernel.dto.AuthenticatedUser;
+import com.trackee.shared.kernel.exception.AuthenticationError;
+import com.trackee.shared.kernel.exception.ResponseException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
-
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,10 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.trackee.application.iam.port.AuthenticatePort;
-import com.trackee.shared.kernel.dto.AuthenticatedUser;
-import com.trackee.shared.kernel.exception.AuthenticationError;
-import com.trackee.shared.kernel.exception.ResponseException;
+import java.util.List;
 
 /**
  * @author vandunxg
@@ -37,17 +38,14 @@ public class AuthenticatePortImpl implements AuthenticatePort {
         log.info("[authenticate]={}", email);
 
         try {
-            Authentication unauthenticated =
-                    new UsernamePasswordAuthenticationToken(email, password);
+            Authentication unauthenticated = new UsernamePasswordAuthenticationToken(email, password);
 
             Authentication authenticated = authenticationManager.authenticate(unauthenticated);
 
             SecurityContextHolder.getContext().setAuthentication(authenticated);
 
             List<String> authorities =
-                    authenticated.getAuthorities().stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .toList();
+                    authenticated.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
             return new AuthenticatedUser(authenticated.getName(), authorities);
         } catch (DisabledException ex) {

@@ -1,14 +1,14 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.time.Instant;
 import java.util.*;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author vandunxg
@@ -142,7 +142,7 @@ public final class StrUtils {
         if (str == null) {
             return new String[0];
         } else if (str.trim().isEmpty()) {
-            return new String[] {str};
+            return new String[]{str};
         } else {
             int delLength = delimiter.length();
             int maxParts = str.length() / delLength + 2;
@@ -151,9 +151,7 @@ public final class StrUtils {
             int count = 0;
 
             int i;
-            for (positions[0] = -delLength;
-                    (i = str.indexOf(delimiter, j)) != -1;
-                    j = i + delLength) {
+            for (positions[0] = -delLength; (i = str.indexOf(delimiter, j)) != -1; j = i + delLength) {
                 ++count;
                 positions[count] = i;
             }
@@ -223,8 +221,7 @@ public final class StrUtils {
                 } else {
                     dp[i][j] =
                             min(
-                                    dp[i - 1][j - 1]
-                                            + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
+                                    dp[i - 1][j - 1] + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
                                     dp[i - 1][j] + 1,
                                     dp[i][j - 1] + 1);
                 }
@@ -266,7 +263,8 @@ public final class StrUtils {
         } else {
             String nfdNormalizedString = Normalizer.normalize(value.toLowerCase(), Form.NFD);
             Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-            return pattern.matcher(nfdNormalizedString)
+            return pattern
+                    .matcher(nfdNormalizedString)
                     .replaceAll("")
                     .replace('đ', 'd')
                     .replaceAll(" +", " ");
@@ -379,9 +377,7 @@ public final class StrUtils {
         }
 
         if (isBlank(code)) {
-            return randomString.length() <= maxSize
-                    ? randomString
-                    : randomString.substring(0, maxSize);
+            return randomString.length() <= maxSize ? randomString : randomString.substring(0, maxSize);
         } else if (code.length() > maxSize) {
             if (randomString.length() <= maxSize) {
                 generateCode.append(code, 0, maxSize - randomString.length()).append(randomString);

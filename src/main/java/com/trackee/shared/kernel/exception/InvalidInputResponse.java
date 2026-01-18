@@ -1,12 +1,11 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * @author vandunxg

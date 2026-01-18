@@ -1,12 +1,11 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.trackee.shared.kernel.web.Response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.trackee.shared.kernel.web.Response;
 
 /**
  * @author vandunxg
@@ -84,7 +83,8 @@ public class ErrorResponse<T> extends Response<T> {
         private T data;
         private String error;
 
-        ErrorResponseBuilder() {}
+        ErrorResponseBuilder() {
+        }
 
         public ErrorResponseBuilder<T> code(final int code) {
             this.code = code;

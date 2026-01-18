@@ -1,20 +1,19 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.exception;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.trackee.shared.infrastructure.i18n.LocaleStringService;
+import com.trackee.shared.kernel.exception.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-
 import org.slf4j.Logger;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -47,12 +46,10 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.trackee.shared.infrastructure.i18n.LocaleStringService;
-import com.trackee.shared.kernel.exception.*;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author vandunxg
@@ -225,14 +222,11 @@ public class ExceptionHandleAdvice {
             String object =
                     queryParamPath.split("\\.").length > 1
                             ? queryParamPath.substring(
-                                    queryParamPath.indexOf(".") + 1,
-                                    queryParamPath.lastIndexOf("."))
+                            queryParamPath.indexOf(".") + 1, queryParamPath.lastIndexOf("."))
                             : queryParamPath;
             String errorMessage =
                     this.localeStringService.getMessage(
-                            constraintViolation.getMessage(),
-                            constraintViolation.getMessage(),
-                            new Object[0]);
+                            constraintViolation.getMessage(), constraintViolation.getMessage(), new Object[0]);
             errors.add(
                     FieldErrorResponse.builder()
                             .field(queryParam)
@@ -293,12 +287,10 @@ public class ExceptionHandleAdvice {
                     && invalidFormatException.getTargetType().isEnum()) {
                 message =
                         String.format(
-                                "Invalid enum value: '%s' for the field: '%s'. The value must be"
-                                        + " one of: %s.",
+                                "Invalid enum value: '%s' for the field: '%s'. The value must be" + " one of: %s.",
                                 invalidFormatException.getValue(),
                                 fieldPath,
-                                Arrays.toString(
-                                        invalidFormatException.getTargetType().getEnumConstants()));
+                                Arrays.toString(invalidFormatException.getTargetType().getEnumConstants()));
             }
 
             invalidInputResponse =
@@ -310,10 +302,7 @@ public class ExceptionHandleAdvice {
                                     new Object[0]),
                             BadRequestError.INVALID_INPUT.name(),
                             Collections.singleton(
-                                    FieldErrorResponse.builder()
-                                            .field(fieldPath)
-                                            .message(message)
-                                            .build()));
+                                    FieldErrorResponse.builder().field(fieldPath).message(message).build()));
         } else if (cause instanceof JsonParseException jsonParseException) {
             invalidInputResponse =
                     new InvalidInputResponse(
@@ -325,10 +314,7 @@ public class ExceptionHandleAdvice {
                             BadRequestError.INVALID_INPUT.name(),
                             Collections.singleton(
                                     FieldErrorResponse.builder()
-                                            .field(
-                                                    jsonParseException
-                                                            .getProcessor()
-                                                            .getCurrentName())
+                                            .field(jsonParseException.getProcessor().getCurrentName())
                                             .message("Invalid input format")
                                             .build()));
         } else if (cause instanceof MismatchedInputException mismatchedInputException) {
@@ -344,16 +330,9 @@ public class ExceptionHandleAdvice {
                                     FieldErrorResponse.builder()
                                             .field(
                                                     (String)
-                                                            mismatchedInputException
-                                                                    .getPath()
-                                                                    .stream()
-                                                                    .map(
-                                                                            JsonMappingException
-                                                                                            .Reference
-                                                                                    ::getFieldName)
-                                                                    .collect(
-                                                                            Collectors.joining(
-                                                                                    ".")))
+                                                            mismatchedInputException.getPath().stream()
+                                                                    .map(JsonMappingException.Reference::getFieldName)
+                                                                    .collect(Collectors.joining(".")))
                                             .message("Mismatched input")
                                             .build()));
         } else if (cause instanceof JsonMappingException jsonMappingException) {
@@ -370,13 +349,8 @@ public class ExceptionHandleAdvice {
                                             .field(
                                                     (String)
                                                             jsonMappingException.getPath().stream()
-                                                                    .map(
-                                                                            JsonMappingException
-                                                                                            .Reference
-                                                                                    ::getFieldName)
-                                                                    .collect(
-                                                                            Collectors.joining(
-                                                                                    ".")))
+                                                                    .map(JsonMappingException.Reference::getFieldName)
+                                                                    .collect(Collectors.joining(".")))
                                             .message("Json mapping invalid")
                                             .build()));
         } else {
@@ -388,8 +362,7 @@ public class ExceptionHandleAdvice {
                                     "Invalid request arguments",
                                     new Object[0]),
                             BadRequestError.INVALID_INPUT.getName(),
-                            Collections.singleton(
-                                    FieldErrorResponse.builder().message("Invalid input").build()));
+                            Collections.singleton(FieldErrorResponse.builder().message("Invalid input").build()));
         }
 
         this.catchException(e);
@@ -401,7 +374,7 @@ public class ExceptionHandleAdvice {
             com.trackee.shared.kernel.exception.ResponseException e, HttpServletRequest request) {
         log.warn(
                 "Failed to handle request {}: {}",
-                new Object[] {request.getRequestURI(), e.getError().getMessage(), e});
+                new Object[]{request.getRequestURI(), e.getError().getMessage(), e});
         ResponseError error = e.getError();
         String message =
                 this.localeStringService.getMessage(
@@ -421,16 +394,14 @@ public class ExceptionHandleAdvice {
             InvocationTargetException e, HttpServletRequest request) {
         log.warn(
                 "Failed to handle request {}: {}",
-                new Object[] {request.getRequestURI(), e.getMessage(), e});
+                new Object[]{request.getRequestURI(), e.getMessage(), e});
         ResponseError error = InternalServerError.INTERNAL_SERVER_ERROR;
-        log.error(
-                "Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(),
-                e);
+        log.error("Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(), e);
         String msg =
                 this.localeStringService.getMessage(
                         InternalServerError.INTERNAL_SERVER_ERROR.getName(),
                         "There are somethings wrong: {0}",
-                        new Object[] {e});
+                        new Object[]{e});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
                 .body(
@@ -487,14 +458,12 @@ public class ExceptionHandleAdvice {
     public ResponseEntity<ErrorResponse<Object>> handleResponseException(
             Exception e, HttpServletRequest request) {
         ResponseError error = InternalServerError.INTERNAL_SERVER_ERROR;
-        log.error(
-                "Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(),
-                e);
+        log.error("Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(), e);
         String msg =
                 this.localeStringService.getMessage(
                         InternalServerError.INTERNAL_SERVER_ERROR.getName(),
                         "There are somethings wrong: {0}",
-                        new Object[] {e});
+                        new Object[]{e});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
                 .body(
@@ -506,22 +475,20 @@ public class ExceptionHandleAdvice {
     }
 
     @ExceptionHandler({
-        DataIntegrityViolationException.class,
-        NonTransientDataAccessException.class,
-        DataAccessException.class
+            DataIntegrityViolationException.class,
+            NonTransientDataAccessException.class,
+            DataAccessException.class
     })
     public ResponseEntity<ErrorResponse<Object>> handleDataAccessException(
             DataAccessException e, HttpServletRequest request) {
         ResponseError error = InternalServerError.DATA_ACCESS_EXCEPTION;
-        log.error(
-                "Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(),
-                e);
+        log.error("Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(), e);
         log.error(e.getMessage(), e);
         String msg =
                 this.localeStringService.getMessage(
                         InternalServerError.DATA_ACCESS_EXCEPTION.getName(),
                         "Data access exception",
-                        new Object[] {e.getClass().getName()});
+                        new Object[]{e.getClass().getName()});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
                 .body(
@@ -538,9 +505,7 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         String message =
                 this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(),
-                        "Invalid request arguments",
-                        new Object[0]);
+                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
@@ -561,16 +526,12 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         String message =
                 this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(),
-                        "Invalid request arguments",
-                        new Object[0]);
+                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                message,
-                                BadRequestError.INVALID_INPUT.getName()));
+                                HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.getName()));
     }
 
     @ExceptionHandler({MultipartException.class})
@@ -579,16 +540,12 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         String message =
                 this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(),
-                        "Invalid request arguments",
-                        new Object[0]);
+                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
                         new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                message,
-                                BadRequestError.INVALID_INPUT.getName()));
+                                HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.getName()));
     }
 
     @ExceptionHandler({BindException.class})
@@ -606,9 +563,7 @@ public class ExceptionHandleAdvice {
                         .collect(Collectors.toSet());
         String message =
                 this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(),
-                        "Invalid request arguments",
-                        new Object[0]);
+                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(
@@ -634,9 +589,7 @@ public class ExceptionHandleAdvice {
                                         new Object[0]),
                                 BadRequestError.INVALID_INPUT.getName(),
                                 Collections.singleton(
-                                        FieldErrorResponse.builder()
-                                                .message(e.getMessage())
-                                                .build())));
+                                        FieldErrorResponse.builder().message(e.getMessage()).build())));
     }
 
     @ExceptionHandler({AccessDeniedException.class})
@@ -660,9 +613,7 @@ public class ExceptionHandleAdvice {
                                 .error(AuthorizationError.ACCESS_DENIED.getName())
                                 .message(
                                         this.localeStringService.getMessage(
-                                                AuthorizationError.ACCESS_DENIED.getName(),
-                                                "Access Denied",
-                                                new Object[0]))
+                                                AuthorizationError.ACCESS_DENIED.getName(), "Access Denied", new Object[0]))
                                 .build());
     }
 
@@ -676,11 +627,9 @@ public class ExceptionHandleAdvice {
                 ErrorResponse.builder().error(AuthenticationError.UNAUTHORISED.getName());
         String var10002 = request.getMethod();
         return var10000.body(
-                var10001.message(
-                                "You were not authorized to request "
-                                        + var10002
-                                        + " "
-                                        + request.getRequestURI())
+                var10001
+                        .message(
+                                "You were not authorized to request " + var10002 + " " + request.getRequestURI())
                         .build());
     }
 
@@ -735,8 +684,7 @@ public class ExceptionHandleAdvice {
                                 .code(AuthenticationError.UNAUTHORISED.getCode())
                                 .message(
                                         this.localeStringService.getMessage(
-                                                AuthorizationError.NOT_SUPPORTED_AUTHENTICATION
-                                                        .getName(),
+                                                AuthorizationError.NOT_SUPPORTED_AUTHENTICATION.getName(),
                                                 "Your authentication has not been supported yet",
                                                 new Object[0]))
                                 .build());

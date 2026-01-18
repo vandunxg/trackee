@@ -1,14 +1,13 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.config;
 
-import java.util.Optional;
-
+import com.trackee.shared.kernel.util.Constants;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.trackee.shared.kernel.util.Constants;
+import java.util.Optional;
 
 /**
  * @author vandunxg

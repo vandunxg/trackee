@@ -23,12 +23,9 @@ public class ResponseException extends RuntimeException {
         this(message, cause, error, (Object) null);
     }
 
-    public ResponseException(
-            String message, Throwable cause, ResponseError error, Object... params) {
+    public ResponseException(String message, Throwable cause, ResponseError error, Object... params) {
         super(
-                Objects.nonNull(message)
-                        ? MessageFormat.format(message, params)
-                        : error.getMessage(),
+                Objects.nonNull(message) ? MessageFormat.format(message, params) : error.getMessage(),
                 cause);
         this.error = error;
         this.params = params == null ? new Object[0] : params;

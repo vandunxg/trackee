@@ -18,11 +18,12 @@ public final class CodeGenerator {
     public static final String ALPHANUMERIC_SAFE =
             "ABCDEFGHJKLMNPQRSTUVWXYZ" + "23456789" + "abcdefghjkmnpqrstuvwxyz";
 
-    private CodeGenerator() {}
+    private CodeGenerator() {
+    }
 
     /**
-     * Generate numeric OTP with fixed length (keeps leading zeros). Example: length=6 -> "000042"
-     * is possible.
+     * Generate numeric OTP with fixed length (keeps leading zeros). Example: length=6 -> "000042" is
+     * possible.
      */
     public static String numeric(int length) {
         if (length <= 0 || length > 18) {
@@ -37,7 +38,9 @@ public final class CodeGenerator {
         return new String(out);
     }
 
-    /** Generate code from provided charset. */
+    /**
+     * Generate code from provided charset.
+     */
     public static String fromCharset(int length, String charset) {
         if (length <= 0) {
             throw new IllegalArgumentException("length must be > 0");
@@ -56,8 +59,10 @@ public final class CodeGenerator {
         return new String(out);
     }
 
-    /** Safe alphanumeric code (no ambiguous chars). */
+    /**
+     * Safe alphanumeric code (no ambiguous chars).
+     */
     public static String alphanumericSafe(int length) {
         return fromCharset(length, ALPHANUMERIC_SAFE);
-    }
+  }
 }

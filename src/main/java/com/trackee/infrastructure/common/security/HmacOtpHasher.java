@@ -1,22 +1,19 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.security;
 
+import com.trackee.application.iam.port.OtpHasher;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.util.HexFormat;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.trackee.application.iam.port.OtpHasher;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.HexFormat;
 
 /**
  * @author vandunxg
@@ -37,8 +34,7 @@ public class HmacOtpHasher implements OtpHasher {
         try {
             this.mac = Mac.getInstance(ALGORITHM);
             SecretKeySpec keySpec =
-                    new SecretKeySpec(
-                            properties.secret().getBytes(StandardCharsets.UTF_8), ALGORITHM);
+                    new SecretKeySpec(properties.secret().getBytes(StandardCharsets.UTF_8), ALGORITHM);
             this.mac.init(keySpec);
         } catch (Exception e) {
             throw new IllegalStateException("Cannot init HMAC OTP hasher", e);

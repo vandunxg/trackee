@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,12 +30,12 @@ public class WebSecurityConfig {
 
     static String[] PUBLIC_ENDPOINT = {"/auth/**"};
     static String[] IGNORE_ENDPOINT = {
-        "/actuator/**",
-        "/v3/**",
-        "/webjars/**",
-        "/swagger-ui*/*swagger-initializer.js",
-        "/swagger-ui*/**",
-        "/favicon.ico"
+            "/actuator/**",
+            "/v3/**",
+            "/webjars/**",
+            "/swagger-ui*/*swagger-initializer.js",
+            "/swagger-ui*/**",
+            "/favicon.ico"
     };
 
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -51,17 +50,12 @@ public class WebSecurityConfig {
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         request -> {
-                            request.requestMatchers(PUBLIC_ENDPOINT)
-                                    .permitAll()
-                                    .anyRequest()
-                                    .authenticated();
+                            request.requestMatchers(PUBLIC_ENDPOINT).permitAll().anyRequest().authenticated();
                         })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .exceptionHandling(
-                        exHandling ->
-                                exHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
-                .addFilterBefore(
-                        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                        exHandling -> exHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

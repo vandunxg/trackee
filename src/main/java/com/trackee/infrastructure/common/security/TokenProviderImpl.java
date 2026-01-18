@@ -116,11 +116,7 @@ public class TokenProviderImpl implements TokenProvider {
 
     public String getSubject(String token) {
         Claims claims =
-                Jwts.parser()
-                        .verifyWith(keyPair.getPublic())
-                        .build()
-                        .parseSignedClaims(token)
-                        .getPayload();
+                Jwts.parser().verifyWith(keyPair.getPublic()).build().parseSignedClaims(token).getPayload();
 
         return claims.getSubject();
     }

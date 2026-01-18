@@ -1,16 +1,14 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.persistence.entity;
 
+import com.trackee.shared.infrastructure.persistence.AuditableEntity;
+import com.trackee.shared.kernel.domain.enums.UserRole;
+import com.trackee.shared.kernel.domain.enums.UserStatus;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
 import java.util.UUID;
-
-import jakarta.persistence.*;
-
-import com.trackee.shared.infrastructure.persistence.AuditableEntity;
-import com.trackee.shared.kernel.domain.enums.UserRole;
-import com.trackee.shared.kernel.domain.enums.UserStatus;
 
 /**
  * @author vandunxg
@@ -19,8 +17,8 @@ import com.trackee.shared.kernel.domain.enums.UserStatus;
 @Table(
         name = "users",
         indexes = {
-            @Index(name = "user_email_idx", columnList = "email"),
-            @Index(name = "user_deleted_at_idx", columnList = "deleted_at")
+                @Index(name = "user_email_idx", columnList = "email"),
+                @Index(name = "user_deleted_at_idx", columnList = "deleted_at")
         })
 @Getter
 @Setter

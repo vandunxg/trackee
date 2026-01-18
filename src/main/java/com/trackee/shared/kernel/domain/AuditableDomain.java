@@ -1,12 +1,11 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.kernel.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * @author vandunxg

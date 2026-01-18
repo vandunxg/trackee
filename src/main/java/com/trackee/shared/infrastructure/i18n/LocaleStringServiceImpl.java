@@ -1,18 +1,11 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.shared.infrastructure.i18n;
 
+import com.trackee.shared.kernel.util.StrUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
@@ -22,7 +15,11 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.trackee.shared.kernel.util.StrUtils;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author vandunxg
@@ -46,8 +43,7 @@ public class LocaleStringServiceImpl implements LocaleStringService {
         if (!(requestAttributes instanceof ServletRequestAttributes)) {
             return DEFAULT_LOCALE;
         } else {
-            HttpServletRequest request =
-                    ((ServletRequestAttributes) requestAttributes).getRequest();
+            HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
             return this.resolveLocale(request);
         }
     }
@@ -67,8 +63,7 @@ public class LocaleStringServiceImpl implements LocaleStringService {
                 List<Locale> allAvailableLocales = Arrays.asList(Locale.getAvailableLocales());
 
                 try {
-                    List<Locale.LanguageRange> languageRanges =
-                            Locale.LanguageRange.parse(tpLanguage);
+                    List<Locale.LanguageRange> languageRanges = Locale.LanguageRange.parse(tpLanguage);
                     Locale foundLocale = Locale.lookup(languageRanges, allAvailableLocales);
                     return foundLocale == null ? DEFAULT_LOCALE : foundLocale;
                 } catch (Exception e) {

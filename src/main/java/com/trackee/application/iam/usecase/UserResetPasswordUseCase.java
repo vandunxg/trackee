@@ -27,47 +27,47 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserResetPasswordUseCase {
 
-    TokenProvider tokenProvider;
-    UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
+  TokenProvider tokenProvider;
+  UserRepository userRepository;
+  PasswordEncoder passwordEncoder;
 
-    public Boolean resetPassword(ResetPasswordRequest request) {
-        log.info("[resetPassword]");
+  public Boolean resetPassword(ResetPasswordRequest request) {
+    log.info("[resetPassword]");
 
-        validateRequest(request);
+    validateRequest(request);
 
-        String password = request.password();
+    String password = request.password();
 
-        String userId = tokenProvider.validateEmailToken(request.resetPasswordToken());
+    String userId = tokenProvider.validateEmailToken(request.resetPasswordToken());
 
-        User user = findUserById(UUID.fromString(userId));
+    User user = findUserById(UUID.fromString(userId));
 
-        user.changePassword(passwordEncoder.encode(password));
+    user.changePassword(passwordEncoder.encode(password));
 
-        userRepository.save(user);
+    userRepository.save(user);
 
-        return Boolean.TRUE;
+    return Boolean.TRUE;
+  }
+
+  void validateRequest(ResetPasswordRequest request) {
+    log.info("[validateRequest]");
+
+    validatePasswordRequest(request);
+  }
+
+  void validatePasswordRequest(ResetPasswordRequest request) {
+    log.info("[validatePasswordRequest]");
+
+    if (!Objects.equals(request.password(), request.rePassword())) {
+      throw new ResponseException(BadRequestError.RE_PASSWORD_NOT_MATCH);
     }
+  }
 
-    void validateRequest(ResetPasswordRequest request) {
-        log.info("[validateRequest]");
+  User findUserById(UUID userId) {
+    log.info("[findUserById]={}", userId);
 
-        validatePasswordRequest(request);
-    }
-
-    void validatePasswordRequest(ResetPasswordRequest request) {
-        log.info("[validatePasswordRequest]");
-
-        if (!Objects.equals(request.password(), request.rePassword())) {
-            throw new ResponseException(BadRequestError.RE_PASSWORD_NOT_MATCH);
-        }
-    }
-
-    User findUserById(UUID userId) {
-        log.info("[findUserById]={}", userId);
-
-        return userRepository
-                .findById(userId)
-                .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
-    }
+    return userRepository
+            .findById(userId)
+            .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
+  }
 }

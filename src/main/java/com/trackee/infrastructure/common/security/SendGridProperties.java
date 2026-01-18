@@ -8,7 +8,8 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "send-grid")
 public record SendGridProperties(String apiKey, Template template, Mail mail) {
 
-    public record Mail(String from) {}
+    public record Mail(String from) {
+    }
 
     public record Template(String register, String forgetPassword) {
     }
