@@ -1,19 +1,18 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.domain.iam;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
-import java.time.Instant;
-import java.util.Objects;
-import java.util.UUID;
-
 import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.shared.kernel.domain.AuditableDomain;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
 import com.trackee.shared.kernel.exception.AuthenticationError;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.shared.kernel.exception.ResponseException;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.time.Instant;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author vandunxg
@@ -61,6 +60,23 @@ public class OtpCode extends AuditableDomain {
 
         if (!otpHasher.matches(rawCode, this.hashedCode)) {
             throw new ResponseException(AuthenticationError.OTP_CODE_NOT_MATCH);
+        }
+
+        consume();
+    }
+
+    public void verifyForgetPassword() {
+
+        if (isRevoked()) {
+            throw new ResponseException(AuthenticationError.OTP_REVOKED);
+        }
+
+        if (isUsed()) {
+            throw new ResponseException(BadRequestError.OTP_ALREADY_USED);
+        }
+
+        if (isExpired()) {
+            throw new ResponseException(AuthenticationError.OTP_EXPIRED);
         }
 
         consume();

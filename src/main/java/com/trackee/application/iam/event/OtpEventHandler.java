@@ -93,8 +93,10 @@ public class OtpEventHandler {
 
         Map<String, Object> variables =
                 Map.of(
-                        Constants.MailTemplateVars.FULL_NAME, event.fullName(),
-                        Constants.MailTemplateVars.RESET_PASSWORD_LINK, forgetPasswordUrl,
+                        Constants.MailTemplateVars.FULL_NAME,
+                        event.fullName(),
+                        Constants.MailTemplateVars.RESET_PASSWORD_LINK,
+                        forgetPasswordUrl,
                         Constants.MailTemplateVars.EXPIRY_MINUTES,
                         otpProperties.expiryTime().toMinutes());
 

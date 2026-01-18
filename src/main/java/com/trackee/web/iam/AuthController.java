@@ -4,6 +4,7 @@ package com.trackee.web.iam;
 import com.trackee.application.iam.usecase.*;
 import com.trackee.shared.kernel.web.Response;
 import com.trackee.web.iam.request.*;
+import com.trackee.web.iam.response.ForgetPasswordResponse;
 import com.trackee.web.iam.response.LoginResponse;
 import com.trackee.web.iam.response.UserRegisterResponse;
 import jakarta.validation.Valid;
@@ -11,10 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author vandunxg
@@ -31,6 +29,8 @@ public class AuthController {
     UserActiveUseCase userActiveUseCase;
     UserResendOtpUseCase userResendOtpUseCase;
     UserForgetPasswordUseCase userForgetPasswordUseCase;
+    UserVerifyForgetPasswordUserCase userVerifyForgetPasswordUserCase;
+    UserResetPasswordUseCase userResetPasswordUseCase;
 
     @PostMapping("/register")
     public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
@@ -55,15 +55,29 @@ public class AuthController {
 
     @PostMapping("/resend")
     public Response<Boolean> resendOtp(@Valid @RequestBody ResendOtpRequest request) {
-        log.info("[auth/resendOtp]={}", request);
+        log.info("[auth/resend]={}", request);
 
         return Response.of(userResendOtpUseCase.resend(request));
     }
 
     @PostMapping("/forget-password")
     public Response<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordRequest request) {
-        log.info("[auth/forgetPassword]={}", request);
+        log.info("[auth/forget-password]={}", request);
 
         return Response.of(userForgetPasswordUseCase.forgetPassword(request));
+    }
+
+    @GetMapping("/verify")
+    public Response<ForgetPasswordResponse> verify(@RequestParam(value = "code") String code) {
+        log.info("[auth/verify]={}", code);
+
+        return Response.of(userVerifyForgetPasswordUserCase.verify(code));
+    }
+
+    @PostMapping("/reset-password")
+    public Response<Boolean> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        log.info("[auth/reset-password]={}", request);
+
+        return Response.of(userResetPasswordUseCase.resetPassword(request));
     }
 }

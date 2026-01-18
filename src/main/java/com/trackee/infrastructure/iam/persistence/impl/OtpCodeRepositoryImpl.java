@@ -1,22 +1,20 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.iam.persistence.impl;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.stereotype.Repository;
-
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.repository.OtpCodeRepository;
 import com.trackee.infrastructure.iam.persistence.OtpCodeJpaRepository;
 import com.trackee.infrastructure.iam.persistence.mapper.OtpCodePersistenceMapper;
 import com.trackee.shared.kernel.domain.enums.OtpPurpose;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author vandunxg
@@ -62,5 +60,14 @@ public class OtpCodeRepositoryImpl implements OtpCodeRepository {
         otpCodeJpaRepository.saveAll(otpCodePersistenceMapper.toEntity(otpCodes));
 
         return otpCodes;
+    }
+
+    @Override
+    public Optional<OtpCode> findByHashedCode(String hashedCode) {
+        log.info("[findByHashedCode]");
+
+        return otpCodeJpaRepository
+                .findByHashedCode(hashedCode)
+                .map(otpCodePersistenceMapper::toDomain);
     }
 }

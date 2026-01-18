@@ -1,13 +1,26 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.infrastructure.common.security;
 
-import static com.trackee.shared.kernel.util.Constants.JwtConstant.*;
-
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.trackee.shared.kernel.application.port.TokenProvider;
+import com.trackee.shared.kernel.dto.AuthenticatedUser;
+import com.trackee.shared.kernel.exception.AuthenticationError;
+import com.trackee.shared.kernel.util.Constants;
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.security.KeyPair;
 import java.security.MessageDigest;
@@ -18,23 +31,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.trackee.shared.kernel.application.port.TokenProvider;
-import com.trackee.shared.kernel.dto.AuthenticatedUser;
-import com.trackee.shared.kernel.exception.AuthenticationError;
-import com.trackee.shared.kernel.util.Constants;
+import static com.trackee.shared.kernel.util.Constants.JwtConstant.*;
 
 /**
  * @author vandunxg
@@ -150,13 +147,14 @@ public class TokenProviderImpl implements TokenProvider {
         return null;
     }
 
-    public String createTokenSendEmail(String userId, String email) {
+    @Override
+    public String generateEmailToken(UUID userId, String email) {
 
         Instant now = Instant.now();
         Instant expiresAt = now.plus(jwtProperties.accessTokenExpiresIn());
 
         return Jwts.builder()
-                .subject(userId)
+                .subject(userId.toString())
                 .claim(EMAIL_CLAIM, email)
                 .signWith(keyPair.getPrivate())
                 .issuedAt(Date.from(now))
@@ -212,6 +210,7 @@ public class TokenProviderImpl implements TokenProvider {
         return true;
     }
 
+    @Override
     public String validateEmailToken(String authToken) {
         try {
 

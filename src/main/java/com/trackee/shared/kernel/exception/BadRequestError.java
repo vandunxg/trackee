@@ -19,7 +19,7 @@ public enum BadRequestError implements ResponseError {
     BAD_REQUEST_ERROR(4000009, "Bad request error"),
     EMAIL_ALREADY_EXISTS(4000010, "Email already exists"),
     OTP_ALREADY_USED(4000011, "OTP already used"),
-    ;
+    RE_PASSWORD_NOT_MATCH(4000012, "RePassword not match");
 
     private final Integer code;
     private final String message;
