@@ -6,5 +6,5 @@ package com.trackee.shared.kernel.domain.enums;
  */
 public enum MailPurpose {
     REGISTER,
-    FORGOT_PASSWORD
+    FORGET_PASSWORD
 }

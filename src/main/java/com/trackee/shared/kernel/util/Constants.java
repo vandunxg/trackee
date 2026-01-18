@@ -13,6 +13,13 @@ public interface Constants {
 
     String CONTENT_KEY = "content";
 
+    interface MailTemplateVars {
+        String FULL_NAME = "full_name";
+        String RESET_PASSWORD_LINK = "reset_password_link";
+        String EXPIRY_MINUTES = "expiry_minutes";
+        String OTP = "otp";
+    }
+
     interface RegexPattern {
         String PLATFORM_REGEX = "^(WEB|IOS|ANDROID)$";
         String PASSWORD_REGEX =

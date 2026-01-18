@@ -1,13 +1,6 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.application.iam.usecase;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-
 import com.trackee.application.iam.port.AuthenticatePort;
 import com.trackee.domain.iam.User;
 import com.trackee.domain.iam.repository.UserRepository;
@@ -17,13 +10,18 @@ import com.trackee.shared.kernel.exception.NotFoundError;
 import com.trackee.shared.kernel.exception.ResponseException;
 import com.trackee.web.iam.request.LoginRequest;
 import com.trackee.web.iam.response.LoginResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 /**
  * @author vandunxg
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "USER-LOGIN-USE-ASE")
+@Slf4j(topic = "USER-LOGIN-USECASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserLoginUseCase {
 

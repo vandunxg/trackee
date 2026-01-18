@@ -10,5 +10,6 @@ public record SendGridProperties(String apiKey, Template template, Mail mail) {
 
     public record Mail(String from) {}
 
-    public record Template(String register) {}
+    public record Template(String register, String forgetPassword) {
+    }
 }

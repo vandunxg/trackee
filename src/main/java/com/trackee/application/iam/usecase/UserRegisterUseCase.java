@@ -1,23 +1,21 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.application.iam.usecase;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.trackee.domain.iam.User;
-import com.trackee.domain.iam.event.UserRegisterEvent;
+import com.trackee.domain.iam.event.UserForgetPasswordEvent;
 import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.shared.kernel.exception.ResponseException;
 import com.trackee.web.iam.request.RegisterRequest;
 import com.trackee.web.iam.response.UserRegisterResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author vandunxg
@@ -45,7 +43,7 @@ public class UserRegisterUseCase {
                         passwordEncoder.encode(request.password()));
 
         eventPublisher.publishEvent(
-                new UserRegisterEvent(user.getId(), user.getEmail(), user.getFullName()));
+                new UserForgetPasswordEvent(user.getId(), user.getEmail(), user.getFullName()));
 
         userRepository.save(user);
 
