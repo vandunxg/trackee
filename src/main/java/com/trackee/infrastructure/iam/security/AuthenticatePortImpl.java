@@ -44,8 +44,9 @@ public class AuthenticatePortImpl implements AuthenticatePort {
 
             SecurityContextHolder.getContext().setAuthentication(authenticated);
 
-            List<String> authorities =
-                    authenticated.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+            List<String> authorities = authenticated.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .toList();
 
             return new AuthenticatedUser(authenticated.getName(), authorities);
         } catch (DisabledException ex) {

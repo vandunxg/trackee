@@ -66,8 +66,6 @@ public class OtpCodeRepositoryImpl implements OtpCodeRepository {
     public Optional<OtpCode> findByHashedCode(String hashedCode) {
         log.info("[findByHashedCode]");
 
-        return otpCodeJpaRepository
-                .findByHashedCode(hashedCode)
-                .map(otpCodePersistenceMapper::toDomain);
+        return otpCodeJpaRepository.findByHashedCode(hashedCode).map(otpCodePersistenceMapper::toDomain);
     }
 }

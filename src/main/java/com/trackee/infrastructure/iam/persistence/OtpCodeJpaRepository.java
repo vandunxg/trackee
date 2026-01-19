@@ -16,8 +16,7 @@ import java.util.UUID;
  */
 public interface OtpCodeJpaRepository extends JpaRepository<OtpCodeEntity, UUID> {
 
-    @Query(
-            """
+    @Query("""
         from OtpCodeEntity o
         where o.deletedAt is null and o.userId = :userId and o.otpPurpose = :purpose
         order by o.createdAt desc
@@ -26,8 +25,7 @@ public interface OtpCodeJpaRepository extends JpaRepository<OtpCodeEntity, UUID>
     Optional<OtpCodeEntity> findLatestOtpCodeByUserId(
             @Param("userId") UUID userId, @Param("purpose") OtpPurpose purpose);
 
-    @Query(
-            """
+    @Query("""
         from OtpCodeEntity o
         where o.deletedAt is null
             and o.userId = :userId
@@ -37,8 +35,7 @@ public interface OtpCodeJpaRepository extends JpaRepository<OtpCodeEntity, UUID>
         """)
     List<OtpCodeEntity> findAllOtpCodesNotUsedByUserId(UUID userId, OtpPurpose purpose);
 
-    @Query(
-            """
+    @Query("""
                         from OtpCodeEntity o
                         where o.deletedAt is null
                             and o.hashedCode = :hashedCode

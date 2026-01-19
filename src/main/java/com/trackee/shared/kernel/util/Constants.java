@@ -22,8 +22,7 @@ public interface Constants {
 
     interface RegexPattern {
         String PLATFORM_REGEX = "^(WEB|IOS|ANDROID)$";
-        String PASSWORD_REGEX =
-                "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
         String OTP_CODE_REGEX = "^\\d{6}$";
     }
 

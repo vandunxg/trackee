@@ -17,8 +17,7 @@ public class InvalidInputResponse extends ErrorResponse<Void> {
 
     private Set<FieldErrorResponse> errors;
 
-    public InvalidInputResponse(
-            int code, String message, String error, Set<FieldErrorResponse> errors) {
+    public InvalidInputResponse(int code, String message, String error, Set<FieldErrorResponse> errors) {
         super(code, message, null, error);
         this.errors = errors;
     }

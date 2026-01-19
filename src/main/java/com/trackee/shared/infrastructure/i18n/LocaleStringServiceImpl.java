@@ -83,10 +83,7 @@ public class LocaleStringServiceImpl implements LocaleStringService {
         try {
             return this.messageSource.getMessage(messageCode, params, currentLocale);
         } catch (Exception var8) {
-            log.warn(
-                    "Could not find message {} for locale {}. Using default message",
-                    messageCode,
-                    currentLocale);
+            log.warn("Could not find message {} for locale {}. Using default message", messageCode, currentLocale);
 
             try {
                 return MessageFormat.format(defaultMessage, params);

@@ -23,8 +23,8 @@ public class JwtKeyConfig {
                 new ClassPathResource(props.keyStore()).getInputStream(),
                 props.keyStorePassword().toCharArray());
 
-        PrivateKey privateKey =
-                (PrivateKey) ks.getKey(props.keyAlias(), props.keyStorePassword().toCharArray());
+        PrivateKey privateKey = (PrivateKey)
+                ks.getKey(props.keyAlias(), props.keyStorePassword().toCharArray());
 
         PublicKey publicKey = ks.getCertificate(props.keyAlias()).getPublicKey();
 

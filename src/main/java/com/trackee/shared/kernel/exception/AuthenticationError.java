@@ -10,8 +10,7 @@ import lombok.Getter;
 public enum AuthenticationError implements ResponseError {
     UNKNOWN(40100001, "UNKNOWN"),
     UNAUTHORISED(40100002, "Unauthorised"),
-    FORBIDDEN_ACCESS_TOKEN(
-            40100003, "Access token has been forbidden due to user has logged out or deactivated"),
+    FORBIDDEN_ACCESS_TOKEN(40100003, "Access token has been forbidden due to user has logged out or deactivated"),
     FORBIDDEN_REFRESH_TOKEN(40100004, "Refresh token has been forbidden"),
     INVALID_REFRESH_TOKEN(40100005, "Refresh token has been forbidden"),
     VALIDATE_EXPIRATION_TIME(40100006, "validate expiration time"),

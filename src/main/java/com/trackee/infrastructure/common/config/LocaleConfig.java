@@ -40,8 +40,7 @@ public class LocaleConfig extends AcceptHeaderLocaleResolver {
 
     @Bean(name = {"messageResourceTp"})
     public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageResource =
-                new ReloadableResourceBundleMessageSource();
+        ReloadableResourceBundleMessageSource messageResource = new ReloadableResourceBundleMessageSource();
         messageResource.setBasenames("classpath:i18n/messages");
         messageResource.setDefaultEncoding("UTF-8");
         messageResource.setCacheSeconds(60);
@@ -80,8 +79,7 @@ public class LocaleConfig extends AcceptHeaderLocaleResolver {
     }
 
     static {
-        SUPPORT_LOCALES =
-                Stream.of(Locale.ENGLISH, DEFAULT_LOCALE)
-                        .collect(Collectors.toMap(Locale::getLanguage, (locale) -> locale));
+        SUPPORT_LOCALES = Stream.of(Locale.ENGLISH, DEFAULT_LOCALE)
+                .collect(Collectors.toMap(Locale::getLanguage, (locale) -> locale));
     }
 }

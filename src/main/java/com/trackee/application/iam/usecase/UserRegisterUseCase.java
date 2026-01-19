@@ -36,12 +36,9 @@ public class UserRegisterUseCase {
 
         ensureEmailNotExists(request.email());
 
-        User user =
-                User.register(
-                        request.fullName(), request.email(), passwordEncoder.encode(request.password()));
+        User user = User.register(request.fullName(), request.email(), passwordEncoder.encode(request.password()));
 
-        eventPublisher.publishEvent(
-                new UserForgetPasswordEvent(user.getId(), user.getEmail(), user.getFullName()));
+        eventPublisher.publishEvent(new UserForgetPasswordEvent(user.getId(), user.getEmail(), user.getFullName()));
 
         userRepository.save(user);
 

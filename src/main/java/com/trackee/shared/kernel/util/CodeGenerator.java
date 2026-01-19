@@ -15,8 +15,7 @@ public final class CodeGenerator {
     private static final SecureRandom RNG = new SecureRandom();
 
     // Avoid ambiguous chars: O/0, I/1, l/1 ...
-    public static final String ALPHANUMERIC_SAFE =
-            "ABCDEFGHJKLMNPQRSTUVWXYZ" + "23456789" + "abcdefghjkmnpqrstuvwxyz";
+    public static final String ALPHANUMERIC_SAFE = "ABCDEFGHJKLMNPQRSTUVWXYZ" + "23456789" + "abcdefghjkmnpqrstuvwxyz";
 
     private CodeGenerator() {
     }
@@ -59,10 +58,8 @@ public final class CodeGenerator {
         return new String(out);
     }
 
-    /**
-     * Safe alphanumeric code (no ambiguous chars).
-     */
+    /** Safe alphanumeric code (no ambiguous chars). */
     public static String alphanumericSafe(int length) {
         return fromCharset(length, ALPHANUMERIC_SAFE);
-  }
+    }
 }

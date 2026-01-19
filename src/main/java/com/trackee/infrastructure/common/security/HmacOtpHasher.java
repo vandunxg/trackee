@@ -33,8 +33,7 @@ public class HmacOtpHasher implements OtpHasher {
     public HmacOtpHasher(OtpProperties properties) {
         try {
             this.mac = Mac.getInstance(ALGORITHM);
-            SecretKeySpec keySpec =
-                    new SecretKeySpec(properties.secret().getBytes(StandardCharsets.UTF_8), ALGORITHM);
+            SecretKeySpec keySpec = new SecretKeySpec(properties.secret().getBytes(StandardCharsets.UTF_8), ALGORITHM);
             this.mac.init(keySpec);
         } catch (Exception e) {
             throw new IllegalStateException("Cannot init HMAC OTP hasher", e);
@@ -54,7 +53,6 @@ public class HmacOtpHasher implements OtpHasher {
         log.info("[matches]");
 
         String computed = hash(rawOtp);
-        return MessageDigest.isEqual(
-                computed.getBytes(StandardCharsets.UTF_8), hash.getBytes(StandardCharsets.UTF_8));
+        return MessageDigest.isEqual(computed.getBytes(StandardCharsets.UTF_8), hash.getBytes(StandardCharsets.UTF_8));
     }
 }

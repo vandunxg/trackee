@@ -52,11 +52,10 @@ public class TokenProviderImpl implements TokenProvider {
 
     @Bean
     public JwtEncoder jwtEncoder(KeyPair keyPair) {
-        RSAKey rsaKey =
-                new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
-                        .privateKey(keyPair.getPrivate())
-                        .keyID(kidFromPublicKey((RSAPublicKey) keyPair.getPublic()))
-                        .build();
+        RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic())
+                .privateKey(keyPair.getPrivate())
+                .keyID(kidFromPublicKey((RSAPublicKey) keyPair.getPublic()))
+                .build();
 
         var jwkSource = new ImmutableJWKSet<>(new JWKSet(rsaKey));
         return new NimbusJwtEncoder(jwkSource);
@@ -64,7 +63,8 @@ public class TokenProviderImpl implements TokenProvider {
 
     @Bean
     public JwtDecoder jwtDecoder(KeyPair keyPair) {
-        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic()).build();
+        return NimbusJwtDecoder.withPublicKey((RSAPublicKey) keyPair.getPublic())
+                .build();
     }
 
     @Override
@@ -115,8 +115,11 @@ public class TokenProviderImpl implements TokenProvider {
     }
 
     public String getSubject(String token) {
-        Claims claims =
-                Jwts.parser().verifyWith(keyPair.getPublic()).build().parseSignedClaims(token).getPayload();
+        Claims claims = Jwts.parser()
+                .verifyWith(keyPair.getPublic())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
 
         return claims.getSubject();
     }
@@ -210,12 +213,11 @@ public class TokenProviderImpl implements TokenProvider {
     public String validateEmailToken(String authToken) {
         try {
 
-            Claims claims =
-                    Jwts.parser()
-                            .verifyWith(keyPair.getPublic())
-                            .build()
-                            .parseSignedClaims(authToken)
-                            .getPayload();
+            Claims claims = Jwts.parser()
+                    .verifyWith(keyPair.getPublic())
+                    .build()
+                    .parseSignedClaims(authToken)
+                    .getPayload();
 
             return claims.getSubject();
         } catch (ExpiredJwtException exception) {
@@ -254,8 +256,7 @@ public class TokenProviderImpl implements TokenProvider {
                     AuthenticationError.INVALID_JWT_SIGNATURE_REFRESH_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info(EXPIRED_JWT_TOKEN);
-            throw new com.trackee.shared.kernel.exception.ResponseException(
-                    AuthenticationError.EXPIRED_REFRESH_TOKEN);
+            throw new com.trackee.shared.kernel.exception.ResponseException(AuthenticationError.EXPIRED_REFRESH_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {

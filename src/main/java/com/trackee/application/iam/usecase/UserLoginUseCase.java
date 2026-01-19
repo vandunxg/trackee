@@ -32,17 +32,15 @@ public class UserLoginUseCase {
     public LoginResponse login(LoginRequest request) {
         log.info("[register]={}", request);
 
-        User user =
-                userRepository
-                        .findByEmail(request.email())
-                        .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
+        User user = userRepository
+                .findByEmail(request.email())
+                .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
 
         if (user == null) {
             throw new ResponseException(NotFoundError.USER_NOT_FOUND);
         }
 
-        AuthenticatedUser authenticatedUser =
-                authenticatePort.authenticate(request.email(), request.password());
+        AuthenticatedUser authenticatedUser = authenticatePort.authenticate(request.email(), request.password());
 
         return new LoginResponse(
                 tokenProvider.generateAccessToken(authenticatedUser, user.getId()),
