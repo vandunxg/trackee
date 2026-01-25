@@ -1,20 +1,17 @@
 /* Copyright (c) 2026 Trackee */
 package com.trackee.application.wallet.usecase;
 
-import com.trackee.domain.iam.User;
-import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.domain.wallet.Wallet;
 import com.trackee.domain.wallet.repository.WalletRepository;
 import com.trackee.shared.kernel.exception.NotFoundError;
 import com.trackee.shared.kernel.exception.ResponseException;
 import com.trackee.shared.kernel.web.mapper.AutoResponseMapper;
-import com.trackee.web.wallet.request.CreateWalletRequest;
+import com.trackee.web.wallet.request.UpdateWalletRequest;
 import com.trackee.web.wallet.response.WalletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -26,21 +23,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j(topic = "CREATE-WALLET-USECASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class CreateWalletUseCase {
+public class UpdateWalletUseCase {
 
-    AutoResponseMapper autoResponseMapper;
-    UserRepository userRepository;
     WalletRepository walletRepository;
+    AutoResponseMapper autoResponseMapper;
 
-    public WalletResponse create(CreateWalletRequest request) {
-        log.info("[createWallet]={}", request);
+    public WalletResponse update(UUID walletId, UpdateWalletRequest request) {
+        log.info("[updateWallet]={}", request);
 
-        UUID userId = getAuthenticatedUserId();
+        Wallet wallet = getWalletById(walletId);
 
-        Wallet wallet = Wallet.created(
-                userId,
+        wallet.updateWallet(
                 request.name(),
                 request.balance(),
+                request.description(),
                 request.isDefault(),
                 request.isTotalIgnored(),
                 request.walletType(),
@@ -51,15 +47,11 @@ public class CreateWalletUseCase {
         return autoResponseMapper.toWalletResponse(wallet);
     }
 
-    UUID getAuthenticatedUserId() {
-        log.info("[getAuthenticatedUserId]");
+    Wallet getWalletById(UUID walletId) {
+        log.info("[getWalletById]={}", walletId);
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        User user = userRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
-
-        return user.getId();
+        return walletRepository
+                .findById(walletId)
+                .orElseThrow(() -> new ResponseException(NotFoundError.WALLET_NOT_FOUND, walletId));
     }
 }

@@ -2,8 +2,10 @@
 package com.trackee.web.wallet;
 
 import com.trackee.application.wallet.usecase.CreateWalletUseCase;
+import com.trackee.application.wallet.usecase.UpdateWalletUseCase;
 import com.trackee.shared.kernel.web.Response;
 import com.trackee.web.wallet.request.CreateWalletRequest;
+import com.trackee.web.wallet.request.UpdateWalletRequest;
 import com.trackee.web.wallet.response.WalletResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -11,10 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * @author vandunxg
@@ -27,12 +28,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class WalletController {
 
     CreateWalletUseCase createWalletUseCase;
+    UpdateWalletUseCase updateWalletUseCase;
 
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/")
     public Response<WalletResponse> createWallet(@RequestBody @Valid CreateWalletRequest request) {
         log.info("[/wallets]={}", request);
 
-        return Response.of(createWalletUseCase.createWallet(request));
+        return Response.of(createWalletUseCase.create(request));
+    }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @PutMapping("/{walletId}")
+    public Response<WalletResponse> updateWallet(
+            @RequestBody @Valid UpdateWalletRequest request, @PathVariable UUID walletId) {
+        log.info("[/wallets/{}]={}", walletId, request);
+
+        return Response.of(updateWalletUseCase.update(walletId, request));
     }
 }

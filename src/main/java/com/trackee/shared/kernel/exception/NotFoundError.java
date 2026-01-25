@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum NotFoundError implements ResponseError {
     NOT_FOUND(40400001, "Not found"),
     USER_NOT_FOUND(40400002, "User not found: {0}"),
-    OTP_CODE_NOT_FOUND(40400002, "Otp code not found");
+    OTP_CODE_NOT_FOUND(40400003, "Otp code not found"),
+    WALLET_NOT_FOUND(40400004, "Wallet not found: {0}");
 
     private final Integer code;
     private final String message;
