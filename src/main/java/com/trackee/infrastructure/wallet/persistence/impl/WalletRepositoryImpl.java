@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,5 +41,14 @@ public class WalletRepositoryImpl extends AbstractDomainRepository<Wallet, Walle
         log.info("[findWalletByIdAndUserId] walletId={} userId={}", walletId, userId);
 
         return walletJpaRepository.findWalletByIdAndUserId(walletId, userId).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Wallet> findAllWalletByIdAndUserId(UUID userId) {
+        log.info("[findAllWalletByIdAndUserId] userId={}", userId);
+
+        return walletJpaRepository.findAllWalletByUserId(userId).stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 }

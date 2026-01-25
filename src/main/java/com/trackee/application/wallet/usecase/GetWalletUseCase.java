@@ -23,7 +23,7 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j(topic = "CREATE-WALLET-USECASE")
+@Slf4j(topic = "GET-WALLET-USECASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GetWalletUseCase {
 

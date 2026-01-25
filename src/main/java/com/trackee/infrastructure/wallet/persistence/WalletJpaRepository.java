@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,4 +21,9 @@ public interface WalletJpaRepository extends JpaRepository<WalletEntity, UUID> {
                 from WalletEntity w where w.deletedAt is null and w.id = :walletId and w.userId = :userId
             """)
     Optional<WalletEntity> findWalletByIdAndUserId(@Param("walletId") UUID walletId, @Param("userId") UUID userId);
+
+    @Query("""
+                from WalletEntity w where w.deletedAt is null and w.userId = :userId
+            """)
+    List<WalletEntity> findAllWalletByUserId(@Param("userId") UUID userId);
 }
