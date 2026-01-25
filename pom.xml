@@ -204,8 +204,6 @@
                             <version>2.85.0</version>
                         </palantirJavaFormat>
 
-                        <removeUnusedImports/>
-
                         <licenseHeader>
                             <file>${project.basedir}/license-header.txt</file>
                         </licenseHeader>
