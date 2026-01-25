@@ -8,7 +8,6 @@ import com.trackee.domain.wallet.repository.WalletRepository;
 import com.trackee.shared.kernel.exception.NotFoundError;
 import com.trackee.shared.kernel.exception.ResponseException;
 import com.trackee.shared.kernel.web.mapper.AutoResponseMapper;
-import com.trackee.web.wallet.request.UpdateWalletRequest;
 import com.trackee.web.wallet.response.WalletResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,29 +25,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j(topic = "CREATE-WALLET-USECASE")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UpdateWalletUseCase {
+public class GetWalletUseCase {
 
-    WalletRepository walletRepository;
     UserRepository userRepository;
+    WalletRepository walletRepository;
     AutoResponseMapper autoResponseMapper;
 
-    public WalletResponse update(UUID walletId, UpdateWalletRequest request) {
-        log.info("[updateWallet]={}", request);
+    public WalletResponse getById(UUID walletId) {
+        log.info("[getById]={}", walletId);
 
         UUID authenticatedUserId = getAuthenticatedUserId();
 
         Wallet wallet = getWalletByIdAndUserId(walletId, authenticatedUserId);
-
-        wallet.updateWallet(
-                request.name(),
-                request.balance(),
-                request.description(),
-                request.isDefault(),
-                request.isTotalIgnored(),
-                request.walletType(),
-                request.currency());
-
-        walletRepository.save(wallet);
 
         return autoResponseMapper.toWalletResponse(wallet);
     }

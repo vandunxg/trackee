@@ -2,6 +2,7 @@
 package com.trackee.web.wallet;
 
 import com.trackee.application.wallet.usecase.CreateWalletUseCase;
+import com.trackee.application.wallet.usecase.GetWalletUseCase;
 import com.trackee.application.wallet.usecase.UpdateWalletUseCase;
 import com.trackee.shared.kernel.web.Response;
 import com.trackee.web.wallet.request.CreateWalletRequest;
@@ -29,6 +30,7 @@ public class WalletController {
 
     CreateWalletUseCase createWalletUseCase;
     UpdateWalletUseCase updateWalletUseCase;
+    GetWalletUseCase getWalletUseCase;
 
     @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/")
@@ -45,5 +47,13 @@ public class WalletController {
         log.info("[/wallets/{}]={}", walletId, request);
 
         return Response.of(updateWalletUseCase.update(walletId, request));
+    }
+
+    @PreAuthorize("hasAnyRole('USER')")
+    @GetMapping("/{walletId}")
+    public Response<WalletResponse> getWallet(@PathVariable UUID walletId) {
+        log.info("[/wallets/{}]", walletId);
+
+        return Response.of(getWalletUseCase.getById(walletId));
     }
 }
