@@ -29,4 +29,35 @@ public class Wallet extends AuditableDomain {
     boolean isTotalIgnored;
     WalletType walletType;
     Currency currency;
+
+    Wallet(
+            UUID userId,
+            String name,
+            BigDecimal balance,
+            boolean isDefault,
+            boolean isTotalIgnored,
+            WalletType walletType,
+            Currency currency) {
+
+        this.id = UUID.randomUUID();
+        this.userId = userId;
+        this.name = name;
+        this.balance = balance;
+        this.isDefault = isDefault;
+        this.isTotalIgnored = isTotalIgnored;
+        this.walletType = walletType;
+        this.currency = currency;
+    }
+
+    public static Wallet created(
+            UUID userId,
+            String name,
+            BigDecimal balance,
+            boolean isDefault,
+            boolean isTotalIgnored,
+            WalletType walletType,
+            Currency currency) {
+
+        return new Wallet(userId, name, balance, isDefault, isTotalIgnored, walletType, currency);
+    }
 }
