@@ -56,8 +56,8 @@ public class UserActiveUseCase {
         userRepository.save(user);
         otpCodeRepository.save(otpCode);
 
-      List<String> authorities =
-              List.of(Constants.ROLE_PREFIX + user.getRole().name());
+        List<String> authorities =
+                List.of(Constants.ROLE_PREFIX + user.getRole().name());
 
         return new LoginResponse(
                 tokenProvider.generateAccessToken(new AuthenticatedUser(user.getEmail(), authorities), user.getId()),
@@ -83,6 +83,6 @@ public class UserActiveUseCase {
     User findUserByEmail(String email) {
         log.info("[findUserByEmail]={}", email);
 
-      return userRepository.findByEmail(email).orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
     }
 }
