@@ -2,7 +2,7 @@
 package com.trackee.application.iam.usecase;
 
 import com.trackee.domain.iam.User;
-import com.trackee.domain.iam.event.UserForgetPasswordEvent;
+import com.trackee.domain.iam.event.UserRegisterEvent;
 import com.trackee.domain.iam.repository.UserRepository;
 import com.trackee.shared.kernel.exception.BadRequestError;
 import com.trackee.shared.kernel.exception.ResponseException;
@@ -38,7 +38,7 @@ public class UserRegisterUseCase {
 
         User user = User.register(request.fullName(), request.email(), passwordEncoder.encode(request.password()));
 
-        eventPublisher.publishEvent(new UserForgetPasswordEvent(user.getId(), user.getEmail(), user.getFullName()));
+        eventPublisher.publishEvent(new UserRegisterEvent(user.getId(), user.getEmail(), user.getFullName()));
 
         userRepository.save(user);
 

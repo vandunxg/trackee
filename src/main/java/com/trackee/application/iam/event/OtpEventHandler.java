@@ -4,7 +4,7 @@ package com.trackee.application.iam.event;
 import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.event.UserForgetPasswordEvent;
-import com.trackee.domain.iam.event.UserRegisterEvent;
+import com.trackee.domain.iam.event.UserResendRegisterOtpEvent;
 import com.trackee.domain.iam.repository.OtpCodeRepository;
 import com.trackee.infrastructure.common.security.OtpProperties;
 import com.trackee.shared.kernel.application.mail.MailService;
@@ -48,8 +48,8 @@ public class OtpEventHandler {
 
     @Async("virtualThreadExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-    public void onUserRegisterEvent(UserRegisterEvent event) {
-        log.info("[onUserRegisterEvent] userId={}", event.userId());
+    public void onUserResendOtpEvent(UserResendRegisterOtpEvent event) {
+        log.info("[onUserResendOtpEvent] userId={}", event.userId());
 
         String plainCode = generateOtp(Constants.CodeGenerator.OTP_CODE_LENGTH);
         Instant expiresAt = calculateExpiry(otpProperties.expiryTime());
