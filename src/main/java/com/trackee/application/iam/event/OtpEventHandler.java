@@ -4,7 +4,7 @@ package com.trackee.application.iam.event;
 import com.trackee.application.iam.port.OtpHasher;
 import com.trackee.domain.iam.OtpCode;
 import com.trackee.domain.iam.event.UserForgetPasswordEvent;
-import com.trackee.domain.iam.event.UserRegisterEvent;
+import com.trackee.domain.iam.event.UserResendRegisterOtpEvent;
 import com.trackee.domain.iam.repository.OtpCodeRepository;
 import com.trackee.infrastructure.common.security.OtpProperties;
 import com.trackee.shared.kernel.application.mail.MailService;
@@ -37,80 +37,71 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OtpEventHandler {
 
-  @NonFinal
-  @Value("${application.base-url}")
-  String baseUrl;
+    @NonFinal
+    @Value("${application.base-url}")
+    String baseUrl;
 
-  OtpHasher otpHasher;
-  MailService mailService;
-  OtpCodeRepository otpCodeRepository;
-  OtpProperties otpProperties;
+    OtpHasher otpHasher;
+    MailService mailService;
+    OtpCodeRepository otpCodeRepository;
+    OtpProperties otpProperties;
 
-  @Async("virtualThreadExecutor")
-  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-  public void onUserRegisterEvent(UserRegisterEvent event) {
-    log.info("[onUserRegisterEvent] userId={}", event.userId());
+    @Async("virtualThreadExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onUserResendOtpEvent(UserResendRegisterOtpEvent event) {
+        log.info("[onUserResendOtpEvent] userId={}", event.userId());
 
-    String plainCode = generateOtp(Constants.CodeGenerator.OTP_CODE_LENGTH);
-    Instant expiresAt = calculateExpiry(otpProperties.expiryTime());
+        String plainCode = generateOtp(Constants.CodeGenerator.OTP_CODE_LENGTH);
+        Instant expiresAt = calculateExpiry(otpProperties.expiryTime());
 
-    OtpCode otpCode =
-            new OtpCode(otpHasher.hash(plainCode), OtpPurpose.REGISTER, event.userId(), expiresAt);
+        OtpCode otpCode = new OtpCode(otpHasher.hash(plainCode), OtpPurpose.REGISTER, event.userId(), expiresAt);
 
-    otpCodeRepository.save(otpCode);
+        otpCodeRepository.save(otpCode);
 
-    Map<String, Object> variables =
-            Map.of(
-                    Constants.MailTemplateVars.FULL_NAME,
-                    event.fullName(),
-                    Constants.MailTemplateVars.OTP,
-                    plainCode);
+        Map<String, Object> variables = Map.of(
+                Constants.MailTemplateVars.FULL_NAME, event.fullName(), Constants.MailTemplateVars.OTP, plainCode);
 
-    MailMessage message = MailMessage.template(event.mailTo(), MailPurpose.REGISTER, variables);
+        MailMessage message = MailMessage.template(event.mailTo(), MailPurpose.REGISTER, variables);
 
-    mailService.sendMail(message);
-  }
+        mailService.sendMail(message);
+    }
 
-  @Async("virtualThreadExecutor")
-  @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-  public void onUserForgetPassword(UserForgetPasswordEvent event) {
-    log.info("[onUserForgetPassword] userId={}", event.userId());
+    @Async("virtualThreadExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void onUserForgetPassword(UserForgetPasswordEvent event) {
+        log.info("[onUserForgetPassword] userId={}", event.userId());
 
-    String plainCode = generateOtp(Constants.CodeGenerator.OTP_CODE_LENGTH);
-    Instant expiresAt = calculateExpiry(otpProperties.expiryTime());
+        String plainCode = generateOtp(Constants.CodeGenerator.OTP_CODE_LENGTH);
+        Instant expiresAt = calculateExpiry(otpProperties.expiryTime());
 
-    OtpCode otpCode =
-            new OtpCode(
-                    otpHasher.hash(plainCode), OtpPurpose.FORGET_PASSWORD, event.userId(), expiresAt);
+        OtpCode otpCode = new OtpCode(otpHasher.hash(plainCode), OtpPurpose.FORGET_PASSWORD, event.userId(), expiresAt);
 
-    otpCodeRepository.save(otpCode);
+        otpCodeRepository.save(otpCode);
 
-    String forgetPasswordUrl = String.format("%s/verify=%s", baseUrl, otpCode.getHashedCode());
+        String forgetPasswordUrl = String.format("%s/verify=%s", baseUrl, otpCode.getHashedCode());
 
-    Map<String, Object> variables =
-            Map.of(
-                    Constants.MailTemplateVars.FULL_NAME,
-                    event.fullName(),
-                    Constants.MailTemplateVars.RESET_PASSWORD_LINK,
-                    forgetPasswordUrl,
-                    Constants.MailTemplateVars.EXPIRY_MINUTES,
-                    otpProperties.expiryTime().toMinutes());
+        Map<String, Object> variables = Map.of(
+                Constants.MailTemplateVars.FULL_NAME,
+                event.fullName(),
+                Constants.MailTemplateVars.RESET_PASSWORD_LINK,
+                forgetPasswordUrl,
+                Constants.MailTemplateVars.EXPIRY_MINUTES,
+                otpProperties.expiryTime().toMinutes());
 
-    MailMessage message =
-            MailMessage.template(event.mailTo(), MailPurpose.FORGET_PASSWORD, variables);
+        MailMessage message = MailMessage.template(event.mailTo(), MailPurpose.FORGET_PASSWORD, variables);
 
-    mailService.sendMail(message);
-  }
+        mailService.sendMail(message);
+    }
 
-  String generateOtp(int codeLength) {
-    log.info("[generateOtp]");
+    String generateOtp(int codeLength) {
+        log.info("[generateOtp]");
 
-    return CodeGenerator.numeric(codeLength);
-  }
+        return CodeGenerator.numeric(codeLength);
+    }
 
-  Instant calculateExpiry(Duration ttl) {
-    log.info("[calculateExpiry]");
+    Instant calculateExpiry(Duration ttl) {
+        log.info("[calculateExpiry]");
 
-    return Instant.now().plus(ttl);
-  }
+        return Instant.now().plus(ttl);
+    }
 }

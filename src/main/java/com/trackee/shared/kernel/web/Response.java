@@ -24,9 +24,12 @@ public class Response<T> implements Serializable {
     private boolean success = true;
     private int code = 200;
     private String message;
+
     @Setter
     private long timestamp = Instant.now().toEpochMilli();
+
     private String status;
+
     @JsonIgnore
     private RuntimeException exception;
 

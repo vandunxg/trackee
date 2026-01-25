@@ -10,19 +10,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 /**
  * @author vandunxg
  */
 @Configuration
+@EnableMethodSecurity
 @RequiredArgsConstructor
 @Slf4j(topic = "WEB-SECURITY-CONFIG")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -46,23 +53,22 @@ public class WebSecurityConfig {
         log.info("----------------[FILTER - CHAIN]----------------");
 
         http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(
-                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        request -> {
-                            request.requestMatchers(PUBLIC_ENDPOINT).permitAll().anyRequest().authenticated();
-                        })
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(request -> {
+                    request.requestMatchers(PUBLIC_ENDPOINT)
+                            .permitAll()
+                            .anyRequest()
+                            .authenticated();
+                })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                .exceptionHandling(
-                        exHandling -> exHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .exceptionHandling(exHandling -> exHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-            throws Exception {
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
         return configuration.getAuthenticationManager();
     }
@@ -77,5 +83,18 @@ public class WebSecurityConfig {
     PasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            List<String> permissions = jwt.getClaimAsStringList("authorities");
+
+            return permissions.stream()
+                    .map(p -> (GrantedAuthority) new SimpleGrantedAuthority(p))
+                    .toList();
+        });
+        return converter;
     }
 }

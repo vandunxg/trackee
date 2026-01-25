@@ -190,15 +190,19 @@
                     </formats>
 
                     <java>
-                        <googleJavaFormat>
-                            <version>1.19.1</version>
-                        </googleJavaFormat>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                        </includes>
 
-                        <importOrder>
-                            <order>java,javax,jakarta,org,com</order>
-                        </importOrder>
+                        <excludes>
+                            <exclude>target/**</exclude>
+                            <exclude>**/generated/**</exclude>
+                            <exclude>**/*MapperImpl.java</exclude>
+                        </excludes>
 
-                        <removeUnusedImports/>
+                        <palantirJavaFormat>
+                            <version>2.85.0</version>
+                        </palantirJavaFormat>
 
                         <licenseHeader>
                             <file>${project.basedir}/license-header.txt</file>

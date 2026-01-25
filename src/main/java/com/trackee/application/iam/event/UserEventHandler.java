@@ -50,8 +50,7 @@ public class UserEventHandler {
         Duration ttl = otpProperties.expiryTime();
         Instant expiresAt = Instant.now().plus(ttl);
 
-        OtpCode otpCode =
-                new OtpCode(otpHasher.hash(code), OtpPurpose.REGISTER, event.userId(), expiresAt);
+        OtpCode otpCode = new OtpCode(otpHasher.hash(code), OtpPurpose.REGISTER, event.userId(), expiresAt);
 
         Map<String, Object> variables = new HashMap<>();
 

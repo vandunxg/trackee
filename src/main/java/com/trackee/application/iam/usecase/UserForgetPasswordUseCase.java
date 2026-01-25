@@ -42,8 +42,6 @@ public class UserForgetPasswordUseCase {
     User findUserByEmail(String email) {
         log.info("[findUserByEmail] email={}", email);
 
-        return userRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
     }
 }

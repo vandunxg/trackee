@@ -24,60 +24,60 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
 
-  UserRegisterUseCase userRegisterUseCase;
-  UserLoginUseCase userLoginUseCase;
-  UserActiveUseCase userActiveUseCase;
-  UserResendOtpUseCase userResendOtpUseCase;
-  UserForgetPasswordUseCase userForgetPasswordUseCase;
-  UserVerifyForgetPasswordUserCase userVerifyForgetPasswordUserCase;
-  UserResetPasswordUseCase userResetPasswordUseCase;
+    UserRegisterUseCase userRegisterUseCase;
+    UserLoginUseCase userLoginUseCase;
+    UserActiveUseCase userActiveUseCase;
+    UserResendOtpUseCase userResendOtpUseCase;
+    UserForgetPasswordUseCase userForgetPasswordUseCase;
+    UserVerifyForgetPasswordUserCase userVerifyForgetPasswordUserCase;
+    UserResetPasswordUseCase userResetPasswordUseCase;
 
-  @PostMapping("/register")
-  public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
-    log.info("[auth/register]={}", request.email());
+    @PostMapping("/register")
+    public Response<UserRegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
+        log.info("[auth/register]={}", request.email());
 
-    return Response.of(userRegisterUseCase.register(request));
-  }
+        return Response.of(userRegisterUseCase.register(request));
+    }
 
-  @PostMapping("/login")
-  public Response<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-    log.info("[auth/login]={}", request.email());
+    @PostMapping("/login")
+    public Response<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        log.info("[auth/login]={}", request.email());
 
-    return Response.of(userLoginUseCase.login(request));
-  }
+        return Response.of(userLoginUseCase.login(request));
+    }
 
-  @PostMapping("/active")
-  public Response<LoginResponse> active(@Valid @RequestBody ActiveRequest request) {
-    log.info("[auth/active]={}", request.email());
+    @PostMapping("/active")
+    public Response<LoginResponse> active(@Valid @RequestBody ActiveRequest request) {
+        log.info("[auth/active]={}", request.email());
 
-    return Response.of(userActiveUseCase.active(request));
-  }
+        return Response.of(userActiveUseCase.active(request));
+    }
 
-  @PostMapping("/resend")
-  public Response<Boolean> resendOtp(@Valid @RequestBody ResendOtpRequest request) {
-    log.info("[auth/resend]={}", request);
+    @PostMapping("/resend")
+    public Response<Boolean> resendOtp(@Valid @RequestBody ResendOtpRequest request) {
+        log.info("[auth/resend]={}", request);
 
-    return Response.of(userResendOtpUseCase.resend(request));
-  }
+        return Response.of(userResendOtpUseCase.resend(request));
+    }
 
-  @PostMapping("/forget-password")
-  public Response<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordRequest request) {
-    log.info("[auth/forget-password]={}", request);
+    @PostMapping("/forget-password")
+    public Response<Boolean> forgetPassword(@Valid @RequestBody ForgetPasswordRequest request) {
+        log.info("[auth/forget-password]={}", request);
 
-    return Response.of(userForgetPasswordUseCase.forgetPassword(request));
-  }
+        return Response.of(userForgetPasswordUseCase.forgetPassword(request));
+    }
 
-  @GetMapping("/verify")
-  public Response<ForgetPasswordResponse> verify(@RequestParam(value = "code") String code) {
-    log.info("[auth/verify]={}", code);
+    @GetMapping("/verify")
+    public Response<ForgetPasswordResponse> verify(@RequestParam(value = "code") String code) {
+        log.info("[auth/verify]={}", code);
 
-    return Response.of(userVerifyForgetPasswordUserCase.verify(code));
-  }
+        return Response.of(userVerifyForgetPasswordUserCase.verify(code));
+    }
 
-  @PostMapping("/reset-password")
-  public Response<Boolean> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
-    log.info("[auth/reset-password]={}", request);
+    @PostMapping("/reset-password")
+    public Response<Boolean> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        log.info("[auth/reset-password]={}", request);
 
-    return Response.of(userResetPasswordUseCase.resetPassword(request));
-  }
+        return Response.of(userResetPasswordUseCase.resetPassword(request));
+    }
 }

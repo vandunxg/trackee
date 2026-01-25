@@ -12,6 +12,7 @@ public record ActiveRequest(
         @Email(message = "{EMAIL_INVALID_FORMAT}")
         @Size(max = 255, message = "{EMAIL_MAX_LENGTH}")
         String email,
+
         @NotBlank(message = "{CODE_REQUIRED}")
         @Size(min = 6, max = 8, message = "{CODE_LENGTH_INVALID}")
         @Pattern(regexp = Constants.RegexPattern.OTP_CODE_REGEX, message = "{CODE_INVALID_FORMAT}")

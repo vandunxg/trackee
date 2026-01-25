@@ -7,8 +7,7 @@ import com.trackee.shared.kernel.util.Constants;
 import java.util.List;
 import java.util.Map;
 
-public record MailMessage(
-        List<String> to, String subject, MailPurpose mailPurpose, Map<String, Object> variables) {
+public record MailMessage(List<String> to, String subject, MailPurpose mailPurpose, Map<String, Object> variables) {
 
     public MailMessage {
         if (to == null || to.isEmpty()) {
@@ -21,8 +20,7 @@ public record MailMessage(
         return new MailMessage(List.of(to), subject, null, Map.of(Constants.CONTENT_KEY, content));
     }
 
-    public static MailMessage template(
-            String to, MailPurpose mailPurpose, Map<String, Object> variables) {
+    public static MailMessage template(String to, MailPurpose mailPurpose, Map<String, Object> variables) {
 
         return new MailMessage(List.of(to), null, mailPurpose, variables);
     }

@@ -70,14 +70,13 @@ public class ExceptionHandleAdvice {
         var10000.warn("Failed to handle request " + var10001 + ": " + e.getMessage());
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.LOCKED)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.LOCKED.value(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.RECORD_IS_BEING_UPDATED.getName(),
-                                        "Transaction is being locked",
-                                        new Object[0]),
-                                BadRequestError.RECORD_IS_BEING_UPDATED.getName()));
+                .body(new InvalidInputResponse(
+                        HttpStatus.LOCKED.value(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.RECORD_IS_BEING_UPDATED.getName(),
+                                "Transaction is being locked",
+                                new Object[0]),
+                        BadRequestError.RECORD_IS_BEING_UPDATED.getName()));
     }
 
     private void catchException(Exception exception) {
@@ -94,22 +93,18 @@ public class ExceptionHandleAdvice {
         String var10001 = request.getRequestURI();
         var10000.warn("Failed to handle request " + var10001 + ": " + e.getMessage());
         Set<FieldErrorResponse> errors = new HashSet();
-        errors.add(
-                FieldErrorResponse.builder()
-                        .field(e.getParameter().getParameterName())
-                        .message(e.getMessage())
-                        .build());
+        errors.add(FieldErrorResponse.builder()
+                .field(e.getParameter().getParameterName())
+                .message(e.getMessage())
+                .build());
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.INVALID_INPUT.getName(),
-                                        "Invalid request arguments",
-                                        new Object[0]),
-                                BadRequestError.INVALID_INPUT.getName(),
-                                errors));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                        BadRequestError.INVALID_INPUT.getName(),
+                        errors));
     }
 
     @ExceptionHandler({MaxUploadSizeExceededException.class})
@@ -121,15 +116,14 @@ public class ExceptionHandleAdvice {
         Set<FieldErrorResponse> errors = new HashSet();
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.FILE_SIZE_EXCEEDED.getName(),
-                                        BadRequestError.FILE_SIZE_EXCEEDED.getMessage(),
-                                        new Object[0]),
-                                BadRequestError.INVALID_INPUT.getName(),
-                                errors));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.FILE_SIZE_EXCEEDED.getName(),
+                                BadRequestError.FILE_SIZE_EXCEEDED.getMessage(),
+                                new Object[0]),
+                        BadRequestError.INVALID_INPUT.getName(),
+                        errors));
     }
 
     @ExceptionHandler({MissingPathVariableException.class})
@@ -139,22 +133,18 @@ public class ExceptionHandleAdvice {
         String var10001 = request.getRequestURI();
         var10000.warn("Failed to handle request " + var10001 + ": " + e.getMessage());
         Set<FieldErrorResponse> errors = new HashSet();
-        errors.add(
-                FieldErrorResponse.builder()
-                        .field(e.getParameter().getParameterName())
-                        .message("Missing path variable")
-                        .build());
+        errors.add(FieldErrorResponse.builder()
+                .field(e.getParameter().getParameterName())
+                .message("Missing path variable")
+                .build());
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                BadRequestError.MISSING_PATH_VARIABLE.getCode(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.INVALID_INPUT.getName(),
-                                        "Invalid request arguments",
-                                        new Object[0]),
-                                BadRequestError.MISSING_PATH_VARIABLE.getName(),
-                                errors));
+                .body(new InvalidInputResponse(
+                        BadRequestError.MISSING_PATH_VARIABLE.getCode(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                        BadRequestError.MISSING_PATH_VARIABLE.getName(),
+                        errors));
     }
 
     @ExceptionHandler({MissingRequestHeaderException.class})
@@ -164,22 +154,18 @@ public class ExceptionHandleAdvice {
         String var10001 = request.getRequestURI();
         var10000.warn("Failed to handle request " + var10001 + ": " + e.getMessage());
         Set<FieldErrorResponse> errors = new HashSet();
-        errors.add(
-                FieldErrorResponse.builder()
-                        .field(e.getParameter().getParameterName())
-                        .message("Missing request header")
-                        .build());
+        errors.add(FieldErrorResponse.builder()
+                .field(e.getParameter().getParameterName())
+                .message("Missing request header")
+                .build());
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                BadRequestError.MISSING_PATH_VARIABLE.getCode(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.INVALID_INPUT.getName(),
-                                        "Invalid request arguments",
-                                        new Object[0]),
-                                BadRequestError.MISSING_PATH_VARIABLE.getName(),
-                                errors));
+                .body(new InvalidInputResponse(
+                        BadRequestError.MISSING_PATH_VARIABLE.getCode(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                        BadRequestError.MISSING_PATH_VARIABLE.getName(),
+                        errors));
     }
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
@@ -189,22 +175,18 @@ public class ExceptionHandleAdvice {
         String var10001 = request.getRequestURI();
         var10000.warn("Failed to handle request " + var10001 + ": " + e.getMessage());
         Set<FieldErrorResponse> errors = new HashSet();
-        errors.add(
-                FieldErrorResponse.builder()
-                        .field(e.getMethod())
-                        .message("Http request method not support")
-                        .build());
+        errors.add(FieldErrorResponse.builder()
+                .field(e.getMethod())
+                .message("Http request method not support")
+                .build());
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.METHOD_NOT_ALLOWED.value(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.INVALID_INPUT.getName(),
-                                        "Invalid request arguments",
-                                        new Object[0]),
-                                BadRequestError.INVALID_INPUT.getName(),
-                                errors));
+                .body(new InvalidInputResponse(
+                        HttpStatus.METHOD_NOT_ALLOWED.value(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                        BadRequestError.INVALID_INPUT.getName(),
+                        errors));
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
@@ -215,54 +197,43 @@ public class ExceptionHandleAdvice {
         for (ConstraintViolation constraintViolation : e.getConstraintViolations()) {
             String queryParamPath = constraintViolation.getPropertyPath().toString();
             log.debug("queryParamPath = {}", queryParamPath);
-            String queryParam =
-                    queryParamPath.contains(".")
-                            ? queryParamPath.substring(queryParamPath.indexOf(".") + 1)
-                            : queryParamPath;
-            String object =
-                    queryParamPath.split("\\.").length > 1
-                            ? queryParamPath.substring(
-                            queryParamPath.indexOf(".") + 1, queryParamPath.lastIndexOf("."))
-                            : queryParamPath;
-            String errorMessage =
-                    this.localeStringService.getMessage(
-                            constraintViolation.getMessage(), constraintViolation.getMessage(), new Object[0]);
-            errors.add(
-                    FieldErrorResponse.builder()
-                            .field(queryParam)
-                            .objectName(object)
-                            .message(errorMessage)
-                            .build());
+            String queryParam = queryParamPath.contains(".")
+                    ? queryParamPath.substring(queryParamPath.indexOf(".") + 1)
+                    : queryParamPath;
+            String object = queryParamPath.split("\\.").length > 1
+                    ? queryParamPath.substring(queryParamPath.indexOf(".") + 1, queryParamPath.lastIndexOf("."))
+                    : queryParamPath;
+            String errorMessage = this.localeStringService.getMessage(
+                    constraintViolation.getMessage(), constraintViolation.getMessage(), new Object[0]);
+            errors.add(FieldErrorResponse.builder()
+                    .field(queryParam)
+                    .objectName(object)
+                    .message(errorMessage)
+                    .build());
         }
 
         InvalidInputResponse invalidInputResponse;
         if (!CollectionUtils.isEmpty(errors)) {
             long count = errors.size();
-            invalidInputResponse =
-                    errors.stream()
-                            .skip(count - 1L)
-                            .findFirst()
-                            .map(
-                                    (fieldErrorResponse) ->
-                                            new InvalidInputResponse(
-                                                    HttpStatus.BAD_REQUEST.value(),
-                                                    this.localeStringService.getMessage(
-                                                            BadRequestError.INVALID_INPUT.getName(),
-                                                            "Invalid request arguments",
-                                                            new Object[0]),
-                                                    fieldErrorResponse.getObjectName(),
-                                                    errors))
-                            .orElse(null);
-        } else {
-            invalidInputResponse =
-                    new InvalidInputResponse(
+            invalidInputResponse = errors.stream()
+                    .skip(count - 1L)
+                    .findFirst()
+                    .map((fieldErrorResponse) -> new InvalidInputResponse(
                             HttpStatus.BAD_REQUEST.value(),
                             this.localeStringService.getMessage(
                                     BadRequestError.INVALID_INPUT.getName(),
                                     "Invalid request arguments",
                                     new Object[0]),
-                            BadRequestError.INVALID_INPUT.getName(),
-                            errors);
+                            fieldErrorResponse.getObjectName(),
+                            errors))
+                    .orElse(null);
+        } else {
+            invalidInputResponse = new InvalidInputResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    this.localeStringService.getMessage(
+                            BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                    BadRequestError.INVALID_INPUT.getName(),
+                    errors);
         }
 
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
@@ -278,91 +249,70 @@ public class ExceptionHandleAdvice {
         Throwable cause = e.getCause();
         InvalidInputResponse invalidInputResponse;
         if (cause instanceof InvalidFormatException invalidFormatException) {
-            String fieldPath =
-                    (String)
-                            invalidFormatException.getPath().stream()
-                                    .map(JsonMappingException.Reference::getFieldName)
-                                    .collect(Collectors.joining("."));
+            String fieldPath = (String) invalidFormatException.getPath().stream()
+                    .map(JsonMappingException.Reference::getFieldName)
+                    .collect(Collectors.joining("."));
             if (invalidFormatException.getTargetType() != null
                     && invalidFormatException.getTargetType().isEnum()) {
-                message =
-                        String.format(
-                                "Invalid enum value: '%s' for the field: '%s'. The value must be" + " one of: %s.",
-                                invalidFormatException.getValue(),
-                                fieldPath,
-                                Arrays.toString(invalidFormatException.getTargetType().getEnumConstants()));
+                message = String.format(
+                        "Invalid enum value: '%s' for the field: '%s'. The value must be" + " one of: %s.",
+                        invalidFormatException.getValue(),
+                        fieldPath,
+                        Arrays.toString(invalidFormatException.getTargetType().getEnumConstants()));
             }
 
-            invalidInputResponse =
-                    new InvalidInputResponse(
-                            HttpStatus.BAD_REQUEST.value(),
-                            this.localeStringService.getMessage(
-                                    BadRequestError.INVALID_INPUT.getName(),
-                                    "Invalid request arguments",
-                                    new Object[0]),
-                            BadRequestError.INVALID_INPUT.name(),
-                            Collections.singleton(
-                                    FieldErrorResponse.builder().field(fieldPath).message(message).build()));
+            invalidInputResponse = new InvalidInputResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    this.localeStringService.getMessage(
+                            BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                    BadRequestError.INVALID_INPUT.name(),
+                    Collections.singleton(FieldErrorResponse.builder()
+                            .field(fieldPath)
+                            .message(message)
+                            .build()));
         } else if (cause instanceof JsonParseException jsonParseException) {
-            invalidInputResponse =
-                    new InvalidInputResponse(
-                            HttpStatus.BAD_REQUEST.value(),
-                            this.localeStringService.getMessage(
-                                    BadRequestError.INVALID_INPUT.getName(),
-                                    "Invalid request arguments",
-                                    new Object[0]),
-                            BadRequestError.INVALID_INPUT.name(),
-                            Collections.singleton(
-                                    FieldErrorResponse.builder()
-                                            .field(jsonParseException.getProcessor().getCurrentName())
-                                            .message("Invalid input format")
-                                            .build()));
+            invalidInputResponse = new InvalidInputResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    this.localeStringService.getMessage(
+                            BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                    BadRequestError.INVALID_INPUT.name(),
+                    Collections.singleton(FieldErrorResponse.builder()
+                            .field(jsonParseException.getProcessor().getCurrentName())
+                            .message("Invalid input format")
+                            .build()));
         } else if (cause instanceof MismatchedInputException mismatchedInputException) {
-            invalidInputResponse =
-                    new InvalidInputResponse(
-                            HttpStatus.BAD_REQUEST.value(),
-                            this.localeStringService.getMessage(
-                                    BadRequestError.INVALID_INPUT.getName(),
-                                    "Invalid request arguments",
-                                    new Object[0]),
-                            BadRequestError.INVALID_INPUT.getName(),
-                            Collections.singleton(
-                                    FieldErrorResponse.builder()
-                                            .field(
-                                                    (String)
-                                                            mismatchedInputException.getPath().stream()
-                                                                    .map(JsonMappingException.Reference::getFieldName)
-                                                                    .collect(Collectors.joining(".")))
-                                            .message("Mismatched input")
-                                            .build()));
+            invalidInputResponse = new InvalidInputResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    this.localeStringService.getMessage(
+                            BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                    BadRequestError.INVALID_INPUT.getName(),
+                    Collections.singleton(FieldErrorResponse.builder()
+                            .field((String) mismatchedInputException.getPath().stream()
+                                    .map(JsonMappingException.Reference::getFieldName)
+                                    .collect(Collectors.joining(".")))
+                            .message("Mismatched input")
+                            .build()));
         } else if (cause instanceof JsonMappingException jsonMappingException) {
-            invalidInputResponse =
-                    new InvalidInputResponse(
-                            HttpStatus.BAD_REQUEST.value(),
-                            this.localeStringService.getMessage(
-                                    BadRequestError.INVALID_INPUT.getName(),
-                                    "Invalid request arguments",
-                                    new Object[0]),
-                            BadRequestError.INVALID_INPUT.getName(),
-                            Collections.singleton(
-                                    FieldErrorResponse.builder()
-                                            .field(
-                                                    (String)
-                                                            jsonMappingException.getPath().stream()
-                                                                    .map(JsonMappingException.Reference::getFieldName)
-                                                                    .collect(Collectors.joining(".")))
-                                            .message("Json mapping invalid")
-                                            .build()));
+            invalidInputResponse = new InvalidInputResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    this.localeStringService.getMessage(
+                            BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                    BadRequestError.INVALID_INPUT.getName(),
+                    Collections.singleton(FieldErrorResponse.builder()
+                            .field((String) jsonMappingException.getPath().stream()
+                                    .map(JsonMappingException.Reference::getFieldName)
+                                    .collect(Collectors.joining(".")))
+                            .message("Json mapping invalid")
+                            .build()));
         } else {
-            invalidInputResponse =
-                    new InvalidInputResponse(
-                            HttpStatus.BAD_REQUEST.value(),
-                            this.localeStringService.getMessage(
-                                    BadRequestError.INVALID_INPUT.getName(),
-                                    "Invalid request arguments",
-                                    new Object[0]),
-                            BadRequestError.INVALID_INPUT.getName(),
-                            Collections.singleton(FieldErrorResponse.builder().message("Invalid input").build()));
+            invalidInputResponse = new InvalidInputResponse(
+                    HttpStatus.BAD_REQUEST.value(),
+                    this.localeStringService.getMessage(
+                            BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                    BadRequestError.INVALID_INPUT.getName(),
+                    Collections.singleton(FieldErrorResponse.builder()
+                            .message("Invalid input")
+                            .build()));
         }
 
         this.catchException(e);
@@ -376,102 +326,83 @@ public class ExceptionHandleAdvice {
                 "Failed to handle request {}: {}",
                 new Object[]{request.getRequestURI(), e.getError().getMessage(), e});
         ResponseError error = e.getError();
-        String message =
-                this.localeStringService.getMessage(
-                        error.getName(), e.getError().getMessage(), e.getParams());
+        String message = this.localeStringService.getMessage(
+                error.getName(), e.getError().getMessage(), e.getParams());
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
-                .body(
-                        ErrorResponse.builder()
-                                .code(error.getCode())
-                                .error(error.getName())
-                                .message(message)
-                                .build());
+                .body(ErrorResponse.builder()
+                        .code(error.getCode())
+                        .error(error.getName())
+                        .message(message)
+                        .build());
     }
 
     @ExceptionHandler({InvocationTargetException.class})
     public ResponseEntity<ErrorResponse<Object>> handleResponseException(
             InvocationTargetException e, HttpServletRequest request) {
-        log.warn(
-                "Failed to handle request {}: {}",
-                new Object[]{request.getRequestURI(), e.getMessage(), e});
+        log.warn("Failed to handle request {}: {}", new Object[]{request.getRequestURI(), e.getMessage(), e});
         ResponseError error = InternalServerError.INTERNAL_SERVER_ERROR;
         log.error("Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(), e);
-        String msg =
-                this.localeStringService.getMessage(
-                        InternalServerError.INTERNAL_SERVER_ERROR.getName(),
-                        "There are somethings wrong: {0}",
-                        new Object[]{e});
+        String msg = this.localeStringService.getMessage(
+                InternalServerError.INTERNAL_SERVER_ERROR.getName(), "There are somethings wrong: {0}", new Object[]{e
+                });
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
-                .body(
-                        ErrorResponse.builder()
-                                .code(error.getCode())
-                                .error(error.getName())
-                                .message(msg)
-                                .build());
+                .body(ErrorResponse.builder()
+                        .code(error.getCode())
+                        .error(error.getName())
+                        .message(msg)
+                        .build());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<InvalidInputResponse> handleValidationException(
             MethodArgumentNotValidException e, HttpServletRequest request) {
         BindingResult bindingResult = e.getBindingResult();
-        Set fieldErrors =
-                bindingResult.getAllErrors().stream()
-                        .map(
-                                (objectError) -> {
-                                    try {
-                                        FieldError fieldError = (FieldError) objectError;
-                                        String message =
-                                                this.localeStringService.getMessage(
-                                                        fieldError.getDefaultMessage(),
-                                                        fieldError.getDefaultMessage(),
-                                                        new Object[0]);
-                                        return FieldErrorResponse.builder()
-                                                .field(fieldError.getField())
-                                                .objectName(fieldError.getObjectName())
-                                                .message(message)
-                                                .build();
-                                    } catch (ClassCastException var4) {
-                                        return null;
-                                    }
-                                })
-                        .filter(Objects::nonNull)
-                        .collect(Collectors.toSet());
+        Set fieldErrors = bindingResult.getAllErrors().stream()
+                .map((objectError) -> {
+                    try {
+                        FieldError fieldError = (FieldError) objectError;
+                        String message = this.localeStringService.getMessage(
+                                fieldError.getDefaultMessage(), fieldError.getDefaultMessage(), new Object[0]);
+                        return FieldErrorResponse.builder()
+                                .field(fieldError.getField())
+                                .objectName(fieldError.getObjectName())
+                                .message(message)
+                                .build();
+                    } catch (ClassCastException var4) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
         Logger var10000 = log;
         String var10001 = request.getRequestURI();
         var10000.warn("Failed to handle request " + var10001 + ": " + e.getMessage());
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.INVALID_INPUT.getName(),
-                                        "Invalid request arguments",
-                                        new Object[0]),
-                                BadRequestError.INVALID_INPUT.getName(),
-                                fieldErrors));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                        BadRequestError.INVALID_INPUT.getName(),
+                        fieldErrors));
     }
 
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<ErrorResponse<Object>> handleResponseException(
-            Exception e, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse<Object>> handleResponseException(Exception e, HttpServletRequest request) {
         ResponseError error = InternalServerError.INTERNAL_SERVER_ERROR;
         log.error("Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(), e);
-        String msg =
-                this.localeStringService.getMessage(
-                        InternalServerError.INTERNAL_SERVER_ERROR.getName(),
-                        "There are somethings wrong: {0}",
-                        new Object[]{e});
+        String msg = this.localeStringService.getMessage(
+                InternalServerError.INTERNAL_SERVER_ERROR.getName(), "There are somethings wrong: {0}", new Object[]{e
+                });
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
-                .body(
-                        ErrorResponse.builder()
-                                .code(error.getCode())
-                                .error(error.getName())
-                                .message(msg)
-                                .build());
+                .body(ErrorResponse.builder()
+                        .code(error.getCode())
+                        .error(error.getName())
+                        .message(msg)
+                        .build());
     }
 
     @ExceptionHandler({
@@ -484,94 +415,76 @@ public class ExceptionHandleAdvice {
         ResponseError error = InternalServerError.DATA_ACCESS_EXCEPTION;
         log.error("Failed to handle request " + request.getRequestURI() + ": " + error.getMessage(), e);
         log.error(e.getMessage(), e);
-        String msg =
-                this.localeStringService.getMessage(
-                        InternalServerError.DATA_ACCESS_EXCEPTION.getName(),
-                        "Data access exception",
-                        new Object[]{e.getClass().getName()});
+        String msg = this.localeStringService.getMessage(
+                InternalServerError.DATA_ACCESS_EXCEPTION.getName(),
+                "Data access exception",
+                new Object[]{e.getClass().getName()});
         this.catchException(e);
         return ResponseEntity.status(error.getStatus())
-                .body(
-                        ErrorResponse.builder()
-                                .code(error.getCode())
-                                .error(error.getName())
-                                .message(msg)
-                                .build());
+                .body(ErrorResponse.builder()
+                        .code(error.getCode())
+                        .error(error.getName())
+                        .message(msg)
+                        .build());
     }
 
     @ExceptionHandler({MissingServletRequestParameterException.class})
     public ResponseEntity<InvalidInputResponse> handleValidationException(
             MissingServletRequestParameterException e, HttpServletRequest request) {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
-        String message =
-                this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
+        String message = this.localeStringService.getMessage(
+                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                message,
-                                BadRequestError.INVALID_INPUT.getName(),
-                                Collections.singleton(
-                                        FieldErrorResponse.builder()
-                                                .field(e.getParameterName())
-                                                .message(e.getMessage())
-                                                .build())));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(),
+                        message,
+                        BadRequestError.INVALID_INPUT.getName(),
+                        Collections.singleton(FieldErrorResponse.builder()
+                                .field(e.getParameterName())
+                                .message(e.getMessage())
+                                .build())));
     }
 
     @ExceptionHandler({MissingServletRequestPartException.class})
     public ResponseEntity<InvalidInputResponse> handleValidationException(
             MissingServletRequestPartException e, HttpServletRequest request) {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
-        String message =
-                this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
+        String message = this.localeStringService.getMessage(
+                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.getName()));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.getName()));
     }
 
     @ExceptionHandler({MultipartException.class})
     public ResponseEntity<InvalidInputResponse> handleValidationException(
             MultipartException e, HttpServletRequest request) {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
-        String message =
-                this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
+        String message = this.localeStringService.getMessage(
+                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.getName()));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.getName()));
     }
 
     @ExceptionHandler({BindException.class})
-    public ResponseEntity<InvalidInputResponse> handleValidationException(
-            BindException e, HttpServletRequest request) {
+    public ResponseEntity<InvalidInputResponse> handleValidationException(BindException e, HttpServletRequest request) {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
-        Set fieldsErrors =
-                e.getFieldErrors().stream()
-                        .map(
-                                (fieldError) ->
-                                        FieldErrorResponse.builder()
-                                                .field(fieldError.getField())
-                                                .objectName(fieldError.getObjectName())
-                                                .build())
-                        .collect(Collectors.toSet());
-        String message =
-                this.localeStringService.getMessage(
-                        BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
+        Set fieldsErrors = e.getFieldErrors().stream()
+                .map((fieldError) -> FieldErrorResponse.builder()
+                        .field(fieldError.getField())
+                        .objectName(fieldError.getObjectName())
+                        .build())
+                .collect(Collectors.toSet());
+        String message = this.localeStringService.getMessage(
+                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                message,
-                                BadRequestError.INVALID_INPUT.name(),
-                                fieldsErrors));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(), message, BadRequestError.INVALID_INPUT.name(), fieldsErrors));
     }
 
     @ExceptionHandler({MismatchedInputException.class})
@@ -580,16 +493,14 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new InvalidInputResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                this.localeStringService.getMessage(
-                                        BadRequestError.INVALID_INPUT.getName(),
-                                        "Invalid request arguments",
-                                        new Object[0]),
-                                BadRequestError.INVALID_INPUT.getName(),
-                                Collections.singleton(
-                                        FieldErrorResponse.builder().message(e.getMessage()).build())));
+                .body(new InvalidInputResponse(
+                        HttpStatus.BAD_REQUEST.value(),
+                        this.localeStringService.getMessage(
+                                BadRequestError.INVALID_INPUT.getName(), "Invalid request arguments", new Object[0]),
+                        BadRequestError.INVALID_INPUT.getName(),
+                        Collections.singleton(FieldErrorResponse.builder()
+                                .message(e.getMessage())
+                                .build())));
     }
 
     @ExceptionHandler({AccessDeniedException.class})
@@ -598,23 +509,15 @@ public class ExceptionHandleAdvice {
         Logger var10000 = log;
         String var10001 = request.getMethod();
         var10000.warn(
-                "Failed to handle request "
-                        + var10001
-                        + ": "
-                        + request.getRequestURI()
-                        + ": "
-                        + e.getMessage(),
-                e);
+                "Failed to handle request " + var10001 + ": " + request.getRequestURI() + ": " + e.getMessage(), e);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(
-                        ErrorResponse.builder()
-                                .code(AuthorizationError.ACCESS_DENIED.getCode())
-                                .error(AuthorizationError.ACCESS_DENIED.getName())
-                                .message(
-                                        this.localeStringService.getMessage(
-                                                AuthorizationError.ACCESS_DENIED.getName(), "Access Denied", new Object[0]))
-                                .build());
+                .body(ErrorResponse.builder()
+                        .code(AuthorizationError.ACCESS_DENIED.getCode())
+                        .error(AuthorizationError.ACCESS_DENIED.getName())
+                        .message(this.localeStringService.getMessage(
+                                AuthorizationError.ACCESS_DENIED.getName(), "Access Denied", new Object[0]))
+                        .build());
     }
 
     @ExceptionHandler({InsufficientAuthenticationException.class})
@@ -627,9 +530,7 @@ public class ExceptionHandleAdvice {
                 ErrorResponse.builder().error(AuthenticationError.UNAUTHORISED.getName());
         String var10002 = request.getMethod();
         return var10000.body(
-                var10001
-                        .message(
-                                "You were not authorized to request " + var10002 + " " + request.getRequestURI())
+                var10001.message("You were not authorized to request " + var10002 + " " + request.getRequestURI())
                         .build());
     }
 
@@ -639,11 +540,10 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(
-                        ErrorResponse.builder()
-                                .error(AuthenticationError.UNAUTHORISED.getName())
-                                .message(e.getMessage())
-                                .build());
+                .body(ErrorResponse.builder()
+                        .error(AuthenticationError.UNAUTHORISED.getName())
+                        .message(e.getMessage())
+                        .build());
     }
 
     @ExceptionHandler({NoHandlerFoundException.class})
@@ -652,11 +552,10 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(
-                        ErrorResponse.builder()
-                                .error(NotFoundError.NOT_FOUND.getName())
-                                .message(e.getMessage())
-                                .build());
+                .body(ErrorResponse.builder()
+                        .error(NotFoundError.NOT_FOUND.getName())
+                        .message(e.getMessage())
+                        .build());
     }
 
     @ExceptionHandler({BadCredentialsException.class})
@@ -665,11 +564,10 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(
-                        ErrorResponse.builder()
-                                .error(AuthenticationError.UNAUTHORISED.getName())
-                                .message(e.getMessage())
-                                .build());
+                .body(ErrorResponse.builder()
+                        .error(AuthenticationError.UNAUTHORISED.getName())
+                        .message(e.getMessage())
+                        .build());
     }
 
     @ExceptionHandler({AuthenticationException.class})
@@ -678,15 +576,13 @@ public class ExceptionHandleAdvice {
         log.warn("Failed to handle request " + request.getRequestURI() + ": " + e.getMessage(), e);
         this.catchException(e);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(
-                        ErrorResponse.builder()
-                                .error(AuthenticationError.UNAUTHORISED.getName())
-                                .code(AuthenticationError.UNAUTHORISED.getCode())
-                                .message(
-                                        this.localeStringService.getMessage(
-                                                AuthorizationError.NOT_SUPPORTED_AUTHENTICATION.getName(),
-                                                "Your authentication has not been supported yet",
-                                                new Object[0]))
-                                .build());
+                .body(ErrorResponse.builder()
+                        .error(AuthenticationError.UNAUTHORISED.getName())
+                        .code(AuthenticationError.UNAUTHORISED.getCode())
+                        .message(this.localeStringService.getMessage(
+                                AuthorizationError.NOT_SUPPORTED_AUTHENTICATION.getName(),
+                                "Your authentication has not been supported yet",
+                                new Object[0]))
+                        .build());
     }
 }

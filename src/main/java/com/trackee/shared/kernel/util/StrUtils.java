@@ -51,9 +51,7 @@ public final class StrUtils {
             return null;
         } else if (str.length() > preLength) {
             char first = Character.toLowerCase(str.charAt(preLength));
-            return str.length() > preLength + 1
-                    ? first + str.substring(preLength + 1)
-                    : String.valueOf(first);
+            return str.length() > preLength + 1 ? first + str.substring(preLength + 1) : String.valueOf(first);
         } else {
             return null;
         }
@@ -86,15 +84,11 @@ public final class StrUtils {
     }
 
     public static String removePrefixIgnoreCase(String str, String prefix) {
-        return str != null && str.toLowerCase().startsWith(prefix.toLowerCase())
-                ? str.substring(prefix.length())
-                : str;
+        return str != null && str.toLowerCase().startsWith(prefix.toLowerCase()) ? str.substring(prefix.length()) : str;
     }
 
     public static String removeSuffix(String str, String suffix) {
-        return str != null && str.endsWith(suffix)
-                ? str.substring(0, str.length() - suffix.length())
-                : str;
+        return str != null && str.endsWith(suffix) ? str.substring(0, str.length() - suffix.length()) : str;
     }
 
     public static String removeSuffixIgnoreCase(String str, String suffix) {
@@ -219,11 +213,10 @@ public final class StrUtils {
                 } else if (j == 0) {
                     dp[i][j] = i;
                 } else {
-                    dp[i][j] =
-                            min(
-                                    dp[i - 1][j - 1] + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
-                                    dp[i - 1][j] + 1,
-                                    dp[i][j - 1] + 1);
+                    dp[i][j] = min(
+                            dp[i - 1][j - 1] + costOfSubstitution(x.charAt(i - 1), y.charAt(j - 1)),
+                            dp[i - 1][j] + 1,
+                            dp[i][j - 1] + 1);
                 }
             }
         }
@@ -263,8 +256,7 @@ public final class StrUtils {
         } else {
             String nfdNormalizedString = Normalizer.normalize(value.toLowerCase(), Form.NFD);
             Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-            return pattern
-                    .matcher(nfdNormalizedString)
+            return pattern.matcher(nfdNormalizedString)
                     .replaceAll("")
                     .replace('đ', 'd')
                     .replaceAll(" +", " ");

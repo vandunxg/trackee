@@ -40,13 +40,10 @@ public class SendGridMailServiceImpl implements MailService {
 
         String templateId = templateResolver.resolve(message.mailPurpose());
 
-        message
-                .to()
-                .forEach(
-                        to -> {
-                            Mail mail = buildMail(to, templateId, message.variables());
-                            sendMailToSendGrid(mail, message.mailPurpose());
-                        });
+        message.to().forEach(to -> {
+            Mail mail = buildMail(to, templateId, message.variables());
+            sendMailToSendGrid(mail, message.mailPurpose());
+        });
     }
 
     Mail buildMail(String toEmail, String templateId, Map<String, Object> dynamicData) {

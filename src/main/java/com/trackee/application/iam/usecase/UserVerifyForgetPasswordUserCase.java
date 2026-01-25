@@ -28,39 +28,35 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserVerifyForgetPasswordUserCase {
 
-  TokenProvider tokenProvider;
-  OtpCodeRepository otpCodeRepository;
-  UserRepository userRepository;
+    TokenProvider tokenProvider;
+    OtpCodeRepository otpCodeRepository;
+    UserRepository userRepository;
 
-  public ForgetPasswordResponse verify(String code) {
-    log.info("[verify]={}", code);
+    public ForgetPasswordResponse verify(String code) {
+        log.info("[verify]={}", code);
 
-    OtpCode otpCode =
-            otpCodeRepository
-                    .findByHashedCode(code)
-                    .orElseThrow(() -> new ResponseException(NotFoundError.OTP_CODE_NOT_FOUND));
+        OtpCode otpCode = otpCodeRepository
+                .findByHashedCode(code)
+                .orElseThrow(() -> new ResponseException(NotFoundError.OTP_CODE_NOT_FOUND));
 
-    User user = findUserById(otpCode.getUserId());
+        User user = findUserById(otpCode.getUserId());
 
-    otpCode.verifyForgetPassword();
+        otpCode.verifyForgetPassword();
 
-    List<OtpCode> otpCodes =
-            otpCodeRepository.findAllOtpCodesNotUsedByUserId(user.getId(), OtpPurpose.FORGET_PASSWORD);
+        List<OtpCode> otpCodes =
+                otpCodeRepository.findAllOtpCodesNotUsedByUserId(user.getId(), OtpPurpose.FORGET_PASSWORD);
 
-    otpCodes.forEach(OtpCode::revoked);
-    otpCodes.add(otpCode);
+        otpCodes.forEach(OtpCode::revoked);
+        otpCodes.add(otpCode);
 
-    otpCodeRepository.saveAll(otpCodes);
+        otpCodeRepository.saveAll(otpCodes);
 
-    return new ForgetPasswordResponse(
-            tokenProvider.generateEmailToken(user.getId(), user.getEmail()));
-  }
+        return new ForgetPasswordResponse(tokenProvider.generateEmailToken(user.getId(), user.getEmail()));
+    }
 
-  User findUserById(UUID userId) {
-    log.info("[findUserById]={}", userId);
+    User findUserById(UUID userId) {
+        log.info("[findUserById]={}", userId);
 
-    return userRepository
-            .findById(userId)
-            .orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
-  }
+        return userRepository.findById(userId).orElseThrow(() -> new ResponseException(NotFoundError.USER_NOT_FOUND));
+    }
 }
